@@ -1,9 +1,11 @@
 /*
 
 	Analisador Léxico do GRINGO (Linguagem C)
-
+	Flex Scanner of GRINGO (C Language)
+	
 	Tokens sugeridos:
-
+	Suggested tokens:
+	
 	CHAR, INT, FLOAT, DOUBLE, VOID, UNSIGNED, SIGNED, SHORT, LONG, CONST,
 	VOLATILE, EXTERN, STATIC, REGISTER, AUTO, SIZEOF,
 	
