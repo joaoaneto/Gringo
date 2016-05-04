@@ -1,7 +1,7 @@
 /*
 
 	Analisador Sintático do GRINGO (Linguagem C)
-
+	Parser of GRINGO (C Language)
 */
 
 %{
