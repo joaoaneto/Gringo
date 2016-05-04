@@ -50,32 +50,32 @@
 "static" 	{ return STATIC; }
 "register"	{ return REGISTER; }
 "auto"		{ return AUTO; }
-"="			{ return EQUAL; }
-"-"			{ return SUBTRACT; }
-"+"			{ return ADD; }
-"*"			{ return MUL; }
-"/"			{ return DIV; }
-"%"			{ return REST; }
-">"			{ return GREATER_THEN; }
-"<"			{ return LESS_THEN; }
-"!"			{ return NOT; }
-"&"			{ return ECOMM; }
-"^"			{ return XOR; }
+"="		{ return EQUAL; }
+"-"		{ return SUBTRACT; }
+"+"		{ return ADD; }
+"*"		{ return MUL; }
+"/"		{ return DIV; }
+"%"		{ return REST; }
+">"		{ return GREATER_THEN; }
+"<"		{ return LESS_THEN; }
+"!"		{ return NOT; }
+"&"		{ return ECOMM; }
+"^"		{ return XOR; }
 "~" 		{ return TILDE; }
-"?"			{ return MARK; }
+"?"		{ return MARK; }
 "sizeof"	{ return SIZEOF; }
-","			{ return COMMA; }
-"."			{ return DOT; }
-":"			{ return TWO_DOTS; }
-";"			{ return DOT_COMMA; }
-"("			{ return PAR_L; }
-")"			{ return PAR_R; }
-"["			{ return COL_L; }
-"]"			{ return COL_R; }
-"{"			{ return BRA_L; }
-"}"			{ return BRA_R; }
-\'			{ return QUOTE; }
-\"			{ return DOUBLE_QUOTE; }
+","		{ return COMMA; }
+"."		{ return DOT; }
+":"		{ return TWO_DOTS; }
+";"		{ return DOT_COMMA; }
+"("		{ return PAR_L; }
+")"		{ return PAR_R; }
+"["		{ return COL_L; }
+"]"		{ return COL_R; }
+"{"		{ return BRA_L; }
+"}"		{ return BRA_R; }
+\'		{ return QUOTE; }
+\"		{ return DOUBLE_QUOTE; }
 "if"		{ return IF; }
 "else"		{ return ELSE; }
 "switch"	{ return SWITCH; }
@@ -91,17 +91,17 @@
 "NULL"		{ return NULL; }
 
 [a-zA-Z_][a-zA-Z0-9_]*	{ return IDENTIFIER; }
-[-]?[0-9]+				{ return LITERAL_INT; }
+[-]?[0-9]+		{ return LITERAL_INT; }
 [-]?[0-9]+[\.][0-9]+	{ return LITERAL_DOUBLE; }
-[0][x][0-9a-f]+			{ return HEXADECIMAL; }
-[0][0-8]+				{ return OCTAL; }
+[0][x][0-9a-f]+		{ return HEXADECIMAL; }
+[0][0-8]+		{ return OCTAL; }
 "\n"		{ return NEW_LINE; }
 "\r"		{ return CARRIAGE_RETURN; }
 "\t"		{ return TAB; }
-"\"			{ return BACKSLASH; }
+"\"		{ return BACKSLASH; }
 "\0"		{ return BAR_ZERO; }
 [\n\r\t ]	{}
-.			{ printf("Caractere inválido: %s",yytext); exit(1); }
+.		{ printf("Caractere inválido: %s",yytext); exit(1); }
 
 %%
 
