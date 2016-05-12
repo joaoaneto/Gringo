@@ -77,4 +77,23 @@
 %token BACKSLASH;
 %token BAR_ZERO;
 
+%union {
+	int int_value;
+	double double_value;
+	char char_value;
+	//...
+};
+
+%type<char_value> CHAR;
+%type<int_value> INT;
+%type<double_value> FLOAT;
+%type<double_value> DOUBLE;
+//...
+
 %%
+
+/* 
+
+Productions...
+
+*/
