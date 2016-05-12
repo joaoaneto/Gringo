@@ -34,6 +34,14 @@
 %}
 
 %option yynowrap nodefault
+%x COMMENT
+
+%%
+
+"/*" { BEGIN(COMMENT); }
+<COMMENT>[A-Za-z_\$0-9]+ { return DOC_PARAM;}
+<COMMENT>.
+<COMMENT>"*/" { BEGIN(INITIAL);}
 
 %%
 "char"		{ return CHAR; }
