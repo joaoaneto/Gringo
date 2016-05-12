@@ -23,11 +23,7 @@
 %token SHORT;
 %token LONG;
 %token CONST;
-%token VOLATILE;
-%token EXTERN;
 %token STATIC;
-%token REGISTER;
-%token AUTO;
 %token SIZEOF;
 %token EQUAL;
 %token SUBTRACT;
@@ -69,8 +65,6 @@
 %token IDENTIFIER;
 %token LITERAL_INT;
 %token LITERAL_DOUBLE;
-%token HEXADECIMAL;
-%token OCTAL;
 %token NEW_LINE;
 %token CARRIAGE_RETURN;
 %token TAB;

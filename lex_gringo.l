@@ -36,7 +36,6 @@
 %option yynowrap nodefault
 
 %%
-
 "char"		{ return CHAR; }
 "int"		{ return INT; }
 "float"		{ return FLOAT; }
@@ -47,11 +46,7 @@
 "short"		{ return SHORT; }
 "long"		{ return LONG; }
 "const"		{ return CONST; }
-"volatile"	{ return VOLATILE; }
-"extern"	{ return EXTERN; }
 "static" 	{ return STATIC; }
-"register"	{ return REGISTER; }
-"auto"		{ return AUTO; }
 "="		{ return EQUAL; }
 "-"		{ return SUBTRACT; }
 "+"		{ return ADD; }
@@ -91,12 +86,9 @@
 "exit"		{ return EXIT; }
 "continue"	{ return CONTINUE; }
 "NULL"		{ return NULL; }
-
 [a-zA-Z_][a-zA-Z0-9_]*	{ return IDENTIFIER; }
 [-]?[0-9]+		{ return LITERAL_INT; }
 [-]?[0-9]+[\.][0-9]+	{ return LITERAL_DOUBLE; }
-[0][x][0-9a-f]+		{ return HEXADECIMAL; }
-[0][0-8]+		{ return OCTAL; }
 "\n"		{ return NEW_LINE; }
 "\r"		{ return CARRIAGE_RETURN; }
 "\t"		{ return TAB; }
@@ -104,7 +96,6 @@
 "\0"		{ return BAR_ZERO; }
 [\n\r\t ]	{}
 .		{ printf("Caractere inválido: %s",yytext); exit(1); }
-
 %%
 
 int main(int argc, char ** argv){
