@@ -27,6 +27,7 @@
 %token SIZEOF;
 %token EQUAL;
 %token SUBTRACT;
+%token DOC_PARAM;
 %token ADD;
 %token MUL;
 %token DIV;
