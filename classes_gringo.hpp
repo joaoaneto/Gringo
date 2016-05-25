@@ -49,9 +49,19 @@ class UnExp: public Factor {
 
 
 class Value : public UnExp {
-	void accept(Visitor *v){
-		v->visit(this);	
-	}
+	protected:
+		Type type;
+	public:
+		enum Type {
+			INT,
+			DOUBLE,
+			ID_VALUE
+		};
+		virtual Type getType() = 0; 
+
+		void accept(Visitor *v){
+			v->visit(this);	
+		}
 };
 
 class Context {
@@ -164,11 +174,11 @@ class FactorDiv: public Factor {
 		}
 };
 
-class PlusValue: public UnExp {
+class UnExpPlus : public UnExp {
 	private:	
 		Value *value;
 	public:
-		PlusValue(Valor *v): value(v){}
+		UnExpPlus(Value *v): value(v){}
 		Value *getValue(){
 			return this->value;
 		}
@@ -177,11 +187,11 @@ class PlusValue: public UnExp {
 	}
 };
 
-class MinusValue: public UnExp {
+class UnExpMinus : public UnExp {
 	private:
 		Value *value;
 	public:
-		MinusValue(Value *v): value(v){}
+		UnExpMinus(Value *v): value(v){}
 		Value *getValue(){
 			return this->value;
 		}
@@ -190,11 +200,11 @@ class MinusValue: public UnExp {
 		}
 };
 
-class LogValue: public UnExp {
+class UnExpLog : public UnExp {
 	private:
 		Exp *exp;
 	public:
-		LogValue(Exp *e): exp(e){}
+		UnExpLog(Exp *e): exp(e){}
 		Exp *getExp(){
 			return this->exp;
 		}
@@ -203,11 +213,11 @@ class LogValue: public UnExp {
 		}
 };
 
-class ExpValue: public UnExp {
+class UnExpExp: public UnExp {
 	private:
 		Exp *exp;
 	public:
-		ExpValue(Exp *e): exp(e){}
+		UnExpExp(Exp *e): exp(e){}
 		Exp *getExp(){
 			return this->exp;
 		}
@@ -217,43 +227,54 @@ class ExpValue: public UnExp {
 };
 
 class IntValue: public Value {
+	private:
+		int value;
 	public:
 		int getValue() const{
 			return this->value;
 		}
-		IntValue(int value):value(value){} //Construtor
+		IntValue(int value):value(value){
+			virtual Type get_type(){
+				return INT;
+			}
+		}
 		void accept(Visitor *v){
 			v->visit(this);
 		}
-	private:
-		int value;
 };
 
 class DoubleValue: public Value {
+	private:
+		double value;
 	public:
 		double getValue() const{
 			return this->value;
 		}
-
-		DoubleValue(double value):value(value){} //Construtor
+		DoubleValue(double value):value(value){
+			virtual get_type(){
+				return DOUBLE;
+			}
+		}
 		void accept(Visitor *v){
 			v->visit(this);
 		}
-	private:
-		double value;
 };
 
 class IdValue: public Value {
+	private:
+		char *idValue;
 	public:
 		char *getValue() const{
 			return this->idValue;
 		}
-		IdValue(char *idValue):idValue(idValue){}
+		IdValue(char *idValue):idValue(idValue){
+			virtual get_type(){
+				return ID_VALUE;
+			}
+		}
 		void accept(Visitor *v){
 			v->visit(this);
 		}
-	private:
-		char *idValue;
 };
 
 class LparExpRpar : public Value {
@@ -302,6 +323,173 @@ class Visitor {
 	virtual void visit(IdValue *) = 0;
 	virtual void visit(LparExpRpar *) = 0;
 	virtual void visit(Atribuition *) = 0;
+};
+
+class Operations : public Visitor {
+	private:
+		vector <Value *> stack_;
+	public:
+		void visit(IntValue *v){
+			stack_.push_back(v);
+		}
+
+		void visit(DoubleValue *v){
+			stack_.push_back(v);
+		}
+
+		void visit(BinExpPlus *bep){
+			bep->getExp()->accept(this);
+			bep->getFactor()->accept(this);
+			Value *value1 = stack_.pop_back();
+			Value *value2 = stack_.pop_back();
+
+			if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+				IntValue *v1 = static_cast <IntValue *> (value1);
+				IntValue *v2 = static_cast <IntValue *> (value2);
+				stack_.push_back(new IntValue(v1->getValue() + v2->getValue()));
+			}
+			else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+				IntValue *v1 = static_cast <IntValue *> (value1);
+				DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
+			}
+			else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+				DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+				IntValue *v2 = static_cast <IntValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
+			}
+			else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+				DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+				DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
+			}
+			
+			delete value1;
+			delete value2;
+		}
+
+		void visit(BinExpMinus *bem){
+			bem->getExp()->accept(this);
+			bem->getFactor()->accept(this);
+			Value *value1 = stack_.pop_back();
+			Value *value2 = stack_.pop_back();
+
+			if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+				IntValue *v1 = static_cast <IntValue *> (value1);
+				IntValue *v2 = static_cast <IntValue *> (value2);
+				stack_.push_back(new IntValue(v1->getValue() - v2->getValue()));
+			}
+			else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+				IntValue *v1 = static_cast <IntValue *> (value1);
+				DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));
+			}
+			else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+				DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+				IntValue *v2 = static_cast <IntValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));
+			}
+			else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+				DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+				DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));
+			}
+			
+			delete value1;
+			delete value2;
+		}
+
+		void visit(FactorMul *fm){
+			fm->getUnExp()->accept(this);
+			fm->getFactor()->accept(this);
+			Value *value1 = stack_.pop_back();
+			Value *value2 = stack_.pop_back();
+
+			if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+				IntValue *v1 = static_cast <IntValue *> (value1);
+				IntValue *v2 = static_cast <IntValue *> (value2);
+				stack_.push_back(new IntValue(v1->getValue() * v2->getValue()));
+			}
+			else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+				IntValue *v1 = static_cast <IntValue *> (value1);
+				DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
+			}
+			else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+				DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+				IntValue *v2 = static_cast <IntValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
+			}
+			else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+				DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+				DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
+			}
+			
+			delete value1;
+			delete value2;
+		}
+
+		void visit(FactorDiv *fd){
+			fd->getUnExp()->accept(this);
+			fd->getFactor()->accept(this);
+			Value *value1 = stack_.pop_back();
+			Value *value2 = stack_.pop_back();
+
+			if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+				IntValue *v1 = static_cast <IntValue *> (value1);
+				IntValue *v2 = static_cast <IntValue *> (value2);
+				stack_.push_back(new IntValue(v1->getValue() / v2->getValue()));
+			}
+			else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+				IntValue *v1 = static_cast <IntValue *> (value1);
+				DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() / v2->getValue()));
+			}
+			else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+				DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+				IntValue *v2 = static_cast <IntValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() / v2->getValue()));
+			}
+			else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+				DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+				DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+				stack_.push_back(new DoubleValue(v1->getValue() / v2->getValue()));
+			}
+			
+			delete value1;
+			delete value2;
+		}
+
+		void visit(UnExpPlus *uep){
+			uep->getValue()->accept(this);
+			Valor *value = stack_.pop_back();
+
+			if(value->getType() == Value::INT){
+				IntValue *v = static_cast <IntValue *> (value);
+			} else {
+				DoubleValue *v = static_cast <DoubleValue *> (value);
+			}
+
+			delete value;
+		}
+
+		void visit(UnExpMinus *uep){
+			uem->getValue()->accept(this);
+			Valor *value = stack_.pop_back();
+
+			if(value->getType() == Value::INT){
+				IntValue *v = static_cast <IntValue *> (value);
+			} else {
+				DoubleValue *v = static_cast <DoubleValue *> (value);
+			}
+
+			delete value;
+		}
+
+		/*
+		CONSULTAR O GRUPO SOBRE UnExpLog E UnExpExp!
+		*/
 };
 
 #endif
