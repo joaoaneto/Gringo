@@ -41,7 +41,6 @@
 %token GREATER_THEN;
 %token LESS_THEN;
 %token NOT;
-%token ECOMM;
 %token XOR;
 %token MARK;
 %token COMMA;

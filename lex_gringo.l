@@ -59,7 +59,6 @@
 ">"		{ return GREATER_THEN; }
 "<"		{ return LESS_THEN; }
 "!"		{ return NOT; }
-"&"		{ return ECOMM; }
 "^"		{ return XOR; }
 "~" 	{ return TILDE; }
 "?"		{ return MARK; }
