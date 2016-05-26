@@ -3,48 +3,30 @@
 
 #include <map>
 #include <string>
+#include <math.h>
+
 using namespace std;
 
 class Node {
-	void accept(Visitor *v){
-		v->visit(this);
-	}
+	
 };
 
 class Program : public Node {	
-	void accept(Visitor *v){
-		v->visit(this);
-	}
 };
 
 class ExpList : public Program {
-	void accept(Visitor *v){
-		v->visit(this);
-	}
 };
 
 class Command : public ExpList {
-	void accept(Visitor *v){
-		v->visit(this);
-	}
 };
 
 class Exp : public Command {
-	void accept(Visitor *v){
-		v->visit(this);
-	}
 };
 
 class Factor: public Exp {
-	void accept(Visitor *v){
-		v->visit(this);
-	}
 };
 
 class UnExp: public Factor {
-	void accept(Visitor *v){
-		v->visit(this);
-	}
 };
 
 
@@ -463,7 +445,7 @@ class Operations : public Visitor {
 
 		void visit(UnExpPlus *uep){
 			uep->getValue()->accept(this);
-			Valor *value = stack_.pop_back();
+	        /*Cadê Valor?*/ Valor *value = stack_.pop_back();
 
 			if(value->getType() == Value::INT){
 				IntValue *v = static_cast <IntValue *> (value);
@@ -487,9 +469,33 @@ class Operations : public Visitor {
 			delete value;
 		}
 
-		/*
-		CONSULTAR O GRUPO SOBRE UnExpLog E UnExpExp!
-		*/
+		void visit(UnExpLog *uel){
+			uel->getExp()->accept(this);
+			Value *value = stack_pop_back();
+
+			if(value->getType() == Value::INT){
+				IntValue *v = static_cast <IntValue*> (value);
+				stack_.push_back(new IntValue (log (v->getValue()));
+			}
+			if(value->getType() == Value::DOUBLE){
+				DoubleValue *v = static_cast <DoubleValue*> (value);
+				stack_.push_back(new DoubleValue (log (v->getValue()));
+			}
+		}
+
+		void visit(UnExpExp *uee){
+			uee->getExp()->accept(this);
+			Value *value = stack_.pop_back();
+
+			if(value->getType() == Value::INT){
+				IntValue *v = static_cast <IntValue*> (value);
+				stack_.push_back(new IntValue (exp (v->getValue()));
+			}
+			if(value->getType() == Value::DOUBLE){
+				DoubleValue *v = static_cast <DoubleValue*> (value);
+				stack_.push_back(new DoubleValue (exp (v->getValue()));
+			}
+		}
 };
 
 #endif
