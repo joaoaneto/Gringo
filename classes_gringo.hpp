@@ -445,7 +445,7 @@ class Operations : public Visitor {
 
 		void visit(UnExpPlus *uep){
 			uep->getValue()->accept(this);
-	        /*Cadê Valor?*/ Valor *value = stack_.pop_back();
+	        Value *value = stack_.pop_back();
 
 			if(value->getType() == Value::INT){
 				IntValue *v = static_cast <IntValue *> (value);
@@ -458,7 +458,7 @@ class Operations : public Visitor {
 
 		void visit(UnExpMinus *uep){
 			uem->getValue()->accept(this);
-			Valor *value = stack_.pop_back();
+			Value*value = stack_.pop_back();
 
 			if(value->getType() == Value::INT){
 				IntValue *v = static_cast <IntValue *> (value);
