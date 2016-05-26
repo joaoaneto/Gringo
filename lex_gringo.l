@@ -24,26 +24,19 @@
 
 %{
 
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <string.h>
-	#include "bison_gringo.hpp"
-
+	//#include <stdio.h>
+	//#include <stdlib.h>
+	//#include <string.h>
 	extern int yyparse();
+	//#include "classes_gringo.hpp"
+	#include "bison_gringo.hpp"
 	
 %}
 
-%option yynowrap nodefault
-%x COMMENT
+%option noyywrap nodefault
 
 %%
 
-"/*" { BEGIN(COMMENT); }
-<COMMENT>[A-Za-z_\$0-9]+ { return DOC_PARAM;}
-<COMMENT>.
-<COMMENT>"*/" { BEGIN(INITIAL);}
-
-%%
 "char"		{ return CHAR; }
 "int"		{ return INT; }
 "float"		{ return FLOAT; }
@@ -55,6 +48,8 @@
 "long"		{ return LONG; }
 "const"		{ return CONST; }
 "static" 	{ return STATIC; }
+"log"		{return LOG2;}
+"exp"	{return EXP;}
 "="		{ return EQUAL; }
 "-"		{ return SUBTRACT; }
 "+"		{ return ADD; }
@@ -66,7 +61,7 @@
 "!"		{ return NOT; }
 "&"		{ return ECOMM; }
 "^"		{ return XOR; }
-"~" 		{ return TILDE; }
+"~" 	{ return TILDE; }
 "?"		{ return MARK; }
 "sizeof"	{ return SIZEOF; }
 ","		{ return COMMA; }
@@ -93,17 +88,17 @@
 "return"	{ return RETURN; }
 "exit"		{ return EXIT; }
 "continue"	{ return CONTINUE; }
-"NULL"		{ return NULL; }
 [a-zA-Z_][a-zA-Z0-9_]*	{ return IDENTIFIER; }
-[-]?[0-9]+		{ return LITERAL_INT; }
-[-]?[0-9]+[\.][0-9]+	{ return LITERAL_DOUBLE; }
+[-]?[0-9]+		{yylval.int_value = atoi(yytext); return LITERAL_INT; }
+[-]?[0-9]+[\.][0-9]+	{yylval.int_value = atof(yytext); return LITERAL_DOUBLE; }
 "\n"		{ return NEW_LINE; }
 "\r"		{ return CARRIAGE_RETURN; }
 "\t"		{ return TAB; }
-"\"		{ return BACKSLASH; }
+[\\]		{ return BACKSLASH; }
 "\0"		{ return BAR_ZERO; }
 [\n\r\t ]	{}
 .		{ printf("Caractere inválido: %s",yytext); exit(1); }
+
 %%
 
 int main(int argc, char ** argv){
@@ -119,6 +114,5 @@ int main(int argc, char ** argv){
 		printf("Error!!\n");
 		return 1;
 	}
-
 	return 0;
 }	

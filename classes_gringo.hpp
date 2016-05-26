@@ -1,14 +1,18 @@
-#ifndef ARQ_CLASS_H
-#define ARQ_CLASS_H
+
+#ifndef CLASSES_GRINGO_HPP
+#define CLASSES_GRINGO_HPP
 
 #include <map>
 #include <string>
 #include <math.h>
-
+#include <stdio.h>
+#include <vector>
+using std::vector;
 using namespace std;
 
 class Node {
-	
+	public:
+		virtual void accept(class Visitor *) = 0;
 };
 
 class Program : public Node {	
@@ -31,8 +35,6 @@ class UnExp: public Factor {
 
 
 class Value : public UnExp {
-	protected:
-		Type type;
 	public:
 		enum Type {
 			INT,
@@ -40,10 +42,9 @@ class Value : public UnExp {
 			ID_VALUE
 		};
 		virtual Type getType() = 0; 
-
-		void accept(Visitor *v){
-			v->visit(this);	
-		}
+	private:
+		Type type;
+	
 };
 
 class Context {
@@ -66,7 +67,7 @@ class Context {
 			program = prog;
 		}
 	private:
-		TypeTable table;
+		TypeTable table;	
 };
 
 Context *Context::instance = NULL;
@@ -83,9 +84,7 @@ class Commands: public ExpList {
 		Command *getCommand(){
 			return this->command;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		//void accept(Visitor *);
 };
 
 class BinExpPlus: public Exp {
@@ -94,15 +93,13 @@ class BinExpPlus: public Exp {
 		Factor *factor;
 	public:
 		BinExpPlus(Exp *e, class Factor *f): exp(e), factor(f){}
-		Exp *getExp(){
+		Exp *getExp (){
 			return this->exp;
 		}
 		Factor *getFactor(){
 			return this->factor;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		void accept(Visitor *);
 };
 
 class BinExpMinus: public Exp {
@@ -111,15 +108,13 @@ class BinExpMinus: public Exp {
 		Factor *factor;
 	public:
 		BinExpMinus(Exp *e, Factor *f): exp(e), factor(f){}
-		Exp *getExp(){
+		Exp *getExp (){
 			return this->exp;
 		}
 		Factor *getFactor(){
 			return this->factor;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		void accept(Visitor *);
 };
 
 class FactorMul: public Factor {
@@ -127,16 +122,14 @@ class FactorMul: public Factor {
 		Factor *factor;
 		UnExp *unExp;
 	public:
-		FactorMul(Factor *f, unExp *ue): factor(f), unExp(ue){}
+		FactorMul(Factor *f, UnExp *ue): factor(f), unExp(ue){}
 		Factor *getFactor(){
 			return this->factor;
 		}
 		UnExp *getUnExp(){
 			return this->unExp;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		void accept(Visitor *);
 };
 
 class FactorDiv: public Factor {
@@ -151,9 +144,7 @@ class FactorDiv: public Factor {
 		UnExp *getUnExp(){
 			return this->unExp;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		void accept(Visitor *);
 };
 
 class UnExpPlus : public UnExp {
@@ -164,9 +155,7 @@ class UnExpPlus : public UnExp {
 		Value *getValue(){
 			return this->value;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-	}
+		void accept(Visitor *);
 };
 
 class UnExpMinus : public UnExp {
@@ -177,9 +166,7 @@ class UnExpMinus : public UnExp {
 		Value *getValue(){
 			return this->value;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		void accept(Visitor *);
 };
 
 class UnExpLog : public UnExp {
@@ -190,9 +177,7 @@ class UnExpLog : public UnExp {
 		Exp *getExp(){
 			return this->exp;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		void accept(Visitor *);
 };
 
 class UnExpExp: public UnExp {
@@ -203,60 +188,57 @@ class UnExpExp: public UnExp {
 		Exp *getExp(){
 			return this->exp;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		void accept(Visitor *);
 };
 
 class IntValue: public Value {
 	private:
 		int value;
 	public:
-		int getValue() const{
+		int getValue(){
 			return this->value;
 		}
-		IntValue(int value):value(value){
-			virtual Type get_type(){
-				return INT;
-			}
+
+		IntValue(int value):value(value){}
+
+		virtual Type getType(){
+			return INT;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+          
+		void accept(Visitor *);
 };
 
 class DoubleValue: public Value {
 	private:
 		double value;
 	public:
-		double getValue() const{
+		double getValue(){
 			return this->value;
 		}
-		DoubleValue(double value):value(value){
-			virtual get_type(){
+		DoubleValue(double value):value(value){}
+
+		virtual Type getType(){
 				return DOUBLE;
-			}
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+
+		void accept(Visitor *v);
 };
+
 
 class IdValue: public Value {
 	private:
 		char *idValue;
 	public:
-		char *getValue() const{
+		char *getValue(){
 			return this->idValue;
 		}
-		IdValue(char *idValue):idValue(idValue){
-			virtual get_type(){
-				return ID_VALUE;
-			}
+
+		IdValue(char *idValue):idValue(idValue){}
+
+		virtual Type getType(){
+			return ID_VALUE;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		//void accept(Visitor *);
 };
 
 class LparExpRpar : public Value {
@@ -268,9 +250,7 @@ class LparExpRpar : public Value {
 		Exp *getExp(){
 			return this->exp;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		//void accept(Visitor *);
 };
 
 class Atribuition : public Command {
@@ -285,13 +265,12 @@ class Atribuition : public Command {
 		IdValue	*getIdValue(){
 			return this->idValue;
 		}
-		void accept(Visitor *v){
-			v->visit(this);
-		}
+		//void accept(Visitor *);
 }; 
 
 class Visitor {
-	virtual void visit(Commands *) = 0;
+public:
+	//virtual void visit(Commands *) = 0;
 	virtual void visit(BinExpPlus *) = 0;
 	virtual void visit(BinExpMinus *) = 0;
 	virtual void visit(FactorMul *) = 0;
@@ -302,16 +281,18 @@ class Visitor {
 	virtual void visit(UnExpExp *) = 0;
 	virtual void visit(IntValue *) = 0;
 	virtual void visit(DoubleValue *) = 0;
-	virtual void visit(IdValue *) = 0;
-	virtual void visit(LparExpRpar *) = 0;
-	virtual void visit(Atribuition *) = 0;
+	//virtual void visit(IdValue *) = 0;
+	//virtual void visit(LparExpRpar *) = 0;
+	//virtual void visit(Atribuition *) = 0;
 };
 
 class Operations : public Visitor {
 	private:
-		vector <Value *> stack_;
+		vector<Value *> stack_;
 	public:
+		Operations(){};
 		void visit(IntValue *v){
+			printf("Entrou no visit do IntValue!\n\n");
 			stack_.push_back(v);
 		}
 
@@ -322,8 +303,10 @@ class Operations : public Visitor {
 		void visit(BinExpPlus *bep){
 			bep->getExp()->accept(this);
 			bep->getFactor()->accept(this);
-			Value *value1 = stack_.pop_back();
-			Value *value2 = stack_.pop_back();
+			Value *value1 = stack_.back();
+			stack_.pop_back();
+			Value *value2 = stack_.back();
+			stack_.pop_back();
 
 			if(value1->getType() == Value::INT && value2->getType() == Value::INT){
 				IntValue *v1 = static_cast <IntValue *> (value1);
@@ -353,8 +336,10 @@ class Operations : public Visitor {
 		void visit(BinExpMinus *bem){
 			bem->getExp()->accept(this);
 			bem->getFactor()->accept(this);
-			Value *value1 = stack_.pop_back();
-			Value *value2 = stack_.pop_back();
+			Value *value1 = stack_.back();
+			stack_.pop_back();
+			Value *value2 = stack_.back();
+			stack_.pop_back();
 
 			if(value1->getType() == Value::INT && value2->getType() == Value::INT){
 				IntValue *v1 = static_cast <IntValue *> (value1);
@@ -384,8 +369,10 @@ class Operations : public Visitor {
 		void visit(FactorMul *fm){
 			fm->getUnExp()->accept(this);
 			fm->getFactor()->accept(this);
-			Value *value1 = stack_.pop_back();
-			Value *value2 = stack_.pop_back();
+			Value *value1 = stack_.back();
+			stack_.pop_back();
+			Value *value2 = stack_.back();
+			stack_.pop_back();
 
 			if(value1->getType() == Value::INT && value2->getType() == Value::INT){
 				IntValue *v1 = static_cast <IntValue *> (value1);
@@ -415,8 +402,10 @@ class Operations : public Visitor {
 		void visit(FactorDiv *fd){
 			fd->getUnExp()->accept(this);
 			fd->getFactor()->accept(this);
-			Value *value1 = stack_.pop_back();
-			Value *value2 = stack_.pop_back();
+			Value *value1 = stack_.back();
+			stack_.pop_back();
+			Value *value2 = stack_.back();
+			stack_.pop_back();
 
 			if(value1->getType() == Value::INT && value2->getType() == Value::INT){
 				IntValue *v1 = static_cast <IntValue *> (value1);
@@ -445,7 +434,8 @@ class Operations : public Visitor {
 
 		void visit(UnExpPlus *uep){
 			uep->getValue()->accept(this);
-	        Value *value = stack_.pop_back();
+	        Value *value = stack_.back();
+	        stack_.pop_back();
 
 			if(value->getType() == Value::INT){
 				IntValue *v = static_cast <IntValue *> (value);
@@ -456,9 +446,10 @@ class Operations : public Visitor {
 			delete value;
 		}
 
-		void visit(UnExpMinus *uep){
+		void visit(UnExpMinus *uem){
 			uem->getValue()->accept(this);
-			Value*value = stack_.pop_back();
+			Value*value = stack_.back();
+			stack_.pop_back();
 
 			if(value->getType() == Value::INT){
 				IntValue *v = static_cast <IntValue *> (value);
@@ -471,31 +462,93 @@ class Operations : public Visitor {
 
 		void visit(UnExpLog *uel){
 			uel->getExp()->accept(this);
-			Value *value = stack_pop_back();
+			Value *value = stack_.back();
+			stack_.pop_back();
 
 			if(value->getType() == Value::INT){
 				IntValue *v = static_cast <IntValue*> (value);
-				stack_.push_back(new IntValue (log (v->getValue()));
+				stack_.push_back(new IntValue (log (v->getValue())));
 			}
 			if(value->getType() == Value::DOUBLE){
 				DoubleValue *v = static_cast <DoubleValue*> (value);
-				stack_.push_back(new DoubleValue (log (v->getValue()));
+				stack_.push_back(new DoubleValue (log (v->getValue())));
 			}
 		}
 
 		void visit(UnExpExp *uee){
 			uee->getExp()->accept(this);
-			Value *value = stack_.pop_back();
+			Value *value = stack_.back();
+			stack_.pop_back();
 
 			if(value->getType() == Value::INT){
 				IntValue *v = static_cast <IntValue*> (value);
-				stack_.push_back(new IntValue (exp (v->getValue()));
+				stack_.push_back(new IntValue (exp (v->getValue())));
 			}
 			if(value->getType() == Value::DOUBLE){
 				DoubleValue *v = static_cast <DoubleValue*> (value);
-				stack_.push_back(new DoubleValue (exp (v->getValue()));
+				stack_.push_back(new DoubleValue (exp (v->getValue())));
 			}
 		}
 };
+/*
+void Commands::accept(Visitor *v){
+	v->visit(this);
+}
+*/
+void BinExpPlus::accept(Visitor *v){
+	v->visit(this);
+}
 
+void BinExpMinus::accept(Visitor *v){
+	v->visit(this);
+}
+
+void FactorMul::accept(Visitor *v){
+	v->visit(this);
+}
+
+void FactorDiv::accept(Visitor *v){
+	v->visit(this);
+}
+
+void UnExpPlus::accept(Visitor *v){
+	v->visit(this);
+}
+
+void UnExpMinus::accept(Visitor *v){
+	v->visit(this);
+}
+
+void UnExpLog::accept(Visitor *v){
+	v->visit(this);
+}
+
+void UnExpExp::accept(Visitor *v){
+	v->visit(this);
+}
+
+void IntValue::accept(Visitor *v){
+	printf("Entrou no accept do IntValue\n\n");
+	printf("O valor do IntValue : %d\n\n",this->getValue());
+	printf("O tipo do Enum : %d\n\n",this->getType());
+	v->visit(this);
+}
+
+void DoubleValue::accept(Visitor *v){
+	v->visit(this);
+}
+/*
+void IdValue::accept(Visitor *v){
+	v->visit(this);
+}
+*/
+/*
+void LparExpRpar::accept(Visitor *v){
+	v->visit(this);
+}
+
+void Atribuition::accept(Visitor *v){
+	v->visit(this);
+}
+*/
 #endif
