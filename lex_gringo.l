@@ -27,8 +27,8 @@
 	//#include <stdio.h>
 	//#include <stdlib.h>
 	//#include <string.h>
-	extern int yyparse();
 	//#include "classes_gringo.hpp"
+	extern int yyparse();
 	#include "bison_gringo.hpp"
 	
 %}
@@ -43,9 +43,6 @@
 "double"	{ return DOUBLE; }
 "void"		{ return VOID; }
 "unsigned"	{ return UNSIGNED; }
-"signed"	{ return SIGNED; }
-"short"		{ return SHORT; }
-"long"		{ return LONG; }
 "const"		{ return CONST; }
 "static" 	{ return STATIC; }
 "log"		{return LOG2;}
@@ -60,8 +57,6 @@
 "<"		{ return LESS_THEN; }
 "!"		{ return NOT; }
 "^"		{ return XOR; }
-"~" 	{ return TILDE; }
-"?"		{ return MARK; }
 "sizeof"	{ return SIZEOF; }
 ","		{ return COMMA; }
 "."		{ return DOT; }
@@ -77,19 +72,15 @@
 \"		{ return DOUBLE_QUOTE; }
 "if"		{ return IF; }
 "else"		{ return ELSE; }
-"switch"	{ return SWITCH; }
-"case"		{ return CASE; }
 "break"		{ return BREAK; }
-"default"	{ return DEFAULT; }
 "for"		{ return FOR; }
 "while"		{ return WHILE; }
-"do"		{ return DO; }
 "return"	{ return RETURN; }
 "exit"		{ return EXIT; }
 "continue"	{ return CONTINUE; }
 [a-zA-Z_][a-zA-Z0-9_]*	{ return IDENTIFIER; }
 [-]?[0-9]+		{yylval.int_value = atoi(yytext); return LITERAL_INT; }
-[-]?[0-9]+[\.][0-9]+	{yylval.int_value = atof(yytext); return LITERAL_DOUBLE; }
+[-]?[0-9]+[\.][0-9]+	{yylval.double_value = atof(yytext); return LITERAL_DOUBLE; }
 "\n"		{ return NEW_LINE; }
 "\r"		{ return CARRIAGE_RETURN; }
 "\t"		{ return TAB; }
@@ -101,17 +92,12 @@
 %%
 
 int main(int argc, char ** argv){
-		
+	
 	yyin = fopen (argv[1],"r"); /*Arquivo de entrada */
 	
-	if(argc != 2){
-		printf("Tem que ter o nome do arquivo\n\n");
-			return 1;
-	}
+	if(argc != 2){ printf("Tem que ter o nome do arquivo\n\n"); return 1; }
 
-	if(yyparse()){
-		printf("Error!!\n");
-		return 1;
-	}
+	if(yyparse()){ /*printf("Error!!\n");*/ return 1; }
+	
 	return 0;
-}	
+}
