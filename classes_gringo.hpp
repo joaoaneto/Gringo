@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <string.h>
 #include <math.h>
 #include <stdio.h>
 #include <vector>
@@ -157,10 +158,10 @@ class IdValue: public Value {
 private:
 	char *idValue;
 public:
-	IdValue(char *idValue):idValue(idValue){} //construtor
+	IdValue(char *idvalue){ idValue = strdup(idvalue); } //construtor
 	char *getValue(){ return this->idValue; }
 	virtual Type getType(){ return ID_VALUE; }
-	//void accept(Visitor *);
+	void accept(Visitor *);
 };
 
 class LparExpRpar : public Value {
@@ -172,15 +173,15 @@ public:
 	//void accept(Visitor *);
 };
 
-class Atribuition : public Command {
+class Assignment : public Command {
 private:
 	Exp *exp;
 	IdValue *idValue;
 public:
-	Atribuition(Exp *e) : exp(e){} //construtor
+	Assignment(IdValue *id, Exp *e) : idValue(id), exp(e){} //construtor
 	Exp *getExp(){ return this->exp; }
 	IdValue	*getIdValue(){ return this->idValue; }
-	//void accept(Visitor *);
+	void accept(Visitor *);
 }; 
 
 

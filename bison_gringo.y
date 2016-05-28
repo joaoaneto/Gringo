@@ -72,6 +72,7 @@
 	int int_value;
 	double double_value;
 	char char_value;
+	char *id_value;
 	class Value *value;
 	class Exp *exp;
 	class UnExp *unexp;
@@ -84,12 +85,14 @@
 	class UnExpMinus *unexpminus;
 	class UnExpLog *unexplog;
 	class UnExpExp *unexpexp;
+	class Assignment *assignment;
 };
 
 %type<char_value> CHAR;
 %type<int_value> LITERAL_INT;
 %type<double_value> FLOAT;
 %type<double_value> LITERAL_DOUBLE;
+%type<id_value> IDENTIFIER;
 %type<value> Value;
 %type<exp> Exp;
 %type<factor> Factor;
@@ -102,31 +105,31 @@
 %type<unexpminus> UnExpMinus;
 %type<unexplog> UnExpLog;
 %type<unexpexp> UnExpExp;
+%type<assignment> Assignment;
 
 %%
 
  
 
-Program : ExpList
+Program : ExpList{}
 ;
 
-ExpList : Command {
-
+ExpList : Command{}
+		|Commands{
 		Value *total = op->getTotal();
 
 		if(total->getType() == Value::INT){
-			printf("%d\n\n", static_cast <IntValue*> (total)->getValue());
+			printf("Valor final: %d\n\n", static_cast <IntValue*> (total)->getValue());
 		} else if(total->getType() == Value::DOUBLE){
-			printf("%lf\n\n", static_cast <DoubleValue*> (total)->getValue());
-		}
+			printf("Valor final: %lf\n\n", static_cast <DoubleValue*> (total)->getValue());
+		}		
 	}
-		|Commands{}
 ; 
 
 Commands : ExpList NEW_LINE Command {} //Só uma produção complexa
 
-Command : Atribuition //Relação "é"
-		|Exp
+Command : Assignment{} //Relação "é"
+		|Exp {}
 ;
 
 Exp : BinExpPlus{}
@@ -203,23 +206,26 @@ UnExpExp : EXP PAR_L Exp PAR_R{
 ;
 
 Value : LITERAL_INT {
-			/*IntValue *fallen = new IntValue($1);
-			fallen->accept(op);*/
-			$$ = new IntValue($1);
+		/*IntValue *fallen = new IntValue($1);
+		fallen->accept(op);*/
+		$$ = new IntValue($1);
 	}
 		|LITERAL_DOUBLE{
-			/*DoubleValue *fallen = new DoubleValue($1);
-			fallen->accept(op);*/
-			$$ = new DoubleValue($1);
+		/*DoubleValue *fallen = new DoubleValue($1);
+		fallen->accept(op);*/
+		$$ = new DoubleValue($1);
 	}
 		|LparExpRpar{}
-		|IDENTIFIER {
-			//$$ = new IdValue($1);
-	}
+		|IDENTIFIER { $$ = new IdValue($1); }
 ;	
 
 LparExpRpar : PAR_L Exp PAR_R{}
 ; 
 
-Atribuition : IDENTIFIER EQUAL Exp{}
+Assignment : IDENTIFIER EQUAL Exp{
+		IdValue *fallenId = new IdValue($1);
+		Assignment *fallen = new Assignment(fallenId,$3);
+		fallen->accept(op);
+		$$ = new Assignment(fallenId,$3);
+	}
 ;

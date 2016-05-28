@@ -17,9 +17,9 @@ public:
 	virtual void visit(UnExpExp *) = 0;
 	virtual void visit(IntValue *) = 0;
 	virtual void visit(DoubleValue *) = 0;
-	//virtual void visit(IdValue *) = 0;
+	virtual void visit(IdValue *) = 0;
 	//virtual void visit(LparExpRpar *) = 0;
-	//virtual void visit(Atribuition *) = 0;
+	virtual void visit(Assignment *) = 0;
 };
 
 class Operations : public Visitor {
@@ -33,6 +33,34 @@ public:
 	void visit(IntValue *v){ stack_.push_back(v); }
 	
 	void visit(DoubleValue *v){ stack_.push_back(v); }
+	
+	void visit(IdValue *v){
+		Context::TypeTable &t = Context::getContext().getTable();
+
+		if(t.find(v->getValue()) == t.end()){
+			stack_.push_back(v);
+		}else{
+			stack_.push_back(t[v->getValue()]);
+		}
+	}
+	
+	void visit(Assignment *a){
+		a->getExp()->accept(this);
+		a->getIdValue()->accept(this);
+		
+		Context::TypeTable &t = Context::getContext().getTable();
+		
+		IdValue *valueId = static_cast <IdValue *> (stack_.back());
+		stack_.pop_back();
+		Value *value = stack_.back();
+		stack_.pop_back();
+		
+		if(valueId->getType() == Value::ID_VALUE && value->getType() == Value::INT){
+			t[valueId->getValue()] = static_cast <IntValue*> (value);
+		} else if(valueId->getType() == Value::ID_VALUE && value->getType() == Value::DOUBLE){
+			t[valueId->getValue()] = static_cast <DoubleValue*> (value);
+		}
+	}
 	
 	void visit(BinExpPlus *bep){
 		bep->getExp()->accept(this);
@@ -245,10 +273,10 @@ void IntValue::accept(Visitor *v){ v->visit(this); }
 
 void DoubleValue::accept(Visitor *v){ v->visit(this); }
 
-//void IdValue::accept(Visitor *v){ v->visit(this); }
+void IdValue::accept(Visitor *v){ v->visit(this); }
 
 //void LparExpRpar::accept(Visitor *v){ v->visit(this); }
 
-//void Atribuition::accept(Visitor *v){ v->visit(this); }
+void Assignment::accept(Visitor *v){ v->visit(this); }
 
 #endif
