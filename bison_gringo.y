@@ -76,8 +76,12 @@
 	char char_value;
 	class Value *value;
 	class Exp *exp;
+	class UnExp *unexp;
 	class Factor *factor;
 	class BinExpPlus *binexpplus;
+	class BinExpMinus *binexpminus;
+	class FactorMul *factormul;
+	class FactorDiv *factordiv;
 };
 
 %type<char_value> CHAR;
@@ -87,10 +91,11 @@
 %type<value> Value;
 %type<exp> Exp;
 %type<factor> Factor;
+%type<unexp> UnExp;
 %type<binexpplus> BinExpPlus;
-
-//...
-
+%type<binexpminus> BinExpMinus;
+%type<factormul> FactorMul;
+%type<factordiv> FactorDiv;
 %%
 
  
@@ -120,18 +125,30 @@ BinExpPlus : Exp ADD Factor {
 	}
 ;  
 
-BinExpMinus : Exp SUBTRACT Factor
+BinExpMinus : Exp SUBTRACT Factor{
+		BinExpMinus *fallen = new BinExpMinus($1, $3);
+		fallen->accept(op);
+		$$ = new BinExpMinus($1, $3);
+	}
 ;
   
-Factor : FactorMUL {} 	
-		|FactorDIV {}
+Factor : FactorMul {} 	
+		|FactorDiv {}
 		|UnExp {}
 ;
 
-FactorMUL : Factor MUL UnExp{}
+FactorMul : Factor MUL UnExp{
+		FactorMul *fallen = new FactorMul($1, $3);
+		fallen->accept(op);
+		$$ = new FactorMul($1, $3);
+	}
 ;		
 
-FactorDIV : Factor DIV UnExp {}
+FactorDiv : Factor DIV UnExp {
+		FactorDiv *fallen = new FactorDiv($1, $3);
+		fallen->accept(op);
+		$$ = new FactorDiv($1, $3);
+	}
 ;
 
 UnExp : UnExpPlus {}     
