@@ -77,6 +77,7 @@
 	class Value *value;
 	class Exp *exp;
 	class Factor *factor;
+	class BinExpPlus *binexpplus;
 };
 
 %type<char_value> CHAR;
@@ -86,6 +87,7 @@
 %type<value> Value;
 %type<exp> Exp;
 %type<factor> Factor;
+%type<binexpplus> BinExpPlus;
 
 //...
 

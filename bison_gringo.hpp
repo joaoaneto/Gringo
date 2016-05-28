@@ -111,8 +111,9 @@ union YYSTYPE
 	class Value *value;
 	class Exp *exp;
 	class Factor *factor;
+	class BinExpPlus *binexpplus;
 
-#line 116 "bison_gringo.hpp" /* yacc.c:1909  */
+#line 117 "bison_gringo.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
