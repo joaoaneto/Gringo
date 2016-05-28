@@ -81,15 +81,17 @@ public:
 	void visit(BinExpMinus *bem){
 		bem->getExp()->accept(this);
 		bem->getFactor()->accept(this);
-		Value *value1 = stack_.back();
-		stack_.pop_back();
 		Value *value2 = stack_.back();
 		stack_.pop_back();
+		Value *value1 = stack_.back();
+		stack_.pop_back(); 
 
 		if(value1->getType() == Value::INT && value2->getType() == Value::INT){
 			IntValue *v1 = static_cast <IntValue *> (value1);
 			IntValue *v2 = static_cast <IntValue *> (value2);
 			stack_.push_back(new IntValue(v1->getValue() - v2->getValue()));
+
+			printf("Valor da subtração: %d\n", static_cast <IntValue*> (stack_.back())->getValue());
 		
 		}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
 			IntValue *v1 = static_cast <IntValue *> (value1);

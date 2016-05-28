@@ -68,7 +68,7 @@ private:
 	Exp *exp;
 	Factor *factor;
 public:
-	BinExpMinus(Exp *e, Factor *f): exp(e), factor(f){} //construtor
+	BinExpMinus(Exp *e,  class Factor *f): exp(e), factor(f){} //construtor
 	Exp *getExp (){ return this->exp; }
 	Factor *getFactor(){ return this->factor; }
 	void accept(Visitor *);

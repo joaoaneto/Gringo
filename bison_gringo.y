@@ -119,13 +119,15 @@ Exp : BinExpPlus {}
 ;
 
 BinExpPlus : Exp ADD Factor {
+		printf("Rapaz!\n");
 		BinExpPlus *fallen = new BinExpPlus($1,$3);
 		fallen->accept(op);
 		$$ = new BinExpPlus($1,$3);
 	}
 ;  
 
-BinExpMinus : Exp SUBTRACT Factor{
+BinExpMinus : Exp SUBTRACT Factor {
+		printf("Rapaz!\n");
 		BinExpMinus *fallen = new BinExpMinus($1, $3);
 		fallen->accept(op);
 		$$ = new BinExpMinus($1, $3);
@@ -171,13 +173,13 @@ UnExpExp : EXP PAR_L Exp PAR_R{}
 ;
 
 Value : LITERAL_INT {
-			IntValue *fallen = new IntValue($1);
-			fallen->accept(op);
+			/*IntValue *fallen = new IntValue($1);
+			fallen->accept(op);*/
 			$$ = new IntValue($1);
 	}
 		|LITERAL_DOUBLE{
-			DoubleValue *fallen = new DoubleValue($1);
-			fallen->accept(op);
+			/*DoubleValue *fallen = new DoubleValue($1);
+			fallen->accept(op);*/
 			$$ = new DoubleValue($1);
 	}
 		|LparExpRpar{}
