@@ -27,14 +27,12 @@ private:
 	vector<Value *> stack_;
 public:
 	Operations(){};
-	void visit(IntValue *v){ 
-		stack_.push_back(v); 
-		printf("Valor na pilha: %d\n\n", static_cast <IntValue*> (stack_.back())->getValue());
-	}
-	void visit(DoubleValue *v){
-		stack_.push_back(v);
-		printf("Valor na pilha: %lf\n\n", static_cast <DoubleValue*> (stack_.back())->getValue());
-	}
+	
+	Value *getTotal(){ return stack_.back(); }
+	
+	void visit(IntValue *v){ stack_.push_back(v); }
+	
+	void visit(DoubleValue *v){ stack_.push_back(v); }
 	
 	void visit(BinExpPlus *bep){
 		bep->getExp()->accept(this);
@@ -49,29 +47,20 @@ public:
 			IntValue *v2 = static_cast <IntValue *> (value2);
 			stack_.push_back(new IntValue(v1->getValue() + v2->getValue()));
 			
-			printf("Valor soma: %d\n\n", static_cast <IntValue*> (stack_.back())->getValue());
-			
 		}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
 			IntValue *v1 = static_cast <IntValue *> (value1);
 			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
 			stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
 			
-			printf("Valor soma: %lf\n\n", static_cast <DoubleValue*> (stack_.back())->getValue());
-			
 		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
 			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
 			IntValue *v2 = static_cast <IntValue *> (value2);
 			stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
-			
-			printf("Valor soma: %lf\n\n", static_cast <DoubleValue*> (stack_.back())->getValue());	
 				
 		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
 			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
 			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
 			stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
-			
-			printf("Valor soma: %lf\n\n", static_cast <DoubleValue*> (stack_.back())->getValue());
-		
 		}
 			
 		delete value1;
@@ -90,8 +79,6 @@ public:
 			IntValue *v1 = static_cast <IntValue *> (value1);
 			IntValue *v2 = static_cast <IntValue *> (value2);
 			stack_.push_back(new IntValue(v1->getValue() - v2->getValue()));
-
-			printf("Valor da subtração: %d\n", static_cast <IntValue*> (stack_.back())->getValue());
 		
 		}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
 			IntValue *v1 = static_cast <IntValue *> (value1);
@@ -102,11 +89,11 @@ public:
 			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
 			IntValue *v2 = static_cast <IntValue *> (value2);
 			stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));
-		
+			
 		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
 			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
 			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));
+			stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));	
 		}
 			
 		delete value1;
@@ -186,10 +173,12 @@ public:
 
 		if(value->getType() == Value::INT){
 			IntValue *v = static_cast <IntValue *> (value);
-		} else { 
-			DoubleValue *v = static_cast <DoubleValue *> (value); }
-			delete value;
+		} else if(value->getType() == Value::DOUBLE){
+			DoubleValue *v = static_cast <DoubleValue *> (value);
 		}
+			
+			delete value;
+	}
 
 	void visit(UnExpMinus *uem){
 		uem->getValue()->accept(this);
@@ -198,7 +187,7 @@ public:
 
 		if(value->getType() == Value::INT){
 			IntValue *v = static_cast <IntValue *> (value);
-		} else {
+		} else if(value->getType() == Value::DOUBLE){
 			DoubleValue *v = static_cast <DoubleValue *> (value);
 		}
 
@@ -213,9 +202,7 @@ public:
 		if(value->getType() == Value::INT){
 			IntValue *v = static_cast <IntValue*> (value);
 			stack_.push_back(new IntValue (log (v->getValue())));
-		}
-		
-		if(value->getType() == Value::DOUBLE){
+		} else if(value->getType() == Value::DOUBLE){
 			DoubleValue *v = static_cast <DoubleValue*> (value);
 			stack_.push_back(new DoubleValue (log (v->getValue())));
 		}
@@ -229,9 +216,7 @@ public:
 		if(value->getType() == Value::INT){
 			IntValue *v = static_cast <IntValue*> (value);
 			stack_.push_back(new IntValue (exp (v->getValue())));
-		}
-		
-		if(value->getType() == Value::DOUBLE){
+		} else if(value->getType() == Value::DOUBLE){
 			DoubleValue *v = static_cast <DoubleValue*> (value);
 			stack_.push_back(new DoubleValue (exp (v->getValue())));
 		}

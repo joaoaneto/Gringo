@@ -24,12 +24,9 @@
 
 %{
 
-	//#include <stdio.h>
-	//#include <stdlib.h>
-	//#include <string.h>
-	//#include "classes_gringo.hpp"
-	extern int yyparse();
 	#include "bison_gringo.hpp"
+	
+	extern int yyparse();
 	
 %}
 
@@ -79,8 +76,8 @@
 "exit"		{ return EXIT; }
 "continue"	{ return CONTINUE; }
 [a-zA-Z_][a-zA-Z0-9_]*	{ return IDENTIFIER; }
-[-]?[0-9]+		{yylval.int_value = atoi(yytext); return LITERAL_INT; }
-[-]?[0-9]+[\.][0-9]+	{yylval.double_value = atof(yytext); return LITERAL_DOUBLE; }
+[0-9]+		{yylval.int_value = atoi(yytext); return LITERAL_INT; }
+[0-9]+[\.][0-9]+	{yylval.double_value = atof(yytext); return LITERAL_DOUBLE; }
 "\n"		{ return NEW_LINE; }
 "\r"		{ return CARRIAGE_RETURN; }
 "\t"		{ return TAB; }
@@ -92,7 +89,7 @@
 %%
 
 int main(int argc, char ** argv){
-	
+
 	yyin = fopen (argv[1],"r"); /*Arquivo de entrada */
 	
 	if(argc != 2){ printf("Tem que ter o nome do arquivo\n\n"); return 1; }

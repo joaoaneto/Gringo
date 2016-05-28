@@ -7,9 +7,7 @@
 %{
 
 	#include "visitor.hpp"
-	//#include <stdio.h>
-	//#include <stdlib.h>
-	//#include <string.h>
+
 	void yyerror(const char *isso) {/*printf("%s\n", isso);*/}
 	extern int yylex();
 	
@@ -82,6 +80,10 @@
 	class BinExpMinus *binexpminus;
 	class FactorMul *factormul;
 	class FactorDiv *factordiv;
+	class UnExpPlus *unexpplus;
+	class UnExpMinus *unexpminus;
+	class UnExpLog *unexplog;
+	class UnExpExp *unexpexp;
 };
 
 %type<char_value> CHAR;
@@ -96,6 +98,11 @@
 %type<binexpminus> BinExpMinus;
 %type<factormul> FactorMul;
 %type<factordiv> FactorDiv;
+%type<unexpplus> UnExpPlus;
+%type<unexpminus> UnExpMinus;
+%type<unexplog> UnExpLog;
+%type<unexpexp> UnExpExp;
+
 %%
 
  
@@ -103,23 +110,31 @@
 Program : ExpList
 ;
 
-ExpList : Command  
-		|Commands
+ExpList : Command {
+
+		Value *total = op->getTotal();
+
+		if(total->getType() == Value::INT){
+			printf("%d\n\n", static_cast <IntValue*> (total)->getValue());
+		} else if(total->getType() == Value::DOUBLE){
+			printf("%lf\n\n", static_cast <DoubleValue*> (total)->getValue());
+		}
+	}
+		|Commands{}
 ; 
 
 Commands : ExpList NEW_LINE Command {} //Só uma produção complexa
 
 Command : Atribuition //Relação "é"
-		|Exp {}
+		|Exp
 ;
 
-Exp : BinExpPlus {} 
-	 |BinExpMinus {} 
-	 |Factor {}
+Exp : BinExpPlus{}
+	 |BinExpMinus {}
+	 |Factor{}
 ;
 
 BinExpPlus : Exp ADD Factor {
-		printf("Rapaz!\n");
 		BinExpPlus *fallen = new BinExpPlus($1,$3);
 		fallen->accept(op);
 		$$ = new BinExpPlus($1,$3);
@@ -127,16 +142,15 @@ BinExpPlus : Exp ADD Factor {
 ;  
 
 BinExpMinus : Exp SUBTRACT Factor {
-		printf("Rapaz!\n");
 		BinExpMinus *fallen = new BinExpMinus($1, $3);
 		fallen->accept(op);
 		$$ = new BinExpMinus($1, $3);
 	}
 ;
   
-Factor : FactorMul {} 	
-		|FactorDiv {}
-		|UnExp {}
+Factor : FactorMul{}
+		|FactorDiv{}
+		|UnExp{}
 ;
 
 FactorMul : Factor MUL UnExp{
@@ -153,23 +167,39 @@ FactorDiv : Factor DIV UnExp {
 	}
 ;
 
-UnExp : UnExpPlus {}     
-        |UnExpMinus {}
-		|UnExpLog {}
-		|UnExpExp {}
-		|Value {}
+UnExp : UnExpPlus{}     
+        |UnExpMinus{}
+		|UnExpLog{}
+		|UnExpExp{}
+		|Value{}
 ;
 
-UnExpPlus : ADD Value{}
+UnExpPlus : ADD Value{
+		UnExpPlus *fallen = new UnExpPlus($2);
+		fallen->accept(op);
+		$$ = new UnExpPlus($2);	
+	}
 ;
 
-UnExpMinus : SUBTRACT Value{}
+UnExpMinus : SUBTRACT Value{
+		UnExpMinus *fallen = new UnExpMinus($2);
+		fallen->accept(op);
+		$$ = new UnExpMinus($2);
+	}
 ;
 
-UnExpLog : LOG2 PAR_L Exp PAR_R{}
+UnExpLog : LOG2 PAR_L Exp PAR_R{
+		UnExpLog *fallen = new UnExpLog($3);
+		fallen->accept(op);
+		$$ = new UnExpLog($3);
+	}
 ;
 
-UnExpExp : EXP PAR_L Exp PAR_R{}			
+UnExpExp : EXP PAR_L Exp PAR_R{
+		UnExpExp *fallen = new UnExpExp($3);
+		fallen->accept(op);
+		$$ = new UnExpExp($3);
+	}			
 ;
 
 Value : LITERAL_INT {
@@ -183,13 +213,13 @@ Value : LITERAL_INT {
 			$$ = new DoubleValue($1);
 	}
 		|LparExpRpar{}
-		|IDENTIFIER {}
-;
+		|IDENTIFIER {
+			//$$ = new IdValue($1);
+	}
+;	
 
-LparExpRpar : PAR_L Exp PAR_R
+LparExpRpar : PAR_L Exp PAR_R{}
 ; 
 
-Atribuition : IDENTIFIER EQUAL Exp{
-	
-}
+Atribuition : IDENTIFIER EQUAL Exp{}
 ;
