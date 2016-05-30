@@ -25,9 +25,7 @@
 %{
 
 	#include "bison_gringo.hpp"
-	
-	extern int yyparse();
-	
+
 %}
 
 %option noyywrap nodefault
@@ -87,14 +85,3 @@
 .		{ printf("Caractere inválido: %s",yytext); exit(1); }
 
 %%
-
-int main(int argc, char ** argv){
-
-	yyin = fopen (argv[1],"r"); /*Arquivo de entrada */
-	
-	if(argc != 2){ printf("Tem que ter o nome do arquivo\n\n"); return 1; }
-
-	if(yyparse()){ /*printf("Error!!\n");*/ return 1; }
-	
-	return 0;
-}

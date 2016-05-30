@@ -2,13 +2,8 @@
 #define CLASSES_GRINGO_HPP
 
 #include <map>
-#include <string>
 #include <string.h>
-#include <math.h>
-#include <stdio.h>
-#include <vector>
 
-using std::vector;
 using namespace std;
 
 class Node {
@@ -191,7 +186,7 @@ private:
 	static Program *program;
 	Context(){} //construtor	
 public:
-	typedef map<string, Value *> TypeTable;
+	typedef map<char *, Value *> TypeTable;
 	static Context &getContext() {
 		if (instance == NULL){ instance = new Context(); }
 		return *instance;

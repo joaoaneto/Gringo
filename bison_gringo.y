@@ -7,10 +7,16 @@
 %{
 
 	#include "visitor.hpp"
+	#include <map>
+	#include <iostream>
 
-	void yyerror(const char *isso) {/*printf("%s\n", isso);*/}
+
 	extern int yylex();
-	
+
+	void yyerror(const char *error) { 
+		printf("Erro no lex: %s\n", error);
+	}
+
 	using namespace std;
 	
 	Operations *op = new Operations();
@@ -115,25 +121,17 @@ Program : ExpList{}
 ;
 
 ExpList : Command{}
-		|Commands{
-		Value *total = op->getTotal();
-
-		if(total->getType() == Value::INT){
-			printf("Valor final: %d\n\n", static_cast <IntValue*> (total)->getValue());
-		} else if(total->getType() == Value::DOUBLE){
-			printf("Valor final: %lf\n\n", static_cast <DoubleValue*> (total)->getValue());
-		}		
-	}
+		|Commands{}
 ; 
 
-Commands : ExpList NEW_LINE Command {} //Só uma produção complexa
+Commands : ExpList NEW_LINE Command {}
 
-Command : Assignment{} //Relação "é"
+Command : Assignment{}
 		|Exp {}
 ;
 
 Exp : BinExpPlus{}
-	 |BinExpMinus {}
+	 |BinExpMinus{}
 	 |Factor{}
 ;
 
@@ -170,7 +168,7 @@ FactorDiv : Factor DIV UnExp {
 	}
 ;
 
-UnExp : UnExpPlus{}     
+UnExp : UnExpPlus{}
         |UnExpMinus{}
 		|UnExpLog{}
 		|UnExpExp{}

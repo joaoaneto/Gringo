@@ -2,7 +2,11 @@
 #define VISITOR_HPP
 
 #include "classes_gringo.hpp"
+#include <math.h>
+#include <vector>
+#include <stdio.h>
 
+using std::vector;
 
 class Visitor {
 public:
@@ -28,8 +32,6 @@ private:
 public:
 	Operations(){};
 	
-	Value *getTotal(){ return stack_.back(); }
-	
 	void visit(IntValue *v){ stack_.push_back(v); }
 	
 	void visit(DoubleValue *v){ stack_.push_back(v); }
@@ -52,14 +54,9 @@ public:
 		
 		IdValue *valueId = static_cast <IdValue *> (stack_.back());
 		stack_.pop_back();
-		Value *value = stack_.back();
+		t[valueId->getValue()] = stack_.back();
 		stack_.pop_back();
-		
-		if(valueId->getType() == Value::ID_VALUE && value->getType() == Value::INT){
-			t[valueId->getValue()] = static_cast <IntValue*> (value);
-		} else if(valueId->getType() == Value::ID_VALUE && value->getType() == Value::DOUBLE){
-			t[valueId->getValue()] = static_cast <DoubleValue*> (value);
-		}
+
 	}
 	
 	void visit(BinExpPlus *bep){
@@ -74,6 +71,7 @@ public:
 			IntValue *v1 = static_cast <IntValue *> (value1);
 			IntValue *v2 = static_cast <IntValue *> (value2);
 			stack_.push_back(new IntValue(v1->getValue() + v2->getValue()));
+			printf("%d\n", static_cast <IntValue *> (stack_.back())->getValue());
 			
 		}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
 			IntValue *v1 = static_cast <IntValue *> (value1);
