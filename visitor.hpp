@@ -22,7 +22,7 @@ public:
 	virtual void visit(IntValue *) = 0;
 	virtual void visit(DoubleValue *) = 0;
 	virtual void visit(IdValue *) = 0;
-	//virtual void visit(LparExpRpar *) = 0;
+	virtual void visit(LparExpRpar *) = 0;
 	virtual void visit(Assignment *) = 0;
 };
 
@@ -154,7 +154,9 @@ public:
 			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
 			stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
 		}
-			
+		
+		printf("Resultado: %d\n", static_cast<IntValue*>(stack_.back())->getValue());
+
 		delete value1;
 		delete value2;
 	}
@@ -247,6 +249,11 @@ public:
 			stack_.push_back(new DoubleValue (exp (v->getValue())));
 		}
 	}
+
+	void visit(LparExpRpar *lpr){
+		lpr->getExp()->accept(this);
+
+	}
 };
 
 //void Commands::accept(Visitor *v){ v->visit(this); }
@@ -273,7 +280,7 @@ void DoubleValue::accept(Visitor *v){ v->visit(this); }
 
 void IdValue::accept(Visitor *v){ v->visit(this); }
 
-//void LparExpRpar::accept(Visitor *v){ v->visit(this); }
+void LparExpRpar::accept(Visitor *v){ v->visit(this); }
 
 void Assignment::accept(Visitor *v){ v->visit(this); }
 

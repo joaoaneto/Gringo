@@ -42,8 +42,8 @@ private:
 	Command *command;
 public:
 	Commands(ExpList *el, Command *c): expList(el), command(c){} //construtor
-	ExpList *getExpList(){ return this->expList; }
-	Command *getCommand(){ return this->command; }
+	ExpList *getExpList();
+	Command *getCommand();
 	//void accept(Visitor *);
 };
 
@@ -54,8 +54,8 @@ private:
 
 public:
 	BinExpPlus(Exp *e, class Factor *f): exp(e), factor(f){} //construtor
-	Exp *getExp (){ return this->exp; }
-	Factor *getFactor(){ return this->factor; }
+	Exp *getExp();
+	Factor *getFactor();
 	void accept(Visitor *);
 };
 
@@ -65,8 +65,8 @@ private:
 	Factor *factor;
 public:
 	BinExpMinus(Exp *e,  class Factor *f): exp(e), factor(f){} //construtor
-	Exp *getExp (){ return this->exp; }
-	Factor *getFactor(){ return this->factor; }
+	Exp *getExp ();
+	Factor *getFactor();
 	void accept(Visitor *);
 };
 
@@ -76,8 +76,8 @@ private:
 	UnExp *unExp;
 public:
 	FactorMul(Factor *f, UnExp *ue): factor(f), unExp(ue){} //construtor
-	Factor *getFactor(){ return this->factor; }
-	UnExp *getUnExp(){ return this->unExp; }
+	Factor *getFactor();
+	UnExp *getUnExp();
 	void accept(Visitor *);
 };
 
@@ -87,8 +87,8 @@ private:
 	UnExp *unExp;
 public:
 	FactorDiv(Factor *f, UnExp *ue): factor(f), unExp(ue){} //construtor
-	Factor *getFactor(){ return this->factor; }
-	UnExp *getUnExp(){	return this->unExp; }
+	Factor *getFactor();
+	UnExp *getUnExp();
 	void accept(Visitor *);
 };
 
@@ -97,7 +97,7 @@ private:
 	Value *value;
 public:
 	UnExpPlus(Value *v): value(v){} //construtor
-	Value *getValue(){ return this->value; }
+	Value *getValue();
 	void accept(Visitor *);
 };
 
@@ -106,7 +106,7 @@ private:
 	Value *value;
 public:
 	UnExpMinus(Value *v): value(v){} //construtor
-	Value *getValue(){ return this->value; }
+	Value *getValue();
 	void accept(Visitor *);
 };
 
@@ -115,7 +115,7 @@ private:
 	Exp *exp;
 public:
 	UnExpLog(Exp *e): exp(e){} //construtor
-	Exp *getExp(){ return this->exp; }
+	Exp *getExp();
 	void accept(Visitor *);
 };
 
@@ -124,7 +124,7 @@ private:
 	Exp *exp;
 public:
 	UnExpExp(Exp *e): exp(e){} //construtor
-	Exp *getExp(){ return this->exp; }
+	Exp *getExp();
 	void accept(Visitor *);
 };
 
@@ -133,8 +133,8 @@ private:
 	int value;
 public:
 	IntValue(int value):value(value){} //construtor
-	int getValue(){ return this->value; }
-	virtual Type getType(){ return INT; }
+	int getValue();
+	virtual Type getType();
 	void accept(Visitor *);
 };
 
@@ -143,8 +143,8 @@ private:
 	double value;
 public:
 	DoubleValue(double value):value(value){} //construtor
-	double getValue(){ return this->value; }
-	virtual Type getType(){ return DOUBLE; }
+	double getValue();
+	virtual Type getType();
 	void accept(Visitor *v);
 };
 
@@ -154,18 +154,18 @@ private:
 	char *idValue;
 public:
 	IdValue(char *idvalue){ idValue = strdup(idvalue); } //construtor
-	char *getValue(){ return this->idValue; }
-	virtual Type getType(){ return ID_VALUE; }
+	char *getValue();
+	virtual Type getType();
 	void accept(Visitor *);
 };
 
-class LparExpRpar : public Value {
+class LparExpRpar : public UnExp {
 private:
 	Exp *exp;
 public:
 	LparExpRpar(Exp *e) : exp(e){} //construtor
-	Exp *getExp(){ return this->exp; }
-	//void accept(Visitor *);
+	Exp *getExp();
+	void accept(Visitor *);
 };
 
 class Assignment : public Command {
@@ -174,8 +174,8 @@ private:
 	IdValue *idValue;
 public:
 	Assignment(IdValue *id, Exp *e) : idValue(id), exp(e){} //construtor
-	Exp *getExp(){ return this->exp; }
-	IdValue	*getIdValue(){ return this->idValue; }
+	Exp *getExp();
+	IdValue	*getIdValue();
 	void accept(Visitor *);
 }; 
 
@@ -183,21 +183,17 @@ public:
 class Context {
 private:
 	static Context *instance;
-	static Program *program;
+	Program *program;
 	Context(){} //construtor	
 public:
 	typedef map<char *, Value *> TypeTable;
-	static Context &getContext() {
-		if (instance == NULL){ instance = new Context(); }
-		return *instance;
-	}
+	static Context &getContext();
 	
-	TypeTable &getTable(){ return this->table; }
-	void setProgram(Program *prog){ program = prog; }
+	TypeTable &getTable();
+	void setProgram(Program *prog);
+	Program *getProgram();
 private:
 	TypeTable table;	
 };
-
-Context *Context::instance = NULL;
 
 #endif

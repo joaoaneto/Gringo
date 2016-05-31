@@ -76,12 +76,10 @@
 [a-zA-Z_][a-zA-Z0-9_]*	{ yylval.id_value = strdup(yytext); return IDENTIFIER; }
 [0-9]+		{ yylval.int_value = atoi(yytext); return LITERAL_INT; }
 [0-9]+[\.][0-9]+	{ yylval.double_value = atof(yytext); return LITERAL_DOUBLE; }
-"\n"		{ return NEW_LINE; }
 "\r"		{ return CARRIAGE_RETURN; }
 "\t"		{ return TAB; }
 [\\]		{ return BACKSLASH; }
 "\0"		{ return BAR_ZERO; }
 [\n\r\t ]	{}
 .		{ printf("Caractere inválido: %s",yytext); exit(1); }
-
 %%

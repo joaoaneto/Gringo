@@ -6,10 +6,10 @@
 
 %{
 
-	#include "visitor.hpp"
+	#include "classes_gringo.hpp"
 	#include <map>
 	#include <iostream>
-
+	#include <stdio.h>
 
 	extern int yylex();
 
@@ -19,8 +19,6 @@
 
 	using namespace std;
 	
-	Operations *op = new Operations();
-
 %}
 
 %token CHAR;
@@ -79,6 +77,10 @@
 	double double_value;
 	char char_value;
 	char *id_value;
+	class Program *program;
+	class ExpList *explist;
+	class Command *command;
+	class Commands *commands;
 	class Value *value;
 	class Exp *exp;
 	class UnExp *unexp;
@@ -91,9 +93,14 @@
 	class UnExpMinus *unexpminus;
 	class UnExpLog *unexplog;
 	class UnExpExp *unexpexp;
+	class LparExpRpar *lparexprpar;
 	class Assignment *assignment;
 };
 
+%type<program> Program;
+%type<explist> ExpList;
+%type<command> Command;
+%type<commands> Commands;
 %type<char_value> CHAR;
 %type<int_value> LITERAL_INT;
 %type<double_value> FLOAT;
@@ -111,119 +118,101 @@
 %type<unexpminus> UnExpMinus;
 %type<unexplog> UnExpLog;
 %type<unexpexp> UnExpExp;
+%type<lparexprpar> LparExpRpar;
 %type<assignment> Assignment;
 
 %%
 
- 
-
-Program : ExpList{}
+Program : ExpList{
+		$$ = $1;
+		Context::getContext().setProgram($$);
+	}
 ;
 
-ExpList : Command{}
-		|Commands{}
+ExpList : Command {$$ = $1;}
+		|Commands {$$ = $1;}
 ; 
 
-Commands : ExpList NEW_LINE Command {}
+Commands : ExpList Command {}
 
-Command : Assignment{}
-		|Exp {}
+Command : Assignment {$$ = $1;}
+		|Exp {$$ = $1;}
 ;
 
-Exp : BinExpPlus{}
-	 |BinExpMinus{}
-	 |Factor{}
+Exp : BinExpPlus { $$ = $1; }
+	 |BinExpMinus { $$ = $1; }
+	 |Factor { $$ = $1; }
 ;
 
 BinExpPlus : Exp ADD Factor {
-		BinExpPlus *fallen = new BinExpPlus($1,$3);
-		fallen->accept(op);
 		$$ = new BinExpPlus($1,$3);
 	}
 ;  
 
 BinExpMinus : Exp SUBTRACT Factor {
-		BinExpMinus *fallen = new BinExpMinus($1, $3);
-		fallen->accept(op);
 		$$ = new BinExpMinus($1, $3);
 	}
 ;
   
-Factor : FactorMul{}
-		|FactorDiv{}
-		|UnExp{}
+Factor : FactorMul { $$ = $1; }
+		|FactorDiv { $$ = $1; }
+		|UnExp { $$ = $1; }
 ;
 
 FactorMul : Factor MUL UnExp{
-		FactorMul *fallen = new FactorMul($1, $3);
-		fallen->accept(op);
 		$$ = new FactorMul($1, $3);
 	}
 ;		
 
 FactorDiv : Factor DIV UnExp {
-		FactorDiv *fallen = new FactorDiv($1, $3);
-		fallen->accept(op);
 		$$ = new FactorDiv($1, $3);
 	}
 ;
 
-UnExp : UnExpPlus{}
-        |UnExpMinus{}
-		|UnExpLog{}
-		|UnExpExp{}
-		|Value{}
+UnExp : UnExpPlus { $$ = $1; }
+        |UnExpMinus { $$ = $1; }
+		|UnExpLog { $$ = $1; }
+		|UnExpExp { $$ = $1; }
+		|LparExpRpar { $$ = $1; }
+		|Value { $$ = $1; }
 ;
 
 UnExpPlus : ADD Value{
-		UnExpPlus *fallen = new UnExpPlus($2);
-		fallen->accept(op);
 		$$ = new UnExpPlus($2);	
 	}
 ;
 
 UnExpMinus : SUBTRACT Value{
-		UnExpMinus *fallen = new UnExpMinus($2);
-		fallen->accept(op);
 		$$ = new UnExpMinus($2);
 	}
 ;
 
 UnExpLog : LOG2 PAR_L Exp PAR_R{
-		UnExpLog *fallen = new UnExpLog($3);
-		fallen->accept(op);
 		$$ = new UnExpLog($3);
 	}
 ;
 
 UnExpExp : EXP PAR_L Exp PAR_R{
-		UnExpExp *fallen = new UnExpExp($3);
-		fallen->accept(op);
 		$$ = new UnExpExp($3);
 	}			
 ;
 
-Value : LITERAL_INT {
-		/*IntValue *fallen = new IntValue($1);
-		fallen->accept(op);*/
+Value : LITERAL_INT {		
 		$$ = new IntValue($1);
 	}
 		|LITERAL_DOUBLE{
-		/*DoubleValue *fallen = new DoubleValue($1);
-		fallen->accept(op);*/
 		$$ = new DoubleValue($1);
 	}
-		|LparExpRpar{}
 		|IDENTIFIER { $$ = new IdValue($1); }
 ;	
 
-LparExpRpar : PAR_L Exp PAR_R{}
+LparExpRpar : PAR_L Exp PAR_R {
+		$$ = new LparExpRpar($2);
+	}
 ; 
 
 Assignment : IDENTIFIER EQUAL Exp{
 		IdValue *fallenId = new IdValue($1);
-		Assignment *fallen = new Assignment(fallenId,$3);
-		fallen->accept(op);
 		$$ = new Assignment(fallenId,$3);
 	}
 ;
