@@ -106,26 +106,11 @@ IdValue	*Assignment::getIdValue(){
 	return this->idValue; 
 }
 
-//If
 Exp *If::getExp(){
 	return this->exp;
 }
 
 ExpList *If::getExpList(){
-	return this->expList;
-}
-
-//Else
-ExpList *Else::getExpList(){
-	return this->expList;
-}
-
-//ElseIf
-Exp *ElseIf::getExp(){
-	return this->exp;
-}
-
-ExpList *ElseIf::getExpList(){
 	return this->expList;
 }
 
