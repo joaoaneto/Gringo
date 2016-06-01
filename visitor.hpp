@@ -24,15 +24,7 @@ public:
 	virtual void visit(IdValue *) = 0;
 	virtual void visit(LparExpRpar *) = 0;
 	virtual void visit(Assignment *) = 0;
-<<<<<<< HEAD
 	virtual void visit(If *) = 0;
-<<<<<<< Updated upstream
-=======
-	virtual void visit(Else *) = 0;
-	virtual void visit(ElseIf *) = 0;
-=======
->>>>>>> parent of 132830d... primeira etapa if
->>>>>>> Stashed changes
 };
 
 class Operations : public Visitor {
@@ -48,18 +40,8 @@ public:
 	void visit(IdValue *v);
 	
 	void visit(Assignment *a);
-<<<<<<< HEAD
 
 	void visit(If *i);
-<<<<<<< Updated upstream
-=======
-
-	void visit(Else *e);
-
-	void visit(ElseIf *ei);
-=======
->>>>>>> parent of 132830d... primeira etapa if
->>>>>>> Stashed changes
 	
 	void visit(BinExpPlus *bep);
 

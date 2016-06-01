@@ -179,12 +179,7 @@ public:
 	void accept(Visitor *);
 }; 
 
-<<<<<<< Updated upstream
 class If: public Command {
-=======
-<<<<<<< HEAD
-class If: public IfElseIf {
->>>>>>> Stashed changes
 private:
 	Exp *exp;
 	ExpList *expList;
@@ -194,8 +189,6 @@ public:
 	ExpList *getExpList();
 	void accept(Visitor *v);
 };
-=======
->>>>>>> parent of 132830d... primeira etapa if
 
 class Context {
 private:

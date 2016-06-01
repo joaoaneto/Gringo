@@ -31,30 +31,11 @@ void Operations::visit(Assignment *a){
 		stack_.pop_back();
 }
 
-<<<<<<< HEAD
 void Operations::visit(If *i){
 	i->If::getExp()->accept(this);
 	i->If::getExpList()->accept(this);
 }
 
-<<<<<<< Updated upstream
-=======
-void Operations::visit(Else *e){
-	e->Else::getExpList()->accept(this);
-	//falta terminar
-}
-
-void Operations::visit(ElseIf *ei){
-	ei->ElseIf::getExp()->accept(this);
-	ei->ElseIf::getExpList()->accept(this);
-	//falta terminar
->>>>>>> Stashed changes
-}
-
-
-=======
->>>>>>> parent of 132830d... primeira etapa if
->>>>>>> Stashed changes
 void Operations::visit(BinExpPlus *bep){
 		bep->BinExpPlus::getExp()->accept(this);
 		bep->BinExpPlus::getFactor()->accept(this);
@@ -305,22 +286,8 @@ void LparExpRpar::accept(Visitor *v){
 
 void Assignment::accept(Visitor *v){ 
 	v->visit(this); 
-<<<<<<< HEAD
 }
 
 void If::accept(Visitor *v){
 	v->visit(this);
-<<<<<<< Updated upstream
-=======
-}
-
-void Else::accept(Visitor *v){
-	v->visit(this);
-}
-
-void ElseIf::accept(Visitor *v){
-	v->visit(this);
-=======
->>>>>>> parent of 132830d... primeira etapa if
->>>>>>> Stashed changes
 }
