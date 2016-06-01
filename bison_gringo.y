@@ -211,7 +211,7 @@ LparExpRpar : PAR_L Exp PAR_R {
 	}
 ; 
 
-Assignment : IDENTIFIER EQUAL Exp{
+Assignment : IDENTIFIER EQUAL Exp DOT_COMMA {
 		IdValue *fallenId = new IdValue($1);
 		$$ = new Assignment(fallenId,$3);
 	}
