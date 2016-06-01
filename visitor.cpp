@@ -34,6 +34,9 @@ void Operations::visit(Assignment *a){
 void Operations::visit(If *i){
 	i->If::getExp()->accept(this);
 	i->If::getExpList()->accept(this);
+
+	//falta terminar
+
 }
 
 void Operations::visit(BinExpPlus *bep){
