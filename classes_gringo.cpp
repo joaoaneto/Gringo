@@ -106,14 +106,6 @@ IdValue	*Assignment::getIdValue(){
 	return this->idValue; 
 }
 
-Exp *If::getExp(){
-	return this->exp;
-}
-
-ExpList *If::getExpList(){
-	return this->expList;
-}
-
 //Context
 Context &Context::getContext(){
 		if (instance == NULL){ 

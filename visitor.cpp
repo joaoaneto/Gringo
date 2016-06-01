@@ -31,11 +31,6 @@ void Operations::visit(Assignment *a){
 		stack_.pop_back();
 }
 
-void Operations::visit(If *i){
-	i->If::getExp()->accept(this);
-	i->If::getExpList()->accept(this);
-}
-
 void Operations::visit(BinExpPlus *bep){
 		bep->BinExpPlus::getExp()->accept(this);
 		bep->BinExpPlus::getFactor()->accept(this);
@@ -286,8 +281,4 @@ void LparExpRpar::accept(Visitor *v){
 
 void Assignment::accept(Visitor *v){ 
 	v->visit(this); 
-}
-
-void If::accept(Visitor *v){
-	v->visit(this);
 }

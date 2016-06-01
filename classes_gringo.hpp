@@ -179,16 +179,6 @@ public:
 	void accept(Visitor *);
 }; 
 
-class If: public Command {
-private:
-	Exp *exp;
-	ExpList *expList;
-public:
-	If(Exp *e, ExpList *eList): exp(e), expList(eList){}
-	Exp *getExp();
-	ExpList *getExpList();
-	void accept(Visitor *v);
-};
 
 class Context {
 private:

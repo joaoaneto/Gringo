@@ -24,7 +24,6 @@ public:
 	virtual void visit(IdValue *) = 0;
 	virtual void visit(LparExpRpar *) = 0;
 	virtual void visit(Assignment *) = 0;
-	virtual void visit(If *) = 0;
 };
 
 class Operations : public Visitor {
@@ -40,8 +39,6 @@ public:
 	void visit(IdValue *v);
 	
 	void visit(Assignment *a);
-
-	void visit(If *i);
 	
 	void visit(BinExpPlus *bep);
 
