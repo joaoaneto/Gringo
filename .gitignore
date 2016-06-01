@@ -3,3 +3,4 @@ bison_gringo.hpp
 lex_gringo.cpp
 bison_gringo.output
 gringo
+*.exe
