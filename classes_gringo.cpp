@@ -106,6 +106,11 @@ IdValue	*Assignment::getIdValue(){
 	return this->idValue; 
 }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+//If
+>>>>>>> Stashed changes
 Exp *If::getExp(){
 	return this->exp;
 }
@@ -114,6 +119,25 @@ ExpList *If::getExpList(){
 	return this->expList;
 }
 
+<<<<<<< Updated upstream
+=======
+//Else
+ExpList *Else::getExpList(){
+	return this->expList;
+}
+
+//ElseIf
+Exp *ElseIf::getExp(){
+	return this->exp;
+}
+
+ExpList *ElseIf::getExpList(){
+	return this->expList;
+}
+
+=======
+>>>>>>> parent of 132830d... primeira etapa if
+>>>>>>> Stashed changes
 //Context
 Context &Context::getContext(){
 		if (instance == NULL){ 

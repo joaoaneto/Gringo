@@ -121,7 +121,14 @@
 %type<unexpexp> UnExpExp;
 %type<lparexprpar> LparExpRpar;
 %type<assignment> Assignment;
+<<<<<<< Updated upstream
 %type<ift> If;
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 132830d... primeira etapa if
+>>>>>>> Stashed changes
 %%
 
 Program : ExpList{
