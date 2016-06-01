@@ -17,6 +17,8 @@ class ExpList : public Program {};
 
 class Command : public ExpList {};
 
+class IfElseIf : public Command {};
+
 class Exp : public Command {};
 
 class Factor: public Exp {};
@@ -179,12 +181,32 @@ public:
 	void accept(Visitor *);
 }; 
 
-class If: public Command {
+class If: public IfElseIf {
 private:
 	Exp *exp;
 	ExpList *expList;
 public:
 	If(Exp *e, ExpList *eList): exp(e), expList(eList){}
+	Exp *getExp();
+	ExpList *getExpList();
+	void accept(Visitor *v);
+};
+
+class Else: public Command {
+private:
+	ExpList *expList;
+public:
+	Else(ExpList *eList): expList(eList){}
+	ExpList *getExpList();
+	void accept(Visitor *v);
+};
+
+class ElseIf: public Command {
+private:
+	Exp *exp;
+	ExpList *expList;
+public:
+	ElseIf(Exp *e, ExpList *eList): exp(e), expList(eList){}
 	Exp *getExp();
 	ExpList *getExpList();
 	void accept(Visitor *v);

@@ -34,7 +34,23 @@ void Operations::visit(Assignment *a){
 void Operations::visit(If *i){
 	i->If::getExp()->accept(this);
 	i->If::getExpList()->accept(this);
+<<<<<<< Updated upstream
+=======
+	//falta terminar
 }
+
+void Operations::visit(Else *e){
+	e->Else::getExpList()->accept(this);
+	//falta terminar
+}
+
+void Operations::visit(ElseIf *ei){
+	ei->ElseIf::getExp()->accept(this);
+	ei->ElseIf::getExpList()->accept(this);
+	//falta terminar
+>>>>>>> Stashed changes
+}
+
 
 void Operations::visit(BinExpPlus *bep){
 		bep->BinExpPlus::getExp()->accept(this);
@@ -289,5 +305,13 @@ void Assignment::accept(Visitor *v){
 }
 
 void If::accept(Visitor *v){
+	v->visit(this);
+}
+
+void Else::accept(Visitor *v){
+	v->visit(this);
+}
+
+void ElseIf::accept(Visitor *v){
 	v->visit(this);
 }
