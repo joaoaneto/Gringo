@@ -95,6 +95,7 @@
 	class UnExpExp *unexpexp;
 	class LparExpRpar *lparexprpar;
 	class Assignment *assignment;
+	class If *ift;
 };
 
 %type<program> Program;
@@ -120,7 +121,7 @@
 %type<unexpexp> UnExpExp;
 %type<lparexprpar> LparExpRpar;
 %type<assignment> Assignment;
-
+%type<ift> If;
 %%
 
 Program : ExpList{
@@ -136,6 +137,7 @@ ExpList : Command {$$ = $1;}
 Commands : ExpList Command {}
 
 Command : Assignment {$$ = $1;}
+		|If {$$ = $1;}
 		|Exp {$$ = $1;}
 ;
 
@@ -216,3 +218,7 @@ Assignment : IDENTIFIER EQUAL Exp DOT_COMMA {
 		$$ = new Assignment(fallenId,$3);
 	}
 ;
+
+If: IF PAR_L Exp PAR_R BRA_L ExpList BRA_R {
+	$$ = new If($3, $6);
+}
