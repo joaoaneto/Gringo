@@ -17,6 +17,8 @@ class ExpList : public Program {};
 
 class Command : public ExpList {};
 
+class IfElseIf : public Command{};
+
 class Exp : public Command {};
 
 class Factor: public Exp {};
@@ -36,15 +38,24 @@ private:
 	Type type;
 };
 
-class Commands: public ExpList {
+class If: public IfElseIf{
+private:
+	Exp *exp;
+	ExpList *expList;
+public:
+	If(Exp *e, ExpList *eList): exp(e), expList(eList){}
+	Exp *getExp();
+	ExpList *getExpList();
+	void accept(Visitor *);
+};
+
+class Else: public IfElseIf{
 private:
 	ExpList *expList;
-	Command *command;
 public:
-	Commands(ExpList *el, Command *c): expList(el), command(c){} //construtor
-	ExpList *getExpList();
-	Command *getCommand();
-	//void accept(Visitor *);
+	Else(ExpList *eList): expList(eList){}
+	ExpList *getListExp();
+	void accept(Visitor *);
 };
 
 class BinExpPlus: public Exp {

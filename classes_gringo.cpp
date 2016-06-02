@@ -1,12 +1,17 @@
 #include "classes_gringo.hpp"
 
-//Commands
-ExpList *Commands::getExpList(){
+//If
+Exp *If::getExp(){
+	return this->exp;
+}
+
+ExpList *If::getExpList(){
 	return this->expList;
 }
 
-Command *Commands::getCommand(){ 
-	return this->command; 
+//Else
+ExpList *Else::getListExp(){
+	return this->expList;
 }
 
 //BinExpPlus

@@ -9,6 +9,14 @@ void Operations::visit(DoubleValue *v){
 	stack_.push_back(v); 
 }
 
+void Operations::visit(If *i){
+
+}
+
+void Operations::visit(Else *e){
+
+}
+
 void Operations::visit(IdValue *v){
 		Context::TypeTable &t = Context::getContext().getTable();
 
@@ -281,4 +289,12 @@ void LparExpRpar::accept(Visitor *v){
 
 void Assignment::accept(Visitor *v){ 
 	v->visit(this); 
+}
+
+void If::accept(Visitor *v){
+	v->visit(this);
+}
+
+void Else::accept(Visitor *v){
+	v->visit(this);
 }

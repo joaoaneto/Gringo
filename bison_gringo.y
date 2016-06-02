@@ -80,7 +80,6 @@
 	class Program *program;
 	class ExpList *explist;
 	class Command *command;
-	class Commands *commands;
 	class Value *value;
 	class Exp *exp;
 	class UnExp *unexp;
@@ -95,12 +94,14 @@
 	class UnExpExp *unexpexp;
 	class LparExpRpar *lparexprpar;
 	class Assignment *assignment;
+	class IfElseIf *ifelseif;
+	class If *ift;
+	class Else *elset;
 };
 
 %type<program> Program;
 %type<explist> ExpList;
 %type<command> Command;
-%type<commands> Commands;
 %type<char_value> CHAR;
 %type<int_value> LITERAL_INT;
 %type<double_value> FLOAT;
@@ -120,7 +121,9 @@
 %type<unexpexp> UnExpExp;
 %type<lparexprpar> LparExpRpar;
 %type<assignment> Assignment;
-
+%type<ifelseif> IfElseIf;
+%type<ift> If;
+%type<elset> Else;
 %%
 
 Program : ExpList{
@@ -130,18 +133,30 @@ Program : ExpList{
 ;
 
 ExpList : Command {$$ = $1;}
-		|Commands {$$ = $1;}
 ; 
 
-Commands : ExpList Command {}
-
 Command : Assignment {$$ = $1;}
+		|IfElseIf {$$ = $1;}
 		|Exp {$$ = $1;}
 ;
 
 Exp : BinExpPlus { $$ = $1; }
 	 |BinExpMinus { $$ = $1; }
 	 |Factor { $$ = $1; }
+;
+
+IfElseIf : If {$$ = $1;}
+		|Else {$$ = $1;}
+;
+
+If : IF PAR_L Exp PAR_R BRA_L ExpList BRA_R {
+		$$ = new If($3, $6);
+	}
+; 
+
+Else : ELSE BRA_L ExpList BRA_R {
+		$$ = new Else($3);
+	}
 ;
 
 BinExpPlus : Exp ADD Factor {
