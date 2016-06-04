@@ -10,10 +10,24 @@ void Operations::visit(DoubleValue *v){
 }
 
 void Operations::visit(If *i){
+	i->If::getExp()->accept(this);
+
+	IntValue *v1 = static_cast<IntValue *>(stack_.back());
+
+	if(v1->getValue()){
+		printf("Essa porra é True! vai dar accept.\n");
+		i->If::getExpList()->accept(this);
+	}else{
+		printf("Essa porra é False!\n");		
+	}
+
+	printf("Valor: %d\n", v1->getValue());
 
 }
 
 void Operations::visit(Else *e){
+
+	e->getExpList()->accept(this);
 
 }
 
