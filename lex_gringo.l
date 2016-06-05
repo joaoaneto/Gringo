@@ -80,6 +80,6 @@
 "\t"		{ return TAB; }
 [\\]		{ return BACKSLASH; }
 "\0"		{ return BAR_ZERO; }
-[\n\r\t ]	{}
+[\n\r\t ]+	{}
 .		{ printf("Caractere inválido: %s",yytext); exit(1); }
 %%

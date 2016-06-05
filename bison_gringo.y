@@ -82,6 +82,8 @@
 	class Command *command;
 	class Value *value;
 	class Exp *exp;
+	class BinExpLessGreater *belg;
+	class BinExpPlusMinus *bepm;
 	class UnExp *unexp;
 	class Factor *factor;
 	class BinExpPlus *binexpplus;
@@ -112,6 +114,8 @@
 %type<id_value> IDENTIFIER;
 %type<value> Value;
 %type<exp> Exp;
+%type<belg> BinExpLessGreater;
+%type<bepm> BinExpPlusMinus;
 %type<factor> Factor;
 %type<unexp> UnExp;
 %type<binexpplus> BinExpPlus;
@@ -139,7 +143,7 @@ Program : ExpList{
 ;
 
 ExpList : Command {$$ = $1;}
-; 
+;
 
 Command : Assignment {$$ = $1;}
 		|IfElseIf {$$ = $1;}
@@ -147,11 +151,16 @@ Command : Assignment {$$ = $1;}
 		|Exp {$$ = $1;}
 ;
 
-Exp : BinExpPlus { $$ = $1; }
-	 |BinExpMinus { $$ = $1; }
-	 |BinExpLessThen {$$ = $1;}
-	 |BinExpGreaterThen {$$ = $1;}
-	 |Factor { $$ = $1; }
+Exp: BinExpLessGreater { $$ = $1; }
+	|BinExpPlusMinus { $$ = $1; }
+	|Factor {$$ = $1;}
+;
+
+BinExpLessGreater: BinExpLessThen {$$ = $1;}
+				|BinExpGreaterThen {$$ = $1;}
+
+BinExpPlusMinus: BinExpPlus {$$ = $1;}
+				|BinExpMinus {$$ = $1;}
 ;
 
 IfElseIf : If {$$ = $1;}

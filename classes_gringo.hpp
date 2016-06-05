@@ -21,6 +21,10 @@ class IfElseIf : public Command{};
 
 class Exp : public Command {};
 
+class BinExpLessGreater : public Exp {};
+
+class BinExpPlusMinus : public Exp {};
+
 class Factor: public Exp {};
 
 class UnExp: public Factor {};
@@ -73,7 +77,7 @@ public:
 	void accept(Visitor *);
 };
 
-class BinExpPlus: public Exp {
+class BinExpPlus: public BinExpPlusMinus {
 private:
 	Exp *exp;
 	Factor *factor;
@@ -85,7 +89,7 @@ public:
 	void accept(Visitor *);
 };
 
-class BinExpMinus: public Exp {
+class BinExpMinus: public BinExpPlusMinus {
 private:
 	Exp *exp;
 	Factor *factor;
@@ -96,7 +100,7 @@ public:
 	void accept(Visitor *);
 };
 
-class BinExpLessThen : public Exp {
+class BinExpLessThen : public BinExpLessGreater {
 private:
 	Exp *exp;
 	Factor *factor;
@@ -107,7 +111,7 @@ public:
 	void accept(Visitor *v);
 };
 
-class BinExpGreaterThen : public Exp {
+class BinExpGreaterThen : public BinExpLessGreater {
 private:
 	Exp *exp;
 	Factor *factor;
