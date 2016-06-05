@@ -86,6 +86,8 @@
 	class Factor *factor;
 	class BinExpPlus *binexpplus;
 	class BinExpMinus *binexpminus;
+	class BinExpLessThen *binexplessthen;
+	class BinExpGreaterThen *binexpgreaterthen;
 	class FactorMul *factormul;
 	class FactorDiv *factordiv;
 	class UnExpPlus *unexpplus;
@@ -114,6 +116,8 @@
 %type<unexp> UnExp;
 %type<binexpplus> BinExpPlus;
 %type<binexpminus> BinExpMinus;
+%type<binexplessthen> BinExpLessThen;
+%type<binexpgreaterthen> BinExpGreaterThen;
 %type<factormul> FactorMul;
 %type<factordiv> FactorDiv;
 %type<unexpplus> UnExpPlus;
@@ -145,6 +149,8 @@ Command : Assignment {$$ = $1;}
 
 Exp : BinExpPlus { $$ = $1; }
 	 |BinExpMinus { $$ = $1; }
+	 |BinExpLessThen {$$ = $1;}
+	 |BinExpGreaterThen {$$ = $1;}
 	 |Factor { $$ = $1; }
 ;
 
@@ -176,7 +182,17 @@ BinExpMinus : Exp SUBTRACT Factor {
 		$$ = new BinExpMinus($1, $3);
 	}
 ;
-  
+
+BinExpLessThen : Exp LESS_THEN Factor {
+		$$ = new BinExpLessThen($1, $3);
+	} 
+;
+
+BinExpGreaterThen : Exp GREATER_THEN Factor {
+		$$ = new BinExpGreaterThen($1, $3);
+	} 
+;
+
 Factor : FactorMul { $$ = $1; }
 		|FactorDiv { $$ = $1; }
 		|UnExp { $$ = $1; }

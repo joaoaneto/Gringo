@@ -49,6 +49,22 @@ Factor *BinExpMinus::getFactor(){
 	return this->factor; 
 }
 
+Exp *BinExpLessThen::getExp(){
+	return this->exp;
+}
+
+Factor *BinExpLessThen::getFactor(){
+	return this->factor;
+}
+
+Exp *BinExpGreaterThen::getExp(){
+	return this->exp;
+}
+
+Factor *BinExpGreaterThen::getFactor(){
+	return this->factor;
+}
+
 //FactorMul
 Factor *FactorMul::getFactor(){ 
 	return this->factor; 

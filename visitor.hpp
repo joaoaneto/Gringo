@@ -13,6 +13,8 @@ public:
 	//virtual void visit(Commands *) = 0;
 	virtual void visit(BinExpPlus *) = 0;
 	virtual void visit(BinExpMinus *) = 0;
+	virtual void visit(BinExpLessThen *) = 0;
+	virtual void visit(BinExpGreaterThen *) = 0;
 	virtual void visit(FactorMul *) = 0;
 	virtual void visit(FactorDiv *) = 0;
 	virtual void visit(UnExpPlus *) = 0;
@@ -52,6 +54,10 @@ public:
 	void visit(BinExpPlus *bep);
 
 	void visit(BinExpMinus *bem);
+
+	void visit(BinExpLessThen *belt);
+
+	void visit(BinExpGreaterThen *begt);
 
 	void visit(FactorMul *fm);
 

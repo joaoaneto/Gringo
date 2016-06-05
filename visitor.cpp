@@ -86,199 +86,293 @@ void Operations::visit(Assignment *a){
 }
 
 void Operations::visit(BinExpPlus *bep){
-		bep->BinExpPlus::getExp()->accept(this);
-		bep->BinExpPlus::getFactor()->accept(this);
-		Value *value1 = stack_.back();
-		stack_.pop_back();
-		Value *value2 = stack_.back();
-		stack_.pop_back();
+	bep->BinExpPlus::getExp()->accept(this);
+	bep->BinExpPlus::getFactor()->accept(this);
+	Value *value1 = stack_.back();
+	stack_.pop_back();
+	Value *value2 = stack_.back();
+	stack_.pop_back();
 
-		if(value1->getType() == Value::INT && value2->getType() == Value::INT){
-			IntValue *v1 = static_cast <IntValue *> (value1);
-			IntValue *v2 = static_cast <IntValue *> (value2);
-			stack_.push_back(new IntValue(v1->getValue() + v2->getValue()));
-			//printf("%d\n", static_cast <IntValue *> (stack_.back())->getValue());
-			
-		}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
-			IntValue *v1 = static_cast <IntValue *> (value1);
-			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
-			
-		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
-			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
-			IntValue *v2 = static_cast <IntValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
-				
-		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
-			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
-			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
-		}
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		stack_.push_back(new IntValue(v1->getValue() + v2->getValue()));
+		//printf("%d\n", static_cast <IntValue *> (stack_.back())->getValue());
 		
-		printf("Resultado: %d\n", static_cast<IntValue*>(stack_.back())->getValue());
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
+		
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
+			
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
+	}
+	
+	printf("Resultado: %d\n", static_cast<IntValue*>(stack_.back())->getValue());
 
-		delete value1;
-		delete value2;
+	delete value1;
+	delete value2;
 }
 
 void Operations::visit(BinExpMinus *bem){
-		bem->BinExpMinus::getExp()->accept(this);
-		bem->BinExpMinus::getFactor()->accept(this);
-		Value *value2 = stack_.back();
-		stack_.pop_back();
-		Value *value1 = stack_.back();
-		stack_.pop_back(); 
+	bem->BinExpMinus::getExp()->accept(this);
+	bem->BinExpMinus::getFactor()->accept(this);
+	Value *value2 = stack_.back();
+	stack_.pop_back();
+	Value *value1 = stack_.back();
+	stack_.pop_back(); 
 
-		if(value1->getType() == Value::INT && value2->getType() == Value::INT){
-			IntValue *v1 = static_cast <IntValue *> (value1);
-			IntValue *v2 = static_cast <IntValue *> (value2);
-			stack_.push_back(new IntValue(v1->getValue() - v2->getValue()));
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		stack_.push_back(new IntValue(v1->getValue() - v2->getValue()));
+	
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));
+	
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));
 		
-		}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
-			IntValue *v1 = static_cast <IntValue *> (value1);
-			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));	
+	}
 		
-		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
-			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
-			IntValue *v2 = static_cast <IntValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));
-			
-		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
-			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
-			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() - v2->getValue()));	
+	delete value1;
+	delete value2;
+}
+
+void Operations::visit(BinExpLessThen *belt){
+	belt->BinExpLessThen::getExp()->accept(this);
+	belt->BinExpLessThen::getFactor()->accept(this);
+	Value *value1 = stack_.back();
+	stack_.pop_back();
+	Value *value2 = stack_.back();
+	stack_.pop_back();
+
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() < v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
 		}
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() < v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() < v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() < v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}
 			
-		delete value1;
-		delete value2;
+	delete value1;
+	delete value2;
+
+}
+
+void Operations::visit(BinExpGreaterThen *begt){
+	begt->BinExpGreaterThen::getExp()->accept(this);
+	begt->BinExpGreaterThen::getFactor()->accept(this);
+	Value *value1 = stack_.back();
+	stack_.pop_back();
+	Value *value2 = stack_.back();
+	stack_.pop_back();
+
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() > v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() > v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() > v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() > v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}
+			
+	delete value1;
+	delete value2;
+
 }
 
 void Operations::visit(FactorMul *fm){
-		fm->FactorMul::getUnExp()->accept(this);
-		fm->FactorMul::getFactor()->accept(this);
-		Value *value1 = stack_.back();
-		stack_.pop_back();
-		Value *value2 = stack_.back();
-		stack_.pop_back();
+	fm->FactorMul::getUnExp()->accept(this);
+	fm->FactorMul::getFactor()->accept(this);
+	Value *value1 = stack_.back();
+	stack_.pop_back();
+	Value *value2 = stack_.back();
+	stack_.pop_back();
 
-		if(value1->getType() == Value::INT && value2->getType() == Value::INT){
-			IntValue *v1 = static_cast <IntValue *> (value1);
-			IntValue *v2 = static_cast <IntValue *> (value2);
-			stack_.push_back(new IntValue(v1->getValue() * v2->getValue()));
-		
-		}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
-			IntValue *v1 = static_cast <IntValue *> (value1);
-			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
-		
-		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
-			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
-			IntValue *v2 = static_cast <IntValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
-		
-		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
-			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
-			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
-		}
-		
-		printf("Resultado: %d\n", static_cast<IntValue*>(stack_.back())->getValue());
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		stack_.push_back(new IntValue(v1->getValue() * v2->getValue()));
+	
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
+	
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
+	
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
+	}
+	
+	printf("Resultado: %d\n", static_cast<IntValue*>(stack_.back())->getValue());
 
-		delete value1;
-		delete value2;
+	delete value1;
+	delete value2;
 }
 
 void Operations::visit(FactorDiv *fd){
-		fd->FactorDiv::getUnExp()->accept(this);
-		fd->FactorDiv::getFactor()->accept(this);
-		Value *value1 = stack_.back();
-		stack_.pop_back();
-		Value *value2 = stack_.back();
-		stack_.pop_back();
+	fd->FactorDiv::getUnExp()->accept(this);
+	fd->FactorDiv::getFactor()->accept(this);
+	Value *value1 = stack_.back();
+	stack_.pop_back();
+	Value *value2 = stack_.back();
+	stack_.pop_back();
 
-		if(value1->getType() == Value::INT && value2->getType() == Value::INT){
-			IntValue *v1 = static_cast <IntValue *> (value1);
-			IntValue *v2 = static_cast <IntValue *> (value2);
-			stack_.push_back(new IntValue(v1->getValue() / v2->getValue()));
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		stack_.push_back(new IntValue(v1->getValue() / v2->getValue()));
+	
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() / v2->getValue()));
+	
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() / v2->getValue()));
+	
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		stack_.push_back(new DoubleValue(v1->getValue() / v2->getValue()));
+	}
 		
-		}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
-			IntValue *v1 = static_cast <IntValue *> (value1);
-			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() / v2->getValue()));
-		
-		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
-			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
-			IntValue *v2 = static_cast <IntValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() / v2->getValue()));
-		
-		}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
-			DoubleValue *v1 = static_cast <DoubleValue *> (value1);
-			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
-			stack_.push_back(new DoubleValue(v1->getValue() / v2->getValue()));
-		}
-			
-		delete value1;
-		delete value2;
+	delete value1;
+	delete value2;
 }
 
 void Operations::visit(UnExpPlus *uep){
-		uep->UnExpPlus::getValue()->accept(this);
-		Value *value = stack_.back();
-		stack_.pop_back();
+	uep->UnExpPlus::getValue()->accept(this);
+	Value *value = stack_.back();
+	stack_.pop_back();
 
-		if(value->getType() == Value::INT){
-			IntValue *v = static_cast <IntValue *> (value);
-		} else if(value->getType() == Value::DOUBLE){
-			DoubleValue *v = static_cast <DoubleValue *> (value);
-		}
-			
-		delete value;
+	if(value->getType() == Value::INT){
+		IntValue *v = static_cast <IntValue *> (value);
+	} else if(value->getType() == Value::DOUBLE){
+		DoubleValue *v = static_cast <DoubleValue *> (value);
+	}
+		
+	delete value;
 }
 void Operations::visit(UnExpMinus *uem){
-		uem->UnExpMinus::getValue()->accept(this);
-		Value*value = stack_.back();
-		stack_.pop_back();
+	uem->UnExpMinus::getValue()->accept(this);
+	Value*value = stack_.back();
+	stack_.pop_back();
 
-		if(value->getType() == Value::INT){
-			IntValue *v = static_cast <IntValue *> (value);
-		} else if(value->getType() == Value::DOUBLE){
-			DoubleValue *v = static_cast <DoubleValue *> (value);
-		}
+	if(value->getType() == Value::INT){
+		IntValue *v = static_cast <IntValue *> (value);
+	} else if(value->getType() == Value::DOUBLE){
+		DoubleValue *v = static_cast <DoubleValue *> (value);
+	}
 
-		delete value;
+	delete value;
 }
 
 void Operations::visit(UnExpLog *uel){
-		uel->UnExpLog::getExp()->accept(this);
-		Value *value = stack_.back();
-		stack_.pop_back();
+	uel->UnExpLog::getExp()->accept(this);
+	Value *value = stack_.back();
+	stack_.pop_back();
 
-		if(value->getType() == Value::INT){
-			IntValue *v = static_cast <IntValue*> (value);
-			stack_.push_back(new IntValue (log (v->getValue())));
-		} else if(value->getType() == Value::DOUBLE){
-			DoubleValue *v = static_cast <DoubleValue*> (value);
-			stack_.push_back(new DoubleValue (log (v->getValue())));
-		}
+	if(value->getType() == Value::INT){
+		IntValue *v = static_cast <IntValue*> (value);
+		stack_.push_back(new IntValue (log (v->getValue())));
+	} else if(value->getType() == Value::DOUBLE){
+		DoubleValue *v = static_cast <DoubleValue*> (value);
+		stack_.push_back(new DoubleValue (log (v->getValue())));
+	}
 }
 
 void Operations::visit(UnExpExp *uee){
-		uee->UnExpExp::getExp()->accept(this);
-		Value *value = stack_.back();
-		stack_.pop_back();
+	uee->UnExpExp::getExp()->accept(this);
+	Value *value = stack_.back();
+	stack_.pop_back();
 
-		if(value->getType() == Value::INT){
-			IntValue *v = static_cast <IntValue*> (value);
-			stack_.push_back(new IntValue (exp (v->getValue())));
-		} else if(value->getType() == Value::DOUBLE){
-			DoubleValue *v = static_cast <DoubleValue*> (value);
-			stack_.push_back(new DoubleValue (exp (v->getValue())));
-		}
+	if(value->getType() == Value::INT){
+		IntValue *v = static_cast <IntValue*> (value);
+		stack_.push_back(new IntValue (exp (v->getValue())));
+	} else if(value->getType() == Value::DOUBLE){
+		DoubleValue *v = static_cast <DoubleValue*> (value);
+		stack_.push_back(new DoubleValue (exp (v->getValue())));
+	}
 }
 
 void Operations::visit(LparExpRpar *lpr){
-		lpr->getExp()->accept(this);
+	lpr->getExp()->accept(this);
 }
 
 //Accepts
@@ -293,6 +387,14 @@ void BinExpPlus::accept(Visitor *v){
 
 void BinExpMinus::accept(Visitor *v){ 
 	v->visit(this); 
+}
+
+void BinExpLessThen::accept(Visitor *v){
+	v->visit(this);
+}
+
+void BinExpGreaterThen::accept(Visitor *v){
+	v->visit(this);
 }
 
 void FactorMul::accept(Visitor *v){ 

@@ -96,6 +96,28 @@ public:
 	void accept(Visitor *);
 };
 
+class BinExpLessThen : public Exp {
+private:
+	Exp *exp;
+	Factor *factor;
+public:
+	BinExpLessThen(Exp *e, class Factor *f): exp(e), factor(f){}
+	Exp *getExp();
+	Factor *getFactor();
+	void accept(Visitor *v);
+};
+
+class BinExpGreaterThen : public Exp {
+private:
+	Exp *exp;
+	Factor *factor;
+public:
+	BinExpGreaterThen(Exp *e, class Factor *f): exp(e), factor(f){}
+	Exp *getExp();
+	Factor *getFactor();
+	void accept(Visitor *v);
+};
+
 class FactorMul: public Factor {
 private:
 	Factor *factor;
