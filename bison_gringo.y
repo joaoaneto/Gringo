@@ -97,6 +97,7 @@
 	class IfElseIf *ifelseif;
 	class If *ift;
 	class IfElse *ifelset;
+	class While *wwhile;
 };
 
 %type<program> Program;
@@ -124,6 +125,7 @@
 %type<ifelseif> IfElseIf;
 %type<ift> If;
 %type<ifelset> IfElse;
+%type<wwhile> While;
 %%
 
 Program : ExpList{
@@ -137,6 +139,7 @@ ExpList : Command {$$ = $1;}
 
 Command : Assignment {$$ = $1;}
 		|IfElseIf {$$ = $1;}
+		|While {$$ = $1;}
 		|Exp {$$ = $1;}
 ;
 
@@ -156,6 +159,11 @@ If : IF PAR_L Exp PAR_R BRA_L ExpList BRA_R {
 
 IfElse : IF PAR_L Exp PAR_R BRA_L ExpList BRA_R ELSE BRA_L ExpList BRA_R {
 		$$ = new IfElse($3,$6,$10);
+	}
+;
+
+While : WHILE PAR_L Exp PAR_R BRA_L ExpList BRA_R {
+		$$ = new While($3, $6);
 	}
 ;
 

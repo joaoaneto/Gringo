@@ -62,6 +62,17 @@ public:
 	void accept(Visitor *);
 };
 
+class While: public Command {
+private:
+	Exp *exp;
+	ExpList *expList;
+public:
+	While(Exp *e, ExpList *eList) : exp(e), expList(eList){}
+	Exp *getExp();
+	ExpList *getExpList();
+	void accept(Visitor *);
+};
+
 class BinExpPlus: public Exp {
 private:
 	Exp *exp;

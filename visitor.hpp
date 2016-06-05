@@ -26,6 +26,7 @@ public:
 	virtual void visit(Assignment *) = 0;
 	virtual void visit(If *) = 0;
 	virtual void visit(IfElse *) = 0;
+	virtual void visit(While *) = 0;
 };
 
 class Operations : public Visitor {
@@ -45,6 +46,8 @@ public:
 	void visit(If *i);
 
 	void visit(IfElse *e);
+
+	void visit(While *w);
 	
 	void visit(BinExpPlus *bep);
 

@@ -43,6 +43,26 @@ void Operations::visit(IfElse *e){
 
 }
 
+void Operations::visit(While *w){
+	w->While::getExp()->accept(this);
+	w->While::getExpList()->accept(this);
+
+	IntValue *v1 = static_cast<IntValue *>(stack_.back());
+	
+	int a = 0;
+	while(v1->getValue()){
+		
+		if(a == 2){
+			break;
+		}
+		++a;
+		printf("Aqui é While msm %d\n", a);
+		
+	}
+
+	printf("Valor aruah auu while eoq: %d\n\n", v1->getValue());
+}
+
 void Operations::visit(IdValue *v){
 		Context::TypeTable &t = Context::getContext().getTable();
 
@@ -324,5 +344,9 @@ void If::accept(Visitor *v){
 }
 
 void IfElse::accept(Visitor *v){
+	v->visit(this);
+}
+
+void While::accept(Visitor *v){
 	v->visit(this);
 }

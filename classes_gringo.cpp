@@ -22,6 +22,15 @@ ExpList *IfElse::getExpList_2(){
 	return this->expList_2;
 }
 
+//While
+Exp *While::getExp(){
+	return this->exp;
+}
+
+ExpList *While::getExpList(){
+	return this->expList;
+}
+
 //BinExpPlus
 Exp *BinExpPlus::getExp (){
 	return this->exp;
