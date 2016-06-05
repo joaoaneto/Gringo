@@ -25,9 +25,21 @@ void Operations::visit(If *i){
 
 }
 
-void Operations::visit(Else *e){
+void Operations::visit(IfElse *e){
+	e->IfElse::getExp()->accept(this);
 
-	e->getExpList()->accept(this);
+	IntValue *v1 = static_cast<IntValue *>(stack_.back());
+
+	if(v1->getValue()){
+		printf("Essa porra é True! vai dar accept.\n");
+		e->IfElse::getExpList()->accept(this);
+	}else{
+		printf("Essa porra é False!\n");
+		e->IfElse::getExpList_2()->accept(this);
+
+	}
+
+	printf("Valor: %d\n", v1->getValue());
 
 }
 
@@ -65,7 +77,7 @@ void Operations::visit(BinExpPlus *bep){
 			IntValue *v1 = static_cast <IntValue *> (value1);
 			IntValue *v2 = static_cast <IntValue *> (value2);
 			stack_.push_back(new IntValue(v1->getValue() + v2->getValue()));
-			printf("%d\n", static_cast <IntValue *> (stack_.back())->getValue());
+			//printf("%d\n", static_cast <IntValue *> (stack_.back())->getValue());
 			
 		}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
 			IntValue *v1 = static_cast <IntValue *> (value1);
@@ -82,7 +94,9 @@ void Operations::visit(BinExpPlus *bep){
 			DoubleValue *v2 = static_cast <DoubleValue *> (value2);
 			stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
 		}
-			
+		
+		printf("Resultado: %d\n", static_cast<IntValue*>(stack_.back())->getValue());
+
 		delete value1;
 		delete value2;
 }
@@ -309,6 +323,6 @@ void If::accept(Visitor *v){
 	v->visit(this);
 }
 
-void Else::accept(Visitor *v){
+void IfElse::accept(Visitor *v){
 	v->visit(this);
 }

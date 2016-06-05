@@ -49,12 +49,16 @@ public:
 	void accept(Visitor *);
 };
 
-class Else: public IfElseIf{
+class IfElse: public IfElseIf{
 private:
+	Exp *exp;
 	ExpList *expList;
+	ExpList *expList_2;
 public:
-	Else(ExpList *eList): expList(eList){}
-	ExpList *getListExp();
+	IfElse(Exp *e, ExpList *eList, ExpList *eList_2): exp(e), expList(eList), expList_2(eList_2){}
+	Exp *getExp();
+	ExpList *getExpList();
+	ExpList *getExpList_2();
 	void accept(Visitor *);
 };
 

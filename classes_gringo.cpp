@@ -9,9 +9,17 @@ ExpList *If::getExpList(){
 	return this->expList;
 }
 
-//Else
-ExpList *Else::getListExp(){
+//IfElse
+Exp *IfElse::getExp(){
+	return this->exp;
+}
+
+ExpList *IfElse::getExpList(){
 	return this->expList;
+}
+
+ExpList *IfElse::getExpList_2(){
+	return this->expList_2;
 }
 
 //BinExpPlus

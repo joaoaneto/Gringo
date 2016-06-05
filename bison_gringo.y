@@ -96,7 +96,7 @@
 	class Assignment *assignment;
 	class IfElseIf *ifelseif;
 	class If *ift;
-	class Else *elset;
+	class IfElse *ifelset;
 };
 
 %type<program> Program;
@@ -123,7 +123,7 @@
 %type<assignment> Assignment;
 %type<ifelseif> IfElseIf;
 %type<ift> If;
-%type<elset> Else;
+%type<ifelset> IfElse;
 %%
 
 Program : ExpList{
@@ -146,7 +146,7 @@ Exp : BinExpPlus { $$ = $1; }
 ;
 
 IfElseIf : If {$$ = $1;}
-		|Else {$$ = $1;}
+		|IfElse {$$ = $1;}
 ;
 
 If : IF PAR_L Exp PAR_R BRA_L ExpList BRA_R {
@@ -154,8 +154,8 @@ If : IF PAR_L Exp PAR_R BRA_L ExpList BRA_R {
 	}
 ; 
 
-Else : ELSE BRA_L ExpList BRA_R {
-		$$ = new Else($3);
+IfElse : IF PAR_L Exp PAR_R BRA_L ExpList BRA_R ELSE BRA_L ExpList BRA_R {
+		$$ = new IfElse($3,$6,$10);
 	}
 ;
 
