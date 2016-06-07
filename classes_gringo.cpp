@@ -57,11 +57,27 @@ Factor *BinExpLessThen::getFactor(){
 	return this->factor;
 }
 
+Exp *BinExpLessEqualThen::getExp(){
+	return this->exp;
+}
+
+Factor *BinExpLessEqualThen::getFactor(){
+	return this->factor;
+}
+
 Exp *BinExpGreaterThen::getExp(){
 	return this->exp;
 }
 
 Factor *BinExpGreaterThen::getFactor(){
+	return this->factor;
+}
+
+Exp *BinExpGreaterEqualThen::getExp(){
+	return this->exp;
+}
+
+Factor *BinExpGreaterEqualThen::getFactor(){
 	return this->factor;
 }
 

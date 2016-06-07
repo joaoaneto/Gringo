@@ -64,25 +64,25 @@ void Operations::visit(While *w){
 }
 
 void Operations::visit(IdValue *v){
-		Context::TypeTable &t = Context::getContext().getTable();
+	Context::TypeTable &t = Context::getContext().getTable();
 
-		if(t.find(v->getValue()) == t.end()){
-			stack_.push_back(v);
-		}else{
-			stack_.push_back(t[v->getValue()]);
-		}
+	if(t.find(v->getValue()) == t.end()){
+		stack_.push_back(v);
+	}else{
+		stack_.push_back(t[v->getValue()]);
+	}
 }
 
 void Operations::visit(Assignment *a){
-		a->Assignment::getExp()->accept(this);
-		a->Assignment::getIdValue()->accept(this);
-		
-		Context::TypeTable &t = Context::getContext().getTable();
-		
-		IdValue *valueId = static_cast <IdValue *> (stack_.back());
-		stack_.pop_back();
-		t[valueId->getValue()] = stack_.back();
-		stack_.pop_back();
+	a->Assignment::getExp()->accept(this);
+	a->Assignment::getIdValue()->accept(this);
+	
+	Context::TypeTable &t = Context::getContext().getTable();
+	
+	IdValue *valueId = static_cast <IdValue *> (stack_.back());
+	stack_.pop_back();
+	t[valueId->getValue()] = stack_.back();
+	stack_.pop_back();
 }
 
 void Operations::visit(BinExpPlus *bep){
@@ -201,6 +201,53 @@ void Operations::visit(BinExpLessThen *belt){
 
 }
 
+void Operations::visit(BinExpLessEqualThen *belet){
+	belet->BinExpLessEqualThen::getExp()->accept(this);
+	belet->BinExpLessEqualThen::getFactor()->accept(this);
+	Value *value1 = stack_.back();
+	stack_.pop_back();
+	Value *value2 = stack_.back();
+	stack_.pop_back();
+
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() <= v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() <= v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() <= v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() <= v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}
+			
+	delete value1;
+	delete value2;
+
+}
+
 void Operations::visit(BinExpGreaterThen *begt){
 	begt->BinExpGreaterThen::getExp()->accept(this);
 	begt->BinExpGreaterThen::getFactor()->accept(this);
@@ -237,6 +284,53 @@ void Operations::visit(BinExpGreaterThen *begt){
 		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
 		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
 		if(v2->getValue() > v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}
+			
+	delete value1;
+	delete value2;
+
+}
+
+void Operations::visit(BinExpGreaterEqualThen *beget){
+	beget->BinExpGreaterEqualThen::getExp()->accept(this);
+	beget->BinExpGreaterEqualThen::getFactor()->accept(this);
+	Value *value1 = stack_.back();
+	stack_.pop_back();
+	Value *value2 = stack_.back();
+	stack_.pop_back();
+
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() >= v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() >= v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() >= v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() >= v1->getValue()){
 			stack_.push_back(new IntValue(1));
 		}else{
 			stack_.push_back(new IntValue(0));
@@ -393,7 +487,15 @@ void BinExpLessThen::accept(Visitor *v){
 	v->visit(this);
 }
 
+void BinExpLessEqualThen::accept(Visitor *v){
+	v->visit(this);
+}
+
 void BinExpGreaterThen::accept(Visitor *v){
+	v->visit(this);
+}
+
+void BinExpGreaterEqualThen::accept(Visitor *v){
 	v->visit(this);
 }
 

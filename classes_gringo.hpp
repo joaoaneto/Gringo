@@ -111,12 +111,34 @@ public:
 	void accept(Visitor *v);
 };
 
+class BinExpLessEqualThen : public BinExpLessGreater {
+private:
+	Exp *exp;
+	Factor *factor;
+public:
+	BinExpLessEqualThen(Exp *e, class Factor *f): exp(e), factor(f){}
+	Exp *getExp();
+	Factor *getFactor();
+	void accept(Visitor *v);
+};
+
 class BinExpGreaterThen : public BinExpLessGreater {
 private:
 	Exp *exp;
 	Factor *factor;
 public:
 	BinExpGreaterThen(Exp *e, class Factor *f): exp(e), factor(f){}
+	Exp *getExp();
+	Factor *getFactor();
+	void accept(Visitor *v);
+};
+
+class BinExpGreaterEqualThen : public BinExpLessGreater {
+private:
+	Exp *exp;
+	Factor *factor;
+public:
+	BinExpGreaterEqualThen(Exp *e, class Factor *f): exp(e), factor(f){}
 	Exp *getExp();
 	Factor *getFactor();
 	void accept(Visitor *v);

@@ -48,8 +48,12 @@
 "*"		{ return MUL; }
 "/"		{ return DIV; }
 "%"		{ return REST; }
+"=="	{ return DOUBLE_EQUAL; }
+"!="	{ return DIFFERENT; }
 ">"		{ return GREATER_THEN; }
+">="	{ return GREATER_EQUAL_THEN; }
 "<"		{ return LESS_THEN; }
+"<="	{ return LESS_EQUAL_THEN; }
 "!"		{ return NOT; }
 "^"		{ return XOR; }
 "sizeof"	{ return SIZEOF; }

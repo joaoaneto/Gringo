@@ -39,8 +39,12 @@
 %token MUL;
 %token DIV;
 %token REST;
+%token DOUBLE_EQUAL;
+%token DIFFERENT;
 %token GREATER_THEN;
+%token GREATER_EQUAL_THEN;
 %token LESS_THEN;
+%token LESS_EQUAL_THEN;
 %token NOT;
 %token XOR;
 %token COMMA;
@@ -89,7 +93,9 @@
 	class BinExpPlus *binexpplus;
 	class BinExpMinus *binexpminus;
 	class BinExpLessThen *binexplessthen;
+	class BinExpLessEqualThen *belet;
 	class BinExpGreaterThen *binexpgreaterthen;
+	class BinExpGreaterEqualThen *beget;
 	class FactorMul *factormul;
 	class FactorDiv *factordiv;
 	class UnExpPlus *unexpplus;
@@ -121,7 +127,9 @@
 %type<binexpplus> BinExpPlus;
 %type<binexpminus> BinExpMinus;
 %type<binexplessthen> BinExpLessThen;
+%type<belet> BinExpLessEqualThen;
 %type<binexpgreaterthen> BinExpGreaterThen;
+%type<beget> BinExpGreaterEqualThen;
 %type<factormul> FactorMul;
 %type<factordiv> FactorDiv;
 %type<unexpplus> UnExpPlus;
@@ -157,7 +165,9 @@ Exp: BinExpLessGreater { $$ = $1; }
 ;
 
 BinExpLessGreater: BinExpLessThen {$$ = $1;}
+				|BinExpLessEqualThen {$$ = $1;}
 				|BinExpGreaterThen {$$ = $1;}
+				|BinExpGreaterEqualThen {$$ = $1;}
 
 BinExpPlusMinus: BinExpPlus {$$ = $1;}
 				|BinExpMinus {$$ = $1;}
@@ -197,8 +207,18 @@ BinExpLessThen : Exp LESS_THEN Factor {
 	} 
 ;
 
+BinExpLessEqualThen : Exp LESS_EQUAL_THEN Factor {
+		$$ = new BinExpLessEqualThen($1, $3);
+	} 
+;
+
 BinExpGreaterThen : Exp GREATER_THEN Factor {
 		$$ = new BinExpGreaterThen($1, $3);
+	} 
+;
+
+BinExpGreaterEqualThen : Exp GREATER_EQUAL_THEN Factor {
+		$$ = new BinExpGreaterEqualThen($1, $3);
 	} 
 ;
 

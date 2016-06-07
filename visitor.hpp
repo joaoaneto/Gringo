@@ -14,7 +14,9 @@ public:
 	virtual void visit(BinExpPlus *) = 0;
 	virtual void visit(BinExpMinus *) = 0;
 	virtual void visit(BinExpLessThen *) = 0;
+	virtual void visit(BinExpLessEqualThen *) = 0;
 	virtual void visit(BinExpGreaterThen *) = 0;
+	virtual void visit(BinExpGreaterEqualThen *) = 0;
 	virtual void visit(FactorMul *) = 0;
 	virtual void visit(FactorDiv *) = 0;
 	virtual void visit(UnExpPlus *) = 0;
@@ -57,7 +59,11 @@ public:
 
 	void visit(BinExpLessThen *belt);
 
+	void visit(BinExpLessEqualThen *belet);
+
 	void visit(BinExpGreaterThen *begt);
+
+	void visit(BinExpGreaterEqualThen *beget);
 
 	void visit(FactorMul *fm);
 
