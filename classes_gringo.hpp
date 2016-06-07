@@ -21,6 +21,8 @@ class IfElseIf : public Command{};
 
 class Exp : public Command {};
 
+class BinExpEqualDiff : public Exp {};
+
 class BinExpLessGreater : public Exp {};
 
 class BinExpPlusMinus : public Exp {};
@@ -139,6 +141,28 @@ private:
 	Factor *factor;
 public:
 	BinExpGreaterEqualThen(Exp *e, class Factor *f): exp(e), factor(f){}
+	Exp *getExp();
+	Factor *getFactor();
+	void accept(Visitor *v);
+};
+
+class BinExpEqual : public BinExpEqualDiff {
+private:
+	Exp *exp;
+	Factor *factor;
+public:
+	BinExpEqual(Exp *e, class Factor *f): exp(e), factor(f){}
+	Exp *getExp();
+	Factor *getFactor();
+	void accept(Visitor *v);
+};
+
+class BinExpDiff : public BinExpEqualDiff {
+private:
+	Exp *exp;
+	Factor *factor;
+public:
+	BinExpDiff(Exp *e, class Factor *f): exp(e), factor(f){}
 	Exp *getExp();
 	Factor *getFactor();
 	void accept(Visitor *v);

@@ -15,13 +15,8 @@ void Operations::visit(If *i){
 	IntValue *v1 = static_cast<IntValue *>(stack_.back());
 
 	if(v1->getValue()){
-		printf("Essa porra é True! vai dar accept.\n");
 		i->If::getExpList()->accept(this);
-	}else{
-		printf("Essa porra é False!\n");		
 	}
-
-	printf("Valor: %d\n", v1->getValue());
 
 }
 
@@ -31,15 +26,10 @@ void Operations::visit(IfElse *e){
 	IntValue *v1 = static_cast<IntValue *>(stack_.back());
 
 	if(v1->getValue()){
-		printf("Essa porra é True! vai dar accept.\n");
 		e->IfElse::getExpList()->accept(this);
 	}else{
-		printf("Essa porra é False!\n");
 		e->IfElse::getExpList_2()->accept(this);
-
 	}
-
-	printf("Valor: %d\n", v1->getValue());
 
 }
 
@@ -342,6 +332,100 @@ void Operations::visit(BinExpGreaterEqualThen *beget){
 
 }
 
+void Operations::visit(BinExpEqual *bee){
+	bee->BinExpEqual::getExp()->accept(this);
+	bee->BinExpEqual::getFactor()->accept(this);
+	Value *value1 = stack_.back();
+	stack_.pop_back();
+	Value *value2 = stack_.back();
+	stack_.pop_back();
+
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() == v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() == v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() == v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() == v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}
+			
+	delete value1;
+	delete value2;
+
+}
+
+void Operations::visit(BinExpDiff *bed){
+	bed->BinExpDiff::getExp()->accept(this);
+	bed->BinExpDiff::getFactor()->accept(this);
+	Value *value1 = stack_.back();
+	stack_.pop_back();
+	Value *value2 = stack_.back();
+	stack_.pop_back();
+
+	if(value1->getType() == Value::INT && value2->getType() == Value::INT){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() != v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::INT && value2->getType() == Value::DOUBLE){
+		IntValue *v1 = static_cast <IntValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() != v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::INT){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		IntValue *v2 = static_cast <IntValue *> (value2);
+		if(v2->getValue() != v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}else if(value1->getType() == Value::DOUBLE && value2->getType() == Value::DOUBLE){
+		DoubleValue *v1 = static_cast <DoubleValue *> (value1);
+		DoubleValue *v2 = static_cast <DoubleValue *> (value2);
+		if(v2->getValue() != v1->getValue()){
+			stack_.push_back(new IntValue(1));
+		}else{
+			stack_.push_back(new IntValue(0));
+		}
+	}
+			
+	delete value1;
+	delete value2;
+
+}
+
 void Operations::visit(FactorMul *fm){
 	fm->FactorMul::getUnExp()->accept(this);
 	fm->FactorMul::getFactor()->accept(this);
@@ -496,6 +580,14 @@ void BinExpGreaterThen::accept(Visitor *v){
 }
 
 void BinExpGreaterEqualThen::accept(Visitor *v){
+	v->visit(this);
+}
+
+void BinExpEqual::accept(Visitor *v){
+	v->visit(this);
+}
+
+void BinExpDiff::accept(Visitor *v){
 	v->visit(this);
 }
 

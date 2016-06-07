@@ -81,6 +81,22 @@ Factor *BinExpGreaterEqualThen::getFactor(){
 	return this->factor;
 }
 
+Exp *BinExpEqual::getExp(){
+	return this->exp;
+}
+
+Factor *BinExpEqual::getFactor(){
+	return this->factor;
+}
+
+Exp *BinExpDiff::getExp(){
+	return this->exp;
+}
+
+Factor *BinExpDiff::getFactor(){
+	return this->factor;
+}
+
 //FactorMul
 Factor *FactorMul::getFactor(){ 
 	return this->factor; 

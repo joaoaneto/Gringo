@@ -17,6 +17,8 @@ public:
 	virtual void visit(BinExpLessEqualThen *) = 0;
 	virtual void visit(BinExpGreaterThen *) = 0;
 	virtual void visit(BinExpGreaterEqualThen *) = 0;
+	virtual void visit(BinExpEqual *) = 0;
+	virtual void visit(BinExpDiff *) = 0;
 	virtual void visit(FactorMul *) = 0;
 	virtual void visit(FactorDiv *) = 0;
 	virtual void visit(UnExpPlus *) = 0;
@@ -64,6 +66,10 @@ public:
 	void visit(BinExpGreaterThen *begt);
 
 	void visit(BinExpGreaterEqualThen *beget);
+
+	void visit(BinExpEqual *bee);
+
+	void visit(BinExpDiff *bed);
 
 	void visit(FactorMul *fm);
 

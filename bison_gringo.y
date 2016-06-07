@@ -86,6 +86,7 @@
 	class Command *command;
 	class Value *value;
 	class Exp *exp;
+	class BinExpEqualDiff *beed;
 	class BinExpLessGreater *belg;
 	class BinExpPlusMinus *bepm;
 	class UnExp *unexp;
@@ -96,6 +97,8 @@
 	class BinExpLessEqualThen *belet;
 	class BinExpGreaterThen *binexpgreaterthen;
 	class BinExpGreaterEqualThen *beget;
+	class BinExpEqual *binexpequal;
+	class BinExpDiff *binexpdiff;
 	class FactorMul *factormul;
 	class FactorDiv *factordiv;
 	class UnExpPlus *unexpplus;
@@ -122,8 +125,11 @@
 %type<exp> Exp;
 %type<belg> BinExpLessGreater;
 %type<bepm> BinExpPlusMinus;
+%type<beed> BinExpEqualDiff;
 %type<factor> Factor;
 %type<unexp> UnExp;
+%type<binexpequal> BinExpEqual;
+%type<binexpdiff> BinExpDiff;
 %type<binexpplus> BinExpPlus;
 %type<binexpminus> BinExpMinus;
 %type<binexplessthen> BinExpLessThen;
@@ -159,15 +165,21 @@ Command : Assignment {$$ = $1;}
 		|Exp {$$ = $1;}
 ;
 
-Exp: BinExpLessGreater { $$ = $1; }
+Exp: BinExpEqualDiff { $$ = $1; }
+	|BinExpLessGreater { $$ = $1; }
 	|BinExpPlusMinus { $$ = $1; }
 	|Factor {$$ = $1;}
+;
+
+BinExpEqualDiff: BinExpEqual { $$ = $1; }
+				|BinExpDiff { $$ = $1; }
 ;
 
 BinExpLessGreater: BinExpLessThen {$$ = $1;}
 				|BinExpLessEqualThen {$$ = $1;}
 				|BinExpGreaterThen {$$ = $1;}
 				|BinExpGreaterEqualThen {$$ = $1;}
+;
 
 BinExpPlusMinus: BinExpPlus {$$ = $1;}
 				|BinExpMinus {$$ = $1;}
@@ -220,6 +232,16 @@ BinExpGreaterThen : Exp GREATER_THEN Factor {
 BinExpGreaterEqualThen : Exp GREATER_EQUAL_THEN Factor {
 		$$ = new BinExpGreaterEqualThen($1, $3);
 	} 
+;
+
+BinExpEqual: Exp DOUBLE_EQUAL Factor {
+		$$ = new BinExpEqual($1, $3);
+	}
+;
+
+BinExpDiff: Exp DIFFERENT Factor {
+		$$ = new BinExpDiff($1, $3);
+	}
 ;
 
 Factor : FactorMul { $$ = $1; }
