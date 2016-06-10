@@ -20,6 +20,12 @@ void Operations::visit(If *i){
 
 }
 
+
+void Operations::visit(Commands *c){
+	c->Commands::getExpList()->accept(this);
+	c->Commands::getCommand()->accept(this);	
+}
+
 void Operations::visit(IfElse *e){
 	e->IfElse::getExp()->accept(this);
 
@@ -66,7 +72,7 @@ void Operations::visit(IdValue *v){
 void Operations::visit(Assignment *a){
 	a->Assignment::getExp()->accept(this);
 	a->Assignment::getIdValue()->accept(this);
-	
+	printf("Eh rolaaaa\n\n");
 	Context::TypeTable &t = Context::getContext().getTable();
 	
 	IdValue *valueId = static_cast <IdValue *> (stack_.back());
@@ -555,9 +561,9 @@ void Operations::visit(LparExpRpar *lpr){
 
 //Accepts
 
-/*void Commands::accept(Visitor *v){ 
+void Commands::accept(Visitor *v){ 
 	v->visit(this); 
-}*/
+}
 
 void BinExpPlus::accept(Visitor *v){ 
 	v->visit(this); 

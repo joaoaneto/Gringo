@@ -1,5 +1,14 @@
 #include "classes_gringo.hpp"
 
+
+//Commands
+ExpList *Commands::getExpList(){
+	return this->expList;
+}
+
+Command *Commands::getCommand(){
+	return this->command;
+}
 //If
 Exp *If::getExp(){
 	return this->exp;

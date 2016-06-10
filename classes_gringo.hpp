@@ -44,6 +44,17 @@ private:
 	Type type;
 };
 
+class Commands : public ExpList{
+private:
+	ExpList *expList;
+	Command *command;
+public:
+	Commands(ExpList *eList, Command *c) : expList(eList), command(c){}	
+	ExpList *getExpList();
+	Command *getCommand();		
+	void accept(Visitor *);	
+};
+
 class If: public IfElseIf{
 private:
 	Exp *exp;

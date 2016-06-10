@@ -109,12 +109,14 @@
 	class Assignment *assignment;
 	class IfElseIf *ifelseif;
 	class If *ift;
+	class Commands *commandst;
 	class IfElse *ifelset;
 	class While *wwhile;
 };
 
 %type<program> Program;
 %type<explist> ExpList;
+
 %type<command> Command;
 %type<char_value> CHAR;
 %type<int_value> LITERAL_INT;
@@ -146,6 +148,7 @@
 %type<assignment> Assignment;
 %type<ifelseif> IfElseIf;
 %type<ift> If;
+%type<commandst> Commands;
 %type<ifelset> IfElse;
 %type<wwhile> While;
 %%
@@ -157,8 +160,11 @@ Program : ExpList{
 ;
 
 ExpList : Command {$$ = $1;}
+		  |Commands {$$ = $1}		
 ;
 
+Commands : |Command DOT_COMMA ExpList {$$ = new Commands($3,$1);}		
+;		
 Command : Assignment {$$ = $1;}
 		|IfElseIf {$$ = $1;}
 		|While {$$ = $1;}
@@ -301,7 +307,7 @@ LparExpRpar : PAR_L Exp PAR_R {
 	}
 ; 
 
-Assignment : IDENTIFIER EQUAL Exp DOT_COMMA {
+Assignment : IDENTIFIER EQUAL Exp  {
 		IdValue *fallenId = new IdValue($1);
 		$$ = new Assignment(fallenId,$3);
 	}

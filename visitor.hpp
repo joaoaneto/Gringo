@@ -10,7 +10,7 @@ using std::vector;
 
 class Visitor {
 public:
-	//virtual void visit(Commands *) = 0;
+	virtual void visit(Commands *) = 0;
 	virtual void visit(BinExpPlus *) = 0;
 	virtual void visit(BinExpMinus *) = 0;
 	virtual void visit(BinExpLessThen *) = 0;
@@ -51,6 +51,8 @@ public:
 
 	void visit(If *i);
 
+	void visit(Commands *c);
+		
 	void visit(IfElse *e);
 
 	void visit(While *w);
