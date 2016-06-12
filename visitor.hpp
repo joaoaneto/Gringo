@@ -32,6 +32,8 @@ public:
 	virtual void visit(Assignment *) = 0;
 	virtual void visit(If *) = 0;
 	virtual void visit(IfElse *) = 0;
+	virtual void visit(FunctionMain *) = 0;
+	virtual void visit(FunctionDec *) = 0;
 	virtual void visit(While *) = 0;
 };
 
@@ -84,6 +86,10 @@ public:
 	void visit(UnExpLog *uel);
 
 	void visit(UnExpExp *uee);
+
+	void visit(FunctionMain *fm);
+
+	void visit(FunctionDec *fd);
 
 	void visit(LparExpRpar *lpr);
 };

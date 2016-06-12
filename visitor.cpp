@@ -559,6 +559,16 @@ void Operations::visit(LparExpRpar *lpr){
 	lpr->getExp()->accept(this);
 }
 
+void Operations::visit(FunctionDec *fd){
+	fd->getExpList()->accept(this);
+	printf("Entrou na birosca do visit\n\n");
+}
+
+void Operations::visit(FunctionMain *fm){
+	fm->getExpList()->accept(this);
+	printf("Entrou na birosca do visit da main\n\n");
+}
+
 //Accepts
 
 void Commands::accept(Visitor *v){ 
@@ -646,6 +656,14 @@ void If::accept(Visitor *v){
 }
 
 void IfElse::accept(Visitor *v){
+	v->visit(this);
+}
+
+void FunctionDec::accept(Visitor *v){
+	v->visit(this);
+}
+
+void FunctionMain::accept(Visitor *v){
 	v->visit(this);
 }
 

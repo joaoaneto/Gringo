@@ -31,6 +31,16 @@ ExpList *IfElse::getExpList_2(){
 	return this->expList_2;
 }
 
+//FunctionMain
+ExpList *FunctionMain::getExpList(){
+	return this->expList;
+}
+
+//FunctionDec
+ExpList *FunctionDec::getExpList(){
+	return this->expList;
+}
+
 //While
 Exp *While::getExp(){
 	return this->exp;

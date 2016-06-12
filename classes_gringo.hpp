@@ -17,6 +17,8 @@ class ExpList : public Program {};
 
 class Command : public ExpList {};
 
+class Function : public Command{};
+
 class IfElseIf : public Command{};
 
 class Exp : public Command {};
@@ -77,6 +79,24 @@ public:
 	ExpList *getExpList();
 	ExpList *getExpList_2();
 	void accept(Visitor *);
+};
+
+class FunctionMain : public Function{
+private:
+	ExpList *expList;
+public:
+	FunctionMain(ExpList *eList) : expList(eList){}	
+	ExpList *getExpList();
+	void accept(Visitor *);
+};
+
+class FunctionDec : public Function{
+private:
+	ExpList *expList;
+public:
+	FunctionDec(ExpList *eList) : expList(eList){}
+	ExpList *getExpList();
+	void accept(Visitor *);		
 };
 
 class While: public Command {

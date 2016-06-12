@@ -21,6 +21,7 @@
 	
 %}
 
+%token MAIN;
 %token CHAR;
 %token LOG2;
 %token EXP;
@@ -109,6 +110,9 @@
 	class Assignment *assignment;
 	class IfElseIf *ifelseif;
 	class If *ift;
+	class Function *ft;
+	class FunctionDec *fdt;
+	class FunctionMain *fmt;
 	class Commands *commandst;
 	class IfElse *ifelset;
 	class While *wwhile;
@@ -118,6 +122,9 @@
 %type<explist> ExpList;
 
 %type<command> Command;
+%type<ft> Function;
+%type<fdt> FunctionDec;
+%type<fmt> FunctionMain;
 %type<char_value> CHAR;
 %type<int_value> LITERAL_INT;
 %type<double_value> FLOAT;
@@ -166,9 +173,26 @@ ExpList : Command {$$ = $1;}
 Commands : |Command DOT_COMMA ExpList {$$ = new Commands($3,$1);}		
 ;		
 Command : Assignment {$$ = $1;}
+		|Function{$$ = $1;}
 		|IfElseIf {$$ = $1;}
 		|While {$$ = $1;}
 		|Exp {$$ = $1;}
+;
+
+Function : FunctionMain {$$ = $1;} 
+		 |FunctionDec {$$ = $1;}
+;
+
+FunctionMain : MAIN PAR_L PAR_R BRA_L ExpList BRA_R{
+			$$ = new FunctionMain($5);	
+			printf("Habemus main\n\n");
+}
+;
+
+FunctionDec : IDENTIFIER PAR_L PAR_R BRA_L ExpList BRA_R{
+		   printf("Habemus function\n\n");
+		   $$ = new FunctionDec($5);	 	
+} 
 ;
 
 Exp: BinExpEqualDiff { $$ = $1; }

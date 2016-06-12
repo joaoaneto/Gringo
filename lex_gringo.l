@@ -32,6 +32,7 @@
 
 %%
 
+"main"		{ return MAIN;}
 "char"		{ return CHAR; }
 "int"		{ return INT; }
 "float"		{ return FLOAT; }
