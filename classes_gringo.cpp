@@ -173,7 +173,7 @@ Value::Type DoubleValue::getType(){
 }
 
 //IdValue
-char *IdValue::getValue(){ 
+string IdValue::getValue(){ 
 	return this->idValue; 
 }
 

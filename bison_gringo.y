@@ -170,7 +170,7 @@ ExpList : Command {$$ = $1;}
 		  |Commands {$$ = $1;}		
 ;
 
-Commands : |Command DOT_COMMA ExpList {$$ = new Commands($3,$1);}		
+Commands : Command DOT_COMMA ExpList {$$ = new Commands($3,$1);}		
 ;		
 Command : Assignment {$$ = $1;}
 		|Function{$$ = $1;}

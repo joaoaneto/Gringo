@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string.h>
+#include <string>
 
 using namespace std;
 
@@ -280,10 +281,10 @@ public:
 
 class IdValue: public Value {
 private:
-	char *idValue;
+	string idValue;
 public:
-	IdValue(char *idvalue){ idValue = strdup(idvalue); } //construtor
-	char *getValue();
+	IdValue(string idvalue):idValue(idvalue){} //construtor
+	string getValue();
 	virtual Type getType();
 	void accept(Visitor *);
 };
@@ -315,7 +316,7 @@ private:
 	Program *program;
 	Context(){} //construtor	
 public:
-	typedef map<char *, Value *> TypeTable;
+	typedef map<string, Value *> TypeTable;
 	static Context &getContext();
 	
 	TypeTable &getTable();
