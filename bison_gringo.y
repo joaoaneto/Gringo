@@ -170,7 +170,7 @@ ExpList : Command {$$ = $1;}
 		  |Commands {$$ = $1;}		
 ;
 
-Commands : Command DOT_COMMA ExpList {$$ = new Commands($3,$1);}		
+Commands : ExpList DOT_COMMA Command {$$ = new Commands($1,$3);}		
 ;		
 Command : Assignment {$$ = $1;}
 		|Function{$$ = $1;}
@@ -332,7 +332,6 @@ LparExpRpar : PAR_L Exp PAR_R {
 ; 
 
 Assignment : IDENTIFIER EQUAL Exp  {
-		IdValue *fallenId = new IdValue($1);
-		$$ = new Assignment(fallenId,$3);
+		$$ = new Assignment(new IdValue(string($1)),$3);
 	}
 ;
