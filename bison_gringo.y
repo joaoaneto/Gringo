@@ -160,39 +160,47 @@
 %type<wwhile> While;
 %%
 
-Program : ExpList{
+Program : StatmentList {
 		$$ = $1;
 		Context::getContext().setProgram($$);
 	}
 ;
 
-ExpList : Command {$$ = $1;}
-		  |Commands {$$ = $1;}		
+StatmentList : VarDeclarationList {$$ = $1;}
+		  	  |FuncDefinitionList {$$ = $1;}		
 ;
 
-Commands : ExpList DOT_COMMA Command {$$ = new Commands($1,$3);}		
+VarDeclarationList : VarDeclaration {}
+					|VarDeclaration VarDeclarationList {}
+;
+
+VarDeclaration : Type IDENTIFIER DOT_COMMA {}
+				|Type Assignment {}
+;
+
+Type : INT {$$ = $1;}
+	 | DOUBLE {$$ = $1;}
+	 | FLOAT {$$ = $1;}
+	 | VOID {$$ = $1;}
+;
+
+FuncDefinitionList : FuncDefinition {}
+					|FuncDefinition FuncDefinitionList {}
+;
+
+FuncDefinition : Type IDENTIFIER PAR_L Parameters PAR_R Block {}
+;
+
+Block : BRA_L VarDeclarationList Commands BRA_R {}
+;
+
+Commands : Command {}
+		  |Commands Command {}
 ;		
-Command : Assignment {$$ = $1;}
-		|Function{$$ = $1;}
-		|IfElseIf {$$ = $1;}
+
+Command : IfElseIf {$$ = $1;}
 		|While {$$ = $1;}
-		|Exp {$$ = $1;}
-;
-
-Function : FunctionMain {$$ = $1;} 
-		 |FunctionDec {$$ = $1;}
-;
-
-FunctionMain : MAIN PAR_L PAR_R BRA_L ExpList BRA_R{
-			$$ = new FunctionMain($5);	
-			printf("Habemus main\n\n");
-}
-;
-
-FunctionDec : IDENTIFIER PAR_L PAR_R BRA_L ExpList BRA_R{
-		   printf("Habemus function\n\n");
-		   $$ = new FunctionDec($5);	 	
-} 
+		|Exp DOT_COMMA {$$ = $1;}
 ;
 
 Exp: BinExpEqualDiff { $$ = $1; }
@@ -219,18 +227,18 @@ IfElseIf : If {$$ = $1;}
 		|IfElse {$$ = $1;}
 ;
 
-If : IF PAR_L Exp PAR_R BRA_L ExpList BRA_R {
-		$$ = new If($3, $6);
+If : IF PAR_L Exp PAR_R Block {
+		$$ = new If($3, $5);
 	}
 ; 
 
-IfElse : IF PAR_L Exp PAR_R BRA_L ExpList BRA_R ELSE BRA_L ExpList BRA_R {
-		$$ = new IfElse($3,$6,$10);
+IfElse : IF PAR_L Exp PAR_R Block ELSE Block {
+		$$ = new IfElse($3,$5,$7);
 	}
 ;
 
-While : WHILE PAR_L Exp PAR_R BRA_L ExpList BRA_R {
-		$$ = new While($3, $6);
+While : WHILE PAR_L Exp PAR_R Block {
+		$$ = new While($3, $5);
 	}
 ;
 
@@ -331,7 +339,7 @@ LparExpRpar : PAR_L Exp PAR_R {
 	}
 ; 
 
-Assignment : IDENTIFIER EQUAL Exp  {
+Assignment : IDENTIFIER EQUAL Exp {
 		$$ = new Assignment(new IdValue(string($1)),$3);
 	}
 ;
