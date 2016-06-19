@@ -14,9 +14,19 @@ public:
 
 class Program : public Node {};
 
-class ExpList : public Program {};
+class StatementList : public Program {};
 
-class Command : public ExpList {};
+class VarDeclarationList : public StatementList {};
+
+class FuncDefinitionList : public StatementList {};
+
+class VarDeclaration : public VarDeclarationList {};
+
+//class Type : public ??? {};
+
+//class ExpList : public Program {};
+
+class Command : public Commands {};
 
 class Function : public Command{};
 

@@ -83,7 +83,10 @@
 	char char_value;
 	char *id_value;
 	class Program *program;
-	class ExpList *explist;
+	class StatementList *statementlist;
+	class VarDeclarationList *vardeclarationlist;
+	class FuncDefinitionList *funcdefinitionlist;
+	class VarDeclaration *vardeclaration;
 	class Command *command;
 	class Value *value;
 	class Exp *exp;
@@ -119,7 +122,10 @@
 };
 
 %type<program> Program;
-%type<explist> ExpList;
+%type<statementlist> StatementList;
+%type<vardeclarationlist> VarDeclarationList;
+%type<funcdefinitionlist> FuncDefinitionList;
+%type<vardeclaration> VarDeclaration;
 
 %type<command> Command;
 %type<ft> Function;
@@ -174,8 +180,14 @@ VarDeclarationList : VarDeclaration {}
 					|VarDeclaration VarDeclarationList {}
 ;
 
-VarDeclaration : Type IDENTIFIER DOT_COMMA {}
-				|Type Assignment {}
+VarDeclaration : VarDeclarationSimple {}
+					| VarDeclarationInit {}
+;
+
+VarDeclarationSimple : Type IDENTIFIER DOT_COMMA {}
+;
+
+VarDeclarationInit : Type Assignment {}
 ;
 
 Type : INT {$$ = $1;}
@@ -196,7 +208,7 @@ Block : BRA_L VarDeclarationList Commands BRA_R {}
 
 Commands : Command {}
 		  |Commands Command {}
-;		
+;
 
 Command : IfElseIf {$$ = $1;}
 		|While {$$ = $1;}
