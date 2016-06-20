@@ -11,6 +11,10 @@ using std::vector;
 class Visitor {
 public:
 	virtual void visit(Commands *) = 0;
+	virtual void visit(VarDeclarationSimple *) = 0;
+	virtual void visit(VarDeclarationInit*) = 0;
+	virtual void visit(FuncDefinition *) = 0;
+	virtual void visit(Block *) = 0;
 	virtual void visit(BinExpPlus *) = 0;
 	virtual void visit(BinExpMinus *) = 0;
 	virtual void visit(BinExpLessThen *) = 0;
@@ -32,8 +36,6 @@ public:
 	virtual void visit(Assignment *) = 0;
 	virtual void visit(If *) = 0;
 	virtual void visit(IfElse *) = 0;
-	virtual void visit(FunctionMain *) = 0;
-	virtual void visit(FunctionDec *) = 0;
 	virtual void visit(While *) = 0;
 };
 
@@ -44,7 +46,15 @@ public:
 	Operations(){};
 	
 	void visit(IntValue *v);
+
+	void visit(VarDeclarationSimple *v);
+
+	void visit(VarDeclarationInit *v);
 	
+	void visit(FunctionDefinition *v);
+
+	void visit(Block *);
+
 	void visit(DoubleValue *v);
 	
 	void visit(IdValue *v);
@@ -52,8 +62,6 @@ public:
 	void visit(Assignment *a);
 
 	void visit(If *i);
-
-	void visit(Commands *c);
 		
 	void visit(IfElse *e);
 

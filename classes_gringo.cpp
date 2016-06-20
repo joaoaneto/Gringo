@@ -1,21 +1,47 @@
 #include "classes_gringo.hpp"
 
-
-//Commands
-ExpList *Commands::getExpList(){
-	return this->expList;
+//VarDeclarationsSimple
+int VarDeclarationsSimple::getType(){
+	return this->type;
 }
 
-Command *Commands::getCommand(){
-	return this->command;
+IdValue *VarDeclarationsSimple::getIdValue(){
+	return this->idValue;
 }
+
+//VarDeclarationsInit
+
+int VarDeclarationsInit::getType(){
+	return this->type;
+}
+
+Assignment *VarDeclarationsInit::getAssigment(){
+	return this->assignment;
+}
+
+//FunctionDefinition
+
+int FunctionDefinition::getType(){
+	return this->type;
+}
+
+IdValue *FunctionDefinition::getIdValue(){
+	return this->idValue; 
+}
+
+Block *FunctionDefinition::getBlock(){
+	return this->block; 
+}
+
+
 //If
+
 Exp *If::getExp(){
 	return this->exp;
 }
 
-ExpList *If::getExpList(){
-	return this->expList;
+Block *If::getBlock(){
+	return this->block;
 }
 
 //IfElse
@@ -23,22 +49,12 @@ Exp *IfElse::getExp(){
 	return this->exp;
 }
 
-ExpList *IfElse::getExpList(){
-	return this->expList;
+Block *IfElse::getBlock1(){
+	return this->block1;
 }
 
-ExpList *IfElse::getExpList_2(){
-	return this->expList_2;
-}
-
-//FunctionMain
-ExpList *FunctionMain::getExpList(){
-	return this->expList;
-}
-
-//FunctionDec
-ExpList *FunctionDec::getExpList(){
-	return this->expList;
+Block *IfElse::getBlock2(){
+	return this->block2;
 }
 
 //While
@@ -46,8 +62,18 @@ Exp *While::getExp(){
 	return this->exp;
 }
 
-ExpList *While::getExpList(){
-	return this->expList;
+Block *While::getBlock(){
+	return this->block;
+}
+
+//Block
+
+Block *VarDeclarationsList::getVarDecList(){
+	return this->varDecList;
+}
+
+Block *Commands::getCommands(){
+	return this->commands;
 }
 
 //BinExpPlus

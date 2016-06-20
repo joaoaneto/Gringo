@@ -575,6 +575,22 @@ void Commands::accept(Visitor *v){
 	v->visit(this); 
 }
 
+void VarDeclarationSimple::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void Block::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void VarDeclarationInit::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void FunctionDefinition::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
 void BinExpPlus::accept(Visitor *v){ 
 	v->visit(this); 
 }

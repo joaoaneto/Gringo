@@ -79,6 +79,7 @@
 
 %union {
 	int int_value;
+	int type;
 	double double_value;
 	char char_value;
 	char *id_value;
@@ -184,24 +185,25 @@ VarDeclaration : VarDeclarationSimple {}
 					| VarDeclarationInit {}
 ;
 
-VarDeclarationSimple : Type IDENTIFIER DOT_COMMA {}
-;
+VarDeclarationSimple : INT IDENTIFIER DOT_COMMA {}
+					  |DOUBLE IDENTIFIER DOT_COMMA {}	
+					  |FLOAT IDENTIFIER DOT_COMMA {}
+;	
 
-VarDeclarationInit : Type Assignment {}
-;
-
-Type : INT {$$ = $1;}
-	 | DOUBLE {$$ = $1;}
-	 | FLOAT {$$ = $1;}
-	 | VOID {$$ = $1;}
+VarDeclarationInit : INT Assignment {}
+					|DOUBLE Assignment {}
+					|FLOAT Assignment {}	
 ;
 
 FuncDefinitionList : FuncDefinition {}
 					|FuncDefinition FuncDefinitionList {}
 ;
 
-FuncDefinition : Type IDENTIFIER PAR_L Parameters PAR_R Block {}
-;
+FuncDefinition : INT IDENTIFIER PAR_L Parameters PAR_R Block {}
+				|DOUBLE IDENTIFIER PAR_L Parameters PAR_R Block {}
+				|FLOAT IDENTIFIER PAR_L Parameters PAR_R Block {}
+				|VOID IDENTIFIER PAR_L Parameters PAR_R Block {}
+;	
 
 Block : BRA_L VarDeclarationList Commands BRA_R {}
 ;

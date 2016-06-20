@@ -34,10 +34,10 @@
 
 "main"		{ return MAIN;}
 "char"		{ return CHAR; }
-"int"		{ return INT; }
-"float"		{ return FLOAT; }
-"double"	{ return DOUBLE; }
-"void"		{ return VOID; }
+"int"		{ yylval.type = 1;return INT;}
+"float"		{ yylval.type = 2;return FLOAT; }
+"double"	{ yylval.type = 3;return DOUBLE; }
+"void"		{ yylval.type = 0;return VOID; }
 "unsigned"	{ return UNSIGNED; }
 "const"		{ return CONST; }
 "static" 	{ return STATIC; }
