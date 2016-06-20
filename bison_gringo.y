@@ -91,6 +91,7 @@
 	class Command *command;
 	class Value *value;
 	class Exp *exp;
+	class Block *block;
 	class BinExpEqualDiff *beed;
 	class BinExpLessGreater *belg;
 	class BinExpPlusMinus *bepm;
@@ -114,9 +115,6 @@
 	class Assignment *assignment;
 	class IfElseIf *ifelseif;
 	class If *ift;
-	class Function *ft;
-	class FunctionDec *fdt;
-	class FunctionMain *fmt;
 	class Commands *commandst;
 	class IfElse *ifelset;
 	class While *wwhile;
@@ -127,11 +125,7 @@
 %type<vardeclarationlist> VarDeclarationList;
 %type<funcdefinitionlist> FuncDefinitionList;
 %type<vardeclaration> VarDeclaration;
-
 %type<command> Command;
-%type<ft> Function;
-%type<fdt> FunctionDec;
-%type<fmt> FunctionMain;
 %type<char_value> CHAR;
 %type<int_value> LITERAL_INT;
 %type<double_value> FLOAT;
@@ -139,6 +133,7 @@
 %type<id_value> IDENTIFIER;
 %type<value> Value;
 %type<exp> Exp;
+%type<block> Block;
 %type<belg> BinExpLessGreater;
 %type<bepm> BinExpPlusMinus;
 %type<beed> BinExpEqualDiff;
@@ -167,13 +162,13 @@
 %type<wwhile> While;
 %%
 
-Program : StatmentList {
+Program : StatementList {
 		$$ = $1;
 		Context::getContext().setProgram($$);
 	}
 ;
 
-StatmentList : VarDeclarationList {$$ = $1;}
+StatementList : VarDeclarationList {$$ = $1;}
 		  	  |FuncDefinitionList {$$ = $1;}		
 ;
 
@@ -199,10 +194,10 @@ FuncDefinitionList : FuncDefinition {}
 					|FuncDefinition FuncDefinitionList {}
 ;
 
-FuncDefinition : INT IDENTIFIER PAR_L Parameters PAR_R Block {}
-				|DOUBLE IDENTIFIER PAR_L Parameters PAR_R Block {}
-				|FLOAT IDENTIFIER PAR_L Parameters PAR_R Block {}
-				|VOID IDENTIFIER PAR_L Parameters PAR_R Block {}
+FuncDefinition : INT IDENTIFIER PAR_L PAR_R Block {}
+				|DOUBLE IDENTIFIER PAR_L PAR_R Block {}
+				|FLOAT IDENTIFIER PAR_L PAR_R Block {}
+				|VOID IDENTIFIER PAR_L PAR_R Block {}
 ;	
 
 Block : BRA_L VarDeclarationList Commands BRA_R {}
