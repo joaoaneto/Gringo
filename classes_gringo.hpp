@@ -24,15 +24,14 @@ class FuncDefinitionList : public StatementList {};
 
 class FuncDefinition;
 
-class VarDeclaration; 
+class Block;
 
-class NameList : public VarDeclaration{};
 //class ExpList : public Program {};
+class Commands : public Block {};
+
 class Command : public Commands {};
 
 class IfElseIf : public Command{};
-
-class Commands : public Block {};
 
 class Exp : public Command {};
 
@@ -85,6 +84,9 @@ public:
 	void accept();
 };
 
+//class Abstrata NameList
+class NameList : public VarDeclaration {};
+
 class Name : public NameList{
 private:
 	IdValue *idValue;
@@ -126,14 +128,14 @@ private:
 	IdValue *idValue;
 	Block *block;
 public:
-	FunctionDefinition(int t, IdValue *id, Block *b) : type(t), idValue(id), block(b){}
+	FuncDefinition(int t, IdValue *id, Block *b) : type(t), idValue(id), block(b){}
 	int getType();
 	IdValue *getIdValue();
 	Block *getBlock();
 	void accept(Visitor *);
 };
 
-class Block : public FunctionDefinition, public If, public IfElse, public While{
+class Block : public FuncDefinition, public If, public IfElse, public While{
 private:
 	VarDeclarationList *varDecList;
 	Commands *commands;

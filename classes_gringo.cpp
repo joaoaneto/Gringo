@@ -1,41 +1,46 @@
 #include "classes_gringo.hpp"
 
-//VarDeclarationsSimple
-int VarDeclarationsSimple::getType(){
-	return this->type;
+//Parameter
+IdValue *Parameter::getIdValue(){
+	return idValue;
 }
 
-IdValue *VarDeclarationsSimple::getIdValue(){
-	return this->idValue;
+int Parameter::getType(){
+	return type;
 }
 
-//VarDeclarationsInit
-
-int VarDeclarationsInit::getType(){
-	return this->type;
+//VarDeclaration
+int VarDeclaration::getType(){
+	return type;
 }
 
-Assignment *VarDeclarationsInit::getAssigment(){
-	return this->assignment;
+NameList *VarDeclaration::getNameList(){
+	return nameList;
+}
+
+//Name
+idValue *Name::getValue(){
+	return idValue;
+}
+
+Assignment *Name::getAssignment(){
+	return assignment;
 }
 
 //FunctionDefinition
-
-int FunctionDefinition::getType(){
+int FuncDefinition::getType(){
 	return this->type;
 }
 
-IdValue *FunctionDefinition::getIdValue(){
+IdValue *FuncDefinition::getIdValue(){
 	return this->idValue; 
 }
 
-Block *FunctionDefinition::getBlock(){
+Block *FuncDefinition::getBlock(){
 	return this->block; 
 }
 
-
 //If
-
 Exp *If::getExp(){
 	return this->exp;
 }
@@ -67,12 +72,11 @@ Block *While::getBlock(){
 }
 
 //Block
-
-Block *VarDeclarationsList::getVarDecList(){
+VarDeclarationList *Block::getVarDecList(){
 	return this->varDecList;
 }
 
-Block *Commands::getCommands(){
+Commands *Block::getCommands(){
 	return this->commands;
 }
 
