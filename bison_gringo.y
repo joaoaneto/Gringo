@@ -124,6 +124,7 @@
 
 %type<program> Program;
 %type<parList> ParameterList;
+%type<int_value> Type;
 %type<statementlist> StatementList;
 %type<vardeclarationlist> VarDeclarationList;
 %type<funcdefinitionlist> FuncDefinitionList;

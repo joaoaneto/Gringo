@@ -14,32 +14,37 @@ public:
 
 class Program : public Node {};
 
+class Type : public Node{};
+
 class StatementList : public Program {};
 
 class VarDeclarationList : public StatementList {};
 
 class FuncDefinitionList : public StatementList {};
 
-class FuncDefinition : public FuncDefinitionList{};
+class FuncDefinition;
 
-class VarDeclaration : public VarDeclarationList {};
+class VarDeclaration; 
 
+class NameList : public VarDeclaration{};
 //class ExpList : public Program {};
 class Command : public Commands {};
 
 class IfElseIf : public Command{};
 
-class Commands : public Block{};
+class Commands : public Block {};
 
 class Exp : public Command {};
 
-class BinExpEqualDiff : public Exp {};
+class LValue : public Exp {};
 
-class BinExpLessGreater : public Exp {};
+class BinExpEqualDiff : public LValue {};
 
-class BinExpPlusMinus : public Exp {};
+class BinExpLessGreater : public LValue {};
 
-class Factor: public Exp {};
+class BinExpPlusMinus : public LValue {};
+
+class Factor: public LValue {};
 
 class UnExp: public Factor {};
 
@@ -69,6 +74,29 @@ private:
 	Type type;
 };
 
+class VarDeclaration : public VarDeclarationList {
+private:
+	int type;
+	NameList *nameList;
+public:
+	VarDeclaration(int t, NameList *n) : type(t), nameList(n){}
+	int getType();
+	NameList *getNameList();	
+	void accept();
+};
+
+class Name : public NameList{
+private:
+	IdValue *idValue;
+	Assignment *assignment;
+public:
+	Name(IdValue *id, Assignment *a) : idValue(id), assignment(a){}
+	IdValue *getValue();
+	Assignment getAssignment();
+	void accept(Visitor *);
+};
+
+/*
 class VarDeclarationSimple : public VarDeclaration{
 private:	
 	int type;
@@ -90,6 +118,7 @@ public:
 	Assignment *getAssigment();
 	void accept(Visitor *);	
 };
+*/
 
 class FuncDefinition : public FuncDefinitionList {
 private:
@@ -153,88 +182,88 @@ public:
 
 class BinExpPlus: public BinExpPlusMinus {
 private:
-	Exp *exp;
+	LValue *lValue;
 	Factor *factor;
 
 public:
-	BinExpPlus(Exp *e, class Factor *f): exp(e), factor(f){} //construtor
-	Exp *getExp();
+	BinExpPlus(LValue *lv, Factor *f): lValue(lv), factor(f){} //construtor
+	LValue *getLValue();
 	Factor *getFactor();
 	void accept(Visitor *);
 };
 
 class BinExpMinus: public BinExpPlusMinus {
 private:
-	Exp *exp;
+	LValue *lValue;
 	Factor *factor;
 public:
-	BinExpMinus(Exp *e,  class Factor *f): exp(e), factor(f){} //construtor
-	Exp *getExp ();
+	BinExpMinus(LValue *lv, Factor *f): lValue(lv), factor(f){} //construtor
+	LValue *getLValue();
 	Factor *getFactor();
 	void accept(Visitor *);
 };
 
 class BinExpLessThen : public BinExpLessGreater {
 private:
-	Exp *exp;
+	LValue *lValue;
 	Factor *factor;
 public:
-	BinExpLessThen(Exp *e, class Factor *f): exp(e), factor(f){}
-	Exp *getExp();
+	BinExpLessThen(LValue *lv, Factor *f): lValue(lv), factor(f){}
+	LValue *getLValue();
 	Factor *getFactor();
 	void accept(Visitor *v);
 };
 
 class BinExpLessEqualThen : public BinExpLessGreater {
 private:
-	Exp *exp;
+	LValue *lValue;
 	Factor *factor;
 public:
-	BinExpLessEqualThen(Exp *e, class Factor *f): exp(e), factor(f){}
-	Exp *getExp();
+	BinExpLessEqualThen(LValue *lv, Factor *f): lvalue(lv) , factor(f){}
+	LValue *getLValue();
 	Factor *getFactor();
 	void accept(Visitor *v);
 };
 
 class BinExpGreaterThen : public BinExpLessGreater {
 private:
-	Exp *exp;
+	LValue *lValue;
 	Factor *factor;
 public:
-	BinExpGreaterThen(Exp *e, class Factor *f): exp(e), factor(f){}
-	Exp *getExp();
+	BinExpGreaterThen(LValue *lv, Factor *f): lValue(lv), factor(f){}
+	LValue *getLValue();
 	Factor *getFactor();
 	void accept(Visitor *v);
 };
 
 class BinExpGreaterEqualThen : public BinExpLessGreater {
 private:
-	Exp *exp;
+	LValue *lValue;
 	Factor *factor;
 public:
-	BinExpGreaterEqualThen(Exp *e, class Factor *f): exp(e), factor(f){}
-	Exp *getExp();
+	BinExpGreaterEqualThen(LValue *lv, Factor *f): lValue(lv), factor(f){}
+	LValue *getLValue();
 	Factor *getFactor();
 	void accept(Visitor *v);
 };
 
 class BinExpEqual : public BinExpEqualDiff {
 private:
-	Exp *exp;
+	LValue *lValue;
 	Factor *factor;
 public:
-	BinExpEqual(Exp *e, class Factor *f): exp(e), factor(f){}
-	Exp *getExp();
+	BinExpEqual(LValue *lv, Factor *f): lValue(lv), factor(f){}
+	LValue *getLValue();
 	Factor *getFactor();
 	void accept(Visitor *v);
 };
 
 class BinExpDiff : public BinExpEqualDiff {
 private:
-	Exp *exp;
+	LValue *lValue;
 	Factor *factor;
 public:
-	BinExpDiff(Exp *e, class Factor *f): exp(e), factor(f){}
+	BinExpDiff(LValue *lv, class Factor *f): lvalue(lv), factor(f){}
 	Exp *getExp();
 	Factor *getFactor();
 	void accept(Visitor *v);
