@@ -51,7 +51,7 @@ public:
 
 	void visit(VarDeclarationInit *v);
 	
-	void visit(FunctionDefinition *v);
+	void visit(FuncDefinition *v);
 
 	void visit(Block *);
 
@@ -94,10 +94,6 @@ public:
 	void visit(UnExpLog *uel);
 
 	void visit(UnExpExp *uee);
-
-	void visit(FunctionMain *fm);
-
-	void visit(FunctionDec *fd);
 
 	void visit(LparExpRpar *lpr);
 };

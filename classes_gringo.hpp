@@ -20,15 +20,16 @@ class VarDeclarationList : public StatementList {};
 
 class FuncDefinitionList : public StatementList {};
 
+class FuncDefinition : public FuncDefinitionList{};
+
 class VarDeclaration : public VarDeclarationList {};
 
 //class ExpList : public Program {};
-
-class Commands : public Block{};
-
 class Command : public Commands {};
 
 class IfElseIf : public Command{};
+
+class Commands : public Block{};
 
 class Exp : public Command {};
 
@@ -41,6 +42,19 @@ class BinExpPlusMinus : public Exp {};
 class Factor: public Exp {};
 
 class UnExp: public Factor {};
+
+class ParameterList : public FuncDefinition{};
+
+class Parameter : public ParameterList{
+private:
+	int type;
+	IdValue *idValue;
+public:
+	Parameter(IdValue *id, int t) : idValue(id), type(t){}
+	IdValue *getIdValue();
+	int getType();
+	void accept(Visitor *);
+};
 
 class Value : public UnExp {
 public:
@@ -335,6 +349,14 @@ public:
 	void accept(Visitor *);
 }; 
 
+class Scope {
+private:
+	map<string, Value*> Symbol_table_;
+	Scope *father_;
+public:
+	Scope *getFather();
+	Value *getSymbol(string);
+};
 
 class Context {
 private:

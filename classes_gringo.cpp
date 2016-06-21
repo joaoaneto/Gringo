@@ -221,6 +221,25 @@ IdValue	*Assignment::getIdValue(){
 	return this->idValue; 
 }
 
+//Scope
+/*
+Scope *Scope::getFather(){
+	return this->father_; 
+}
+
+
+Value *Scope::getSymbol(string name){
+	map<stringm Valor*>::iterator it;
+	it = symbolTable_.find(name);
+		if(it == symbolTable_.end()){
+			if(father_) return father_->getSymbol(name);
+			else return NULL;
+		}else{
+			return it->second();	
+		}
+}			
+*/
+
 //Context
 Context &Context::getContext(){
 		if (instance == NULL){ 

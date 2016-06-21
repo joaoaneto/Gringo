@@ -88,6 +88,7 @@
 	class VarDeclarationList *vardeclarationlist;
 	class FuncDefinitionList *funcdefinitionlist;
 	class VarDeclaration *vardeclaration;
+	class ParameterList *parList;
 	class Command *command;
 	class Value *value;
 	class Exp *exp;
@@ -121,6 +122,7 @@
 };
 
 %type<program> Program;
+%type<parList> ParameterList;
 %type<statementlist> StatementList;
 %type<vardeclarationlist> VarDeclarationList;
 %type<funcdefinitionlist> FuncDefinitionList;
@@ -194,11 +196,20 @@ FuncDefinitionList : FuncDefinition {}
 					|FuncDefinition FuncDefinitionList {}
 ;
 
-FuncDefinition : INT IDENTIFIER PAR_L PAR_R Block {}
-				|DOUBLE IDENTIFIER PAR_L PAR_R Block {}
-				|FLOAT IDENTIFIER PAR_L PAR_R Block {}
-				|VOID IDENTIFIER PAR_L PAR_R Block {}
+FuncDefinition : INT IDENTIFIER PAR_L ParameterList PAR_R Block {}
+				|DOUBLE IDENTIFIER PAR_L ParameterList PAR_R Block {}
+				|FLOAT IDENTIFIER PAR_L ParameterList PAR_R Block {}
+				|VOID IDENTIFIER PAR_L ParameterList PAR_R Block {}
 ;	
+
+ParameterList : Parameter{}
+				|ParameterList COMMA Parameter {}
+;
+
+Parameter : INT IDENTIFIER{}
+		   |DOUBLE IDENTIFIER{}
+		   |FLOAT IDENTIFIER{}
+;	 
 
 Block : BRA_L VarDeclarationList Commands BRA_R {}
 ;
