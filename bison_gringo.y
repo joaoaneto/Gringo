@@ -119,6 +119,7 @@
 	class Commands *commandst;
 	class IfElse *ifelset;
 	class While *wwhile;
+	class LValue *lvalue;
 };
 
 %type<program> Program;
@@ -162,6 +163,7 @@
 %type<commandst> Commands;
 %type<ifelset> IfElse;
 %type<wwhile> While;
+%type<lvalue> LValue;
 %%
 
 Program : StatementList {
@@ -223,26 +225,6 @@ Command : IfElseIf {$$ = $1;}
 		|Exp DOT_COMMA {$$ = $1;}
 ;
 
-Exp: BinExpEqualDiff { $$ = $1; }
-	|BinExpLessGreater { $$ = $1; }
-	|BinExpPlusMinus { $$ = $1; }
-	|Factor {$$ = $1;}
-;
-
-BinExpEqualDiff: BinExpEqual { $$ = $1; }
-				|BinExpDiff { $$ = $1; }
-;
-
-BinExpLessGreater: BinExpLessThen {$$ = $1;}
-				|BinExpLessEqualThen {$$ = $1;}
-				|BinExpGreaterThen {$$ = $1;}
-				|BinExpGreaterEqualThen {$$ = $1;}
-;
-
-BinExpPlusMinus: BinExpPlus {$$ = $1;}
-				|BinExpMinus {$$ = $1;}
-;
-
 IfElseIf : If {$$ = $1;}
 		|IfElse {$$ = $1;}
 ;
@@ -262,42 +244,66 @@ While : WHILE PAR_L Exp PAR_R Block {
 	}
 ;
 
-BinExpPlus : Exp ADD Factor {
+Exp: LValue {$$ = $1;}
+	| Assignment {$$ = $1;}
+;
+
+LValue: BinExpEqualDiff { $$ = $1; }
+	|BinExpLessGreater { $$ = $1; }
+	|BinExpPlusMinus { $$ = $1; }
+	|Factor {$$ = $1;}
+;	
+
+BinExpEqualDiff: BinExpEqual { $$ = $1; }
+				|BinExpDiff { $$ = $1; }
+;
+
+BinExpLessGreater: BinExpLessThen {$$ = $1;}
+				|BinExpLessEqualThen {$$ = $1;}
+				|BinExpGreaterThen {$$ = $1;}
+				|BinExpGreaterEqualThen {$$ = $1;}
+;
+
+BinExpPlusMinus: BinExpPlus {$$ = $1;}
+				|BinExpMinus {$$ = $1;}
+;
+
+BinExpPlus : LValue ADD Factor {
 		$$ = new BinExpPlus($1,$3);
 	}
 ;  
 
-BinExpMinus : Exp SUBTRACT Factor {
+BinExpMinus : LValue SUBTRACT Factor {
 		$$ = new BinExpMinus($1, $3);
 	}
 ;
 
-BinExpLessThen : Exp LESS_THEN Factor {
+BinExpLessThen : LValue LESS_THEN Factor {
 		$$ = new BinExpLessThen($1, $3);
 	} 
 ;
 
-BinExpLessEqualThen : Exp LESS_EQUAL_THEN Factor {
+BinExpLessEqualThen : LValue LESS_EQUAL_THEN Factor {
 		$$ = new BinExpLessEqualThen($1, $3);
 	} 
 ;
 
-BinExpGreaterThen : Exp GREATER_THEN Factor {
+BinExpGreaterThen : LValue GREATER_THEN Factor {
 		$$ = new BinExpGreaterThen($1, $3);
 	} 
 ;
 
-BinExpGreaterEqualThen : Exp GREATER_EQUAL_THEN Factor {
+BinExpGreaterEqualThen : LValue GREATER_EQUAL_THEN Factor {
 		$$ = new BinExpGreaterEqualThen($1, $3);
 	} 
 ;
 
-BinExpEqual: Exp DOUBLE_EQUAL Factor {
+BinExpEqual: LValue DOUBLE_EQUAL Factor {
 		$$ = new BinExpEqual($1, $3);
 	}
 ;
 
-BinExpDiff: Exp DIFFERENT Factor {
+BinExpDiff: LValue DIFFERENT Factor {
 		$$ = new BinExpDiff($1, $3);
 	}
 ;
@@ -319,10 +325,10 @@ FactorDiv : Factor DIV UnExp {
 
 UnExp : UnExpPlus { $$ = $1; }
         |UnExpMinus { $$ = $1; }
-		|UnExpLog { $$ = $1; }
-		|UnExpExp { $$ = $1; }
-		|LparExpRpar { $$ = $1; }
-		|Value { $$ = $1; }
+				|UnExpLog { $$ = $1; }
+				|UnExpExp { $$ = $1; }
+				|LparExpRpar { $$ = $1; }
+				|Value { $$ = $1; }
 ;
 
 UnExpPlus : ADD Value{
