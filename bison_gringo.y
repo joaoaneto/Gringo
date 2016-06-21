@@ -172,45 +172,43 @@ Program : StatementList {
 	}
 ;
 
+Type : INT {}
+	  |DOUBLE {}
+	  |FLOAT {}
+	  |VOID{}	
+;
+
 StatementList : VarDeclarationList {$$ = $1;}
 		  	  |FuncDefinitionList {$$ = $1;}		
 ;
 
 VarDeclarationList : VarDeclaration {}
-					|VarDeclaration VarDeclarationList {}
+					|VarDeclarationList VarDeclaration {}
 ;
 
-VarDeclaration : VarDeclarationSimple {}
-					| VarDeclarationInit {}
+VarDeclaration : Type NameList DOT_COMMA {}
 ;
 
-VarDeclarationSimple : INT IDENTIFIER DOT_COMMA {}
-					  |DOUBLE IDENTIFIER DOT_COMMA {}	
-					  |FLOAT IDENTIFIER DOT_COMMA {}
-;	
+NameList : Name {}
+		  |NameList COMMA Name {}
+;
 
-VarDeclarationInit : INT Assignment {}
-					|DOUBLE Assignment {}
-					|FLOAT Assignment {}	
+Name : IDENTIFIER {}
+	  |Assignment {}	
 ;
 
 FuncDefinitionList : FuncDefinition {}
 					|FuncDefinition FuncDefinitionList {}
 ;
 
-FuncDefinition : INT IDENTIFIER PAR_L ParameterList PAR_R Block {}
-				|DOUBLE IDENTIFIER PAR_L ParameterList PAR_R Block {}
-				|FLOAT IDENTIFIER PAR_L ParameterList PAR_R Block {}
-				|VOID IDENTIFIER PAR_L ParameterList PAR_R Block {}
+FuncDefinition : Type IDENTIFIER PAR_L ParameterList PAR_R Block {}
 ;	
 
 ParameterList : Parameter{}
 				|ParameterList COMMA Parameter {}
 ;
 
-Parameter : INT IDENTIFIER{}
-		   |DOUBLE IDENTIFIER{}
-		   |FLOAT IDENTIFIER{}
+Parameter : Type IDENTIFIER{}
 ;	 
 
 Block : BRA_L VarDeclarationList Commands BRA_R {}
