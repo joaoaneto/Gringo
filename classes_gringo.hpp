@@ -26,7 +26,8 @@ class FuncDefinition;
 
 class Block;
 
-//class ExpList : public Program {};
+class NameList;
+
 class Commands : public Block {};
 
 class Command : public Commands {};
@@ -49,16 +50,6 @@ class UnExp: public Factor {};
 
 class ParameterList : public FuncDefinition{};
 
-class Parameter : public ParameterList{
-private:
-	int type;
-	IdValue *idValue;
-public:
-	Parameter(IdValue *id, int t) : idValue(id), type(t){}
-	IdValue *getIdValue();
-	int getType();
-	void accept(Visitor *);
-};
 
 class Value : public UnExp {
 public:
@@ -73,6 +64,29 @@ private:
 	Type type;
 };
 
+class IdValue: public Value {
+private:
+	string idValue;
+public:
+	IdValue(string idvalue):idValue(idvalue){} //construtor
+	string getValue();
+	virtual Type getType();
+	void accept(Visitor *);
+};
+
+class Parameter : public ParameterList{
+private:
+	int type;
+	IdValue *idValue;
+public:
+	Parameter(IdValue *id, int t) : idValue(id), type(t){}
+	IdValue *getIdValue();
+	int getType();
+	void accept(Visitor *);
+};
+
+class NameList : public VarDeclaration {};
+
 class VarDeclaration : public VarDeclarationList {
 private:
 	int type;
@@ -86,6 +100,17 @@ public:
 
 //class Abstrata NameList
 class NameList : public VarDeclaration {};
+
+class Assignment : public Command {
+private:
+	Exp *exp;
+	IdValue *idValue;
+public:
+	Assignment(IdValue *id, Exp *e) : idValue(id), exp(e){} //construtor
+	Exp *getExp();
+	IdValue	*getIdValue();
+	void accept(Visitor *);
+}; 
 
 class Name : public NameList{
 private:
@@ -176,7 +201,7 @@ private:
 	Exp *exp;
 	Block *block;
 public:
-	While(Exp *e, ExpList *eList) : exp(e), expList(eList){}
+	While(Exp *e, Block *b) : exp(e), block(b){}
 	Exp *getExp();
 	Block *getBlock();
 	void accept(Visitor *);
@@ -221,7 +246,7 @@ private:
 	LValue *lValue;
 	Factor *factor;
 public:
-	BinExpLessEqualThen(LValue *lv, Factor *f): lvalue(lv) , factor(f){}
+	BinExpLessEqualThen(LValue *lv, Factor *f): lValue(lv) , factor(f){}
 	LValue *getLValue();
 	Factor *getFactor();
 	void accept(Visitor *v);
@@ -265,7 +290,7 @@ private:
 	LValue *lValue;
 	Factor *factor;
 public:
-	BinExpDiff(LValue *lv, class Factor *f): lvalue(lv), factor(f){}
+	BinExpDiff(LValue *lv, class Factor *f): lValue(lv), factor(f){}
 	Exp *getExp();
 	Factor *getFactor();
 	void accept(Visitor *v);
@@ -349,17 +374,6 @@ public:
 	void accept(Visitor *v);
 };
 
-
-class IdValue: public Value {
-private:
-	string idValue;
-public:
-	IdValue(string idvalue):idValue(idvalue){} //construtor
-	string getValue();
-	virtual Type getType();
-	void accept(Visitor *);
-};
-
 class LparExpRpar : public UnExp {
 private:
 	Exp *exp;
@@ -368,17 +382,6 @@ public:
 	Exp *getExp();
 	void accept(Visitor *);
 };
-
-class Assignment : public Command {
-private:
-	Exp *exp;
-	IdValue *idValue;
-public:
-	Assignment(IdValue *id, Exp *e) : idValue(id), exp(e){} //construtor
-	Exp *getExp();
-	IdValue	*getIdValue();
-	void accept(Visitor *);
-}; 
 
 class Scope {
 private:

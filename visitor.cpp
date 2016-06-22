@@ -559,15 +559,8 @@ void Operations::visit(LparExpRpar *lpr){
 	lpr->getExp()->accept(this);
 }
 
-void Operations::visit(FunctionDec *fd){
-	fd->getExpList()->accept(this);
-	printf("Entrou na birosca do visit\n\n");
-}
 
-void Operations::visit(FunctionMain *fm){
-	fm->getExpList()->accept(this);
-	printf("Entrou na birosca do visit da main\n\n");
-}
+void FuncDefinition::visit(FuncDefinition *fdef){}
 
 //Accepts
 
@@ -575,7 +568,7 @@ void Commands::accept(Visitor *v){
 	v->visit(this); 
 }
 
-void VarDeclarationSimple::accept(Visitor *v){ 
+void VarDeclaration::accept(Visitor *v){ 
 	v->visit(this); 
 }
 
@@ -583,12 +576,16 @@ void Block::accept(Visitor *v){
 	v->visit(this); 
 }
 
-void VarDeclarationInit::accept(Visitor *v){ 
+void FuncDefinition::accept(Visitor *v){ 
 	v->visit(this); 
 }
 
-void FunctionDefinition::accept(Visitor *v){ 
+void Parameter::accept(Visitor *v){ 
 	v->visit(this); 
+}
+
+void Name::accept(Visitor *v){
+	v->visit(this);
 }
 
 void BinExpPlus::accept(Visitor *v){ 
@@ -672,14 +669,6 @@ void If::accept(Visitor *v){
 }
 
 void IfElse::accept(Visitor *v){
-	v->visit(this);
-}
-
-void FunctionDec::accept(Visitor *v){
-	v->visit(this);
-}
-
-void FunctionMain::accept(Visitor *v){
 	v->visit(this);
 }
 

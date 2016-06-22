@@ -11,9 +11,11 @@ using std::vector;
 class Visitor {
 public:
 	virtual void visit(Commands *) = 0;
-	virtual void visit(VarDeclarationSimple *) = 0;
-	virtual void visit(VarDeclarationInit*) = 0;
+	virtual void visit(VarDeclaration *) = 0;
 	virtual void visit(FuncDefinition *) = 0;
+	virtual void visit(Parameter *) = 0;
+	virtual void visit(NameList *) = 0;
+	virtual void visit(Name *) = 0;
 	virtual void visit(Block *) = 0;
 	virtual void visit(BinExpPlus *) = 0;
 	virtual void visit(BinExpMinus *) = 0;
@@ -47,13 +49,15 @@ public:
 	
 	void visit(IntValue *v);
 
-	void visit(VarDeclarationSimple *v);
-
-	void visit(VarDeclarationInit *v);
+	void visit(VarDeclaration *vd);
 	
-	void visit(FuncDefinition *v);
+	void visit(FuncDefinition *fdef);
 
-	void visit(Block *);
+	void visit(Parameter *par);
+
+	void visit(Name *n);
+
+	void visit(Block *b);
 
 	void visit(DoubleValue *v);
 	
