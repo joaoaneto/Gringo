@@ -26,103 +26,39 @@ class FuncDefinition;
 
 class Block;
 
+class VarDeclaration;
+
 class NameList;
 
-class Commands : public Block {};
+class IdValue;
 
-class Command : public Commands {};
+class Assignment;
 
-class IfElseIf : public Command{};
+//class Abstrata NameList
 
-class Exp : public Command {};
-
-class LValue : public Exp {};
-
-class BinExpEqualDiff : public LValue {};
-
-class BinExpLessGreater : public LValue {};
-
-class BinExpPlusMinus : public LValue {};
-
-class Factor: public LValue {};
-
-class UnExp: public Factor {};
-
-class ParameterList : public FuncDefinition{};
-
-
-class Value : public UnExp {
-public:
-	enum Type {
-		INT,
-		DOUBLE,
-		ID_VALUE
-	};
-	
-	virtual Type getType() = 0;		 
+class Name : public NameList {
 private:
-	Type type;
-};
-
-class IdValue: public Value {
-private:
-	string idValue;
-public:
-	IdValue(string idvalue):idValue(idvalue){} //construtor
-	string getValue();
-	virtual Type getType();
-	void accept(Visitor *);
-};
-
-class Parameter : public ParameterList{
-private:
-	int type;
 	IdValue *idValue;
+	Assignment *assignment;
 public:
-	Parameter(IdValue *id, int t) : idValue(id), type(t){}
-	IdValue *getIdValue();
-	int getType();
+	Name(class IdValue *id, class Assignment *a) : idValue(id), assignment(a){}
+	IdValue *getValue();
+	Assignment getAssignment();
 	void accept(Visitor *);
 };
-
-class NameList : public VarDeclaration {};
 
 class VarDeclaration : public VarDeclarationList {
 private:
 	int type;
 	NameList *nameList;
 public:
-	VarDeclaration(int t, NameList *n) : type(t), nameList(n){}
+	VarDeclaration(int t, class NameList *n) : type(t), nameList(n){}
 	int getType();
 	NameList *getNameList();	
 	void accept();
 };
 
-//class Abstrata NameList
 class NameList : public VarDeclaration {};
-
-class Assignment : public Command {
-private:
-	Exp *exp;
-	IdValue *idValue;
-public:
-	Assignment(IdValue *id, Exp *e) : idValue(id), exp(e){} //construtor
-	Exp *getExp();
-	IdValue	*getIdValue();
-	void accept(Visitor *);
-}; 
-
-class Name : public NameList{
-private:
-	IdValue *idValue;
-	Assignment *assignment;
-public:
-	Name(IdValue *id, Assignment *a) : idValue(id), assignment(a){}
-	IdValue *getValue();
-	Assignment getAssignment();
-	void accept(Visitor *);
-};
-
 /*
 class VarDeclarationSimple : public VarDeclaration{
 private:	
@@ -158,18 +94,9 @@ public:
 	IdValue *getIdValue();
 	Block *getBlock();
 	void accept(Visitor *);
-};
-
-class Block : public FuncDefinition, public If, public IfElse, public While{
-private:
-	VarDeclarationList *varDecList;
-	Commands *commands;
-public:
-	Block(VarDeclarationList *varList, Commands *comms) : varDecList(varList), commands(comms){}
-	VarDeclarationList *getVarDecList();
-	Commands *getCommands();
-	void accept(Visitor *);
 };  
+
+class ParameterList : public FuncDefinition{};
 
 class If: public IfElseIf{
 private:
@@ -206,6 +133,82 @@ public:
 	Block *getBlock();
 	void accept(Visitor *);
 };
+
+class Block : public FuncDefinition, public If, public IfElse, public While {
+private:
+	VarDeclarationList *varDecList;
+	Commands *commands;
+public:
+	Block(VarDeclarationList *varList, Commands *comms) : varDecList(varList), commands(comms){}
+	VarDeclarationList *getVarDecList();
+	Commands *getCommands();
+	void accept(Visitor *);
+};
+
+class Commands : public Block {};
+
+class Command : public Commands {};
+
+class IfElseIf : public Command{};
+
+class Exp : public Command {};
+
+class LValue : public Exp {};
+
+class BinExpEqualDiff : public LValue {};
+
+class BinExpLessGreater : public LValue {};
+
+class BinExpPlusMinus : public LValue {};
+
+class Factor: public LValue {};
+
+class UnExp: public Factor {};
+
+class Value : public UnExp {
+public:
+	enum Type {
+		INT,
+		DOUBLE,
+		ID_VALUE
+	};
+	
+	virtual Type getType() = 0;		 
+private:
+	Type type;
+};
+
+class IdValue: public Value {
+private:
+	string idValue;
+public:
+	IdValue(string idvalue):idValue(idvalue){} //construtor
+	string getValue();
+	virtual Type getType();
+	void accept(Visitor *);
+};
+
+class Parameter : public ParameterList{
+private:
+	int type;
+	IdValue *idValue;
+public:
+	Parameter(IdValue *id, int t) : idValue(id), type(t){}
+	IdValue *getIdValue();
+	int getType();
+	void accept(Visitor *);
+};
+
+class Assignment : public Command {
+private:
+	Exp *exp;
+	IdValue *idValue;
+public:
+	Assignment(IdValue *id, Exp *e) : idValue(id), exp(e){} //construtor
+	Exp *getExp();
+	IdValue	*getIdValue();
+	void accept(Visitor *);
+}; 
 
 class BinExpPlus: public BinExpPlusMinus {
 private:
