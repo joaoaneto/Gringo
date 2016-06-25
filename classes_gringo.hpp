@@ -24,10 +24,12 @@ class VarDeclarationList : public StatementList {};
 
 class FuncDefinitionList : public StatementList {};
 
+class Commands;
+
 class Block : public Node {
 private:
 	VarDeclarationList *varDecList;
-	class Commands *commands;
+	Commands *commands;
 public:
 	Block(VarDeclarationList *varList, Commands *comms) : varDecList(varList), commands(comms){}
 	VarDeclarationList *getVarDecList();
@@ -177,7 +179,7 @@ public:
 	void accept(Visitor *);
 };
 
-class Assignment : public Command {
+class Assignment : public Exp{
 private:
 	Exp *exp;
 	IdValue *idValue;

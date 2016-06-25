@@ -10,20 +10,14 @@ void Operations::visit(DoubleValue *v){
 }
 
 void Operations::visit(If *i){
-	i->If::getExp()->accept(this);
+	i->If::getBlock()->accept(this);
 
 	IntValue *v1 = static_cast<IntValue *>(stack_.back());
 
 	if(v1->getValue()){
-		i->If::getExpList()->accept(this);
+		i->If::getBlock()->accept(this);
 	}
 
-}
-
-
-void Operations::visit(Commands *c){
-	c->Commands::getExpList()->accept(this);
-	c->Commands::getCommand()->accept(this);	
 }
 
 void Operations::visit(IfElse *e){
@@ -559,19 +553,18 @@ void Operations::visit(LparExpRpar *lpr){
 	lpr->getExp()->accept(this);
 }
 
-/*
-void FuncDefinition::visit(FuncDefinition *fdef){
-	fdef->FuncDefinition::
-}
-*/
+void Operations::visit(VarDeclaration *vd){}
+
+void Operations::visit(FuncDefinition *fdef){}
+
+void Operations::visit(Parameter *par){}
+
+void Operations::visit(Name *n){}
+
+void Operations::visit(Block *b){}
+
 
 //Accepts
-
-/*
-void Commands::accept(Visitor *v){ 
-	v->visit(this); 
-}
-*/
 
 void VarDeclaration::accept(Visitor *v){ 
 	v->visit(this); 

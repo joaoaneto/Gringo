@@ -10,11 +10,9 @@ using std::vector;
 
 class Visitor {
 public:
-	//virtual void visit(Commands *) = 0;
 	virtual void visit(VarDeclaration *) = 0;
 	virtual void visit(FuncDefinition *) = 0;
 	virtual void visit(Parameter *) = 0;
-	virtual void visit(NameList *) = 0;
 	virtual void visit(Name *) = 0;
 	virtual void visit(Block *) = 0;
 	virtual void visit(BinExpPlus *) = 0;
@@ -38,12 +36,16 @@ public:
 	virtual void visit(Assignment *) = 0;
 	virtual void visit(If *) = 0;
 	virtual void visit(IfElse *) = 0;
-	virtual void visit(While *) = 0;
+	virtual void visit(While *) = 0;	
 };
 
 class Operations : public Visitor {
 private:
 	vector<Value *> stack_;
+	int countIf;
+	int countFunc;
+	int countLaces;
+	int countVar;
 public:
 	Operations(){};
 	
