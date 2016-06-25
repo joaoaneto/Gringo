@@ -16,23 +16,37 @@ class Program : public Node {};
 
 class Type : public Node{};
 
+class NameList : public Node {};
+
 class StatementList : public Program {};
 
 class VarDeclarationList : public StatementList {};
 
 class FuncDefinitionList : public StatementList {};
 
-class FuncDefinition;
+class Block : public Node {
+private:
+	VarDeclarationList *varDecList;
+	class Commands *commands;
+public:
+	Block(VarDeclarationList *varList, Commands *comms) : varDecList(varList), commands(comms){}
+	VarDeclarationList *getVarDecList();
+	Commands *getCommands();
+	void accept(Visitor *);
+};
 
-class Block;
-
-class VarDeclaration;
-
-class NameList;
+class Commands : public Block {
+public:
+	Commands();
+};
 
 class IdValue;
 
 class Assignment;
+
+class Block;
+
+class VarDeclarationList;
 
 //class Abstrata NameList
 
@@ -43,7 +57,7 @@ private:
 public:
 	Name(class IdValue *id, class Assignment *a) : idValue(id), assignment(a){}
 	IdValue *getValue();
-	Assignment getAssignment();
+	Assignment *getAssignment();
 	void accept(Visitor *);
 };
 
@@ -55,33 +69,8 @@ public:
 	VarDeclaration(int t, class NameList *n) : type(t), nameList(n){}
 	int getType();
 	NameList *getNameList();	
-	void accept();
+	void accept(Visitor *);
 };
-
-class NameList : public VarDeclaration {};
-/*
-class VarDeclarationSimple : public VarDeclaration{
-private:	
-	int type;
-	IdValue *idValue;
-public:
-	VarDeclarationSimple(int t, IdValue *name) : type(t), idValue(name){}
-	int getType();
-	IdValue *getIdValue();
-	void accept(Visitor *);	
-};
-
-class VarDeclarationInit : public VarDeclaration{
-private:
-	int type;
-	Assignment *assignment;
-public:
-	VarDeclarationInit(int t, Assignment *a) : type(t), assignment(a){}
-	int getType();
-	Assignment *getAssigment();
-	void accept(Visitor *);	
-};
-*/
 
 class FuncDefinition : public FuncDefinitionList {
 private:
@@ -96,56 +85,10 @@ public:
 	void accept(Visitor *);
 };  
 
-class ParameterList : public FuncDefinition{};
-
-class If: public IfElseIf{
-private:
-	Exp *exp;
-	Block *block;
+class ParameterList : public FuncDefinition{
 public:
-	If(Exp *e, Block *b): exp(e), block(b){}
-	Exp *getExp();
-	Block *getBlock();
-	void accept(Visitor *);
+	ParameterList();
 };
-
-class IfElse: public IfElseIf{
-private:
-	Exp *exp;
-	Block *block1;
-	Block *block2;
-public:
-	IfElse(Exp *e, Block *b1, Block *b2): exp(e),block1(b1),block2(b2){}
-	Exp *getExp();
-	Block *getBlock1();
-	Block *getBlock2();
-	void accept(Visitor *);
-};
-
-
-class While: public Command {
-private:
-	Exp *exp;
-	Block *block;
-public:
-	While(Exp *e, Block *b) : exp(e), block(b){}
-	Exp *getExp();
-	Block *getBlock();
-	void accept(Visitor *);
-};
-
-class Block : public FuncDefinition, public If, public IfElse, public While {
-private:
-	VarDeclarationList *varDecList;
-	Commands *commands;
-public:
-	Block(VarDeclarationList *varList, Commands *comms) : varDecList(varList), commands(comms){}
-	VarDeclarationList *getVarDecList();
-	Commands *getCommands();
-	void accept(Visitor *);
-};
-
-class Commands : public Block {};
 
 class Command : public Commands {};
 
@@ -196,6 +139,41 @@ public:
 	Parameter(IdValue *id, int t) : idValue(id), type(t){}
 	IdValue *getIdValue();
 	int getType();
+	void accept(Visitor *);
+};
+
+class If: public IfElseIf{
+private:
+	Exp *exp;
+	Block *block;
+public:
+	If(Exp *e, Block *b): exp(e), block(b){}
+	Exp *getExp();
+	Block *getBlock();
+	void accept(Visitor *);
+};
+
+class IfElse: public IfElseIf{
+private:
+	Exp *exp;
+	Block *block1;
+	Block *block2;
+public:
+	IfElse(Exp *e, Block *b1, Block *b2): exp(e),block1(b1),block2(b2){}
+	Exp *getExp();
+	Block *getBlock1();
+	Block *getBlock2();
+	void accept(Visitor *);
+};
+
+class While: public Command {
+private:
+	Exp *exp;
+	Block *block;
+public:
+	While(Exp *e, Block *b) : exp(e), block(b){}
+	Exp *getExp();
+	Block *getBlock();
 	void accept(Visitor *);
 };
 
@@ -294,7 +272,7 @@ private:
 	Factor *factor;
 public:
 	BinExpDiff(LValue *lv, class Factor *f): lValue(lv), factor(f){}
-	Exp *getExp();
+	LValue *getLValue();
 	Factor *getFactor();
 	void accept(Visitor *v);
 };

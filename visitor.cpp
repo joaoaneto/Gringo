@@ -32,16 +32,16 @@ void Operations::visit(IfElse *e){
 	IntValue *v1 = static_cast<IntValue *>(stack_.back());
 
 	if(v1->getValue()){
-		e->IfElse::getExpList()->accept(this);
+		e->IfElse::getBlock1()->accept(this);
 	}else{
-		e->IfElse::getExpList_2()->accept(this);
+		e->IfElse::getBlock2()->accept(this);
 	}
 
 }
 
 void Operations::visit(While *w){
 	w->While::getExp()->accept(this);
-	w->While::getExpList()->accept(this);
+	w->While::getBlock()->accept(this);
 
 	IntValue *v1 = static_cast<IntValue *>(stack_.back());
 	
@@ -82,7 +82,7 @@ void Operations::visit(Assignment *a){
 }
 
 void Operations::visit(BinExpPlus *bep){
-	bep->BinExpPlus::getExp()->accept(this);
+	bep->BinExpPlus::getLValue()->accept(this);
 	bep->BinExpPlus::getFactor()->accept(this);
 	Value *value1 = stack_.back();
 	stack_.pop_back();
@@ -118,7 +118,7 @@ void Operations::visit(BinExpPlus *bep){
 }
 
 void Operations::visit(BinExpMinus *bem){
-	bem->BinExpMinus::getExp()->accept(this);
+	bem->BinExpMinus::getLValue()->accept(this);
 	bem->BinExpMinus::getFactor()->accept(this);
 	Value *value2 = stack_.back();
 	stack_.pop_back();
@@ -151,7 +151,7 @@ void Operations::visit(BinExpMinus *bem){
 }
 
 void Operations::visit(BinExpLessThen *belt){
-	belt->BinExpLessThen::getExp()->accept(this);
+	belt->BinExpLessThen::getLValue()->accept(this);
 	belt->BinExpLessThen::getFactor()->accept(this);
 	Value *value1 = stack_.back();
 	stack_.pop_back();
@@ -198,7 +198,7 @@ void Operations::visit(BinExpLessThen *belt){
 }
 
 void Operations::visit(BinExpLessEqualThen *belet){
-	belet->BinExpLessEqualThen::getExp()->accept(this);
+	belet->BinExpLessEqualThen::getLValue()->accept(this);
 	belet->BinExpLessEqualThen::getFactor()->accept(this);
 	Value *value1 = stack_.back();
 	stack_.pop_back();
@@ -245,7 +245,7 @@ void Operations::visit(BinExpLessEqualThen *belet){
 }
 
 void Operations::visit(BinExpGreaterThen *begt){
-	begt->BinExpGreaterThen::getExp()->accept(this);
+	begt->BinExpGreaterThen::getLValue()->accept(this);
 	begt->BinExpGreaterThen::getFactor()->accept(this);
 	Value *value1 = stack_.back();
 	stack_.pop_back();
@@ -292,7 +292,7 @@ void Operations::visit(BinExpGreaterThen *begt){
 }
 
 void Operations::visit(BinExpGreaterEqualThen *beget){
-	beget->BinExpGreaterEqualThen::getExp()->accept(this);
+	beget->BinExpGreaterEqualThen::getLValue()->accept(this);
 	beget->BinExpGreaterEqualThen::getFactor()->accept(this);
 	Value *value1 = stack_.back();
 	stack_.pop_back();
@@ -339,7 +339,7 @@ void Operations::visit(BinExpGreaterEqualThen *beget){
 }
 
 void Operations::visit(BinExpEqual *bee){
-	bee->BinExpEqual::getExp()->accept(this);
+	bee->BinExpEqual::getLValue()->accept(this);
 	bee->BinExpEqual::getFactor()->accept(this);
 	Value *value1 = stack_.back();
 	stack_.pop_back();
@@ -386,7 +386,7 @@ void Operations::visit(BinExpEqual *bee){
 }
 
 void Operations::visit(BinExpDiff *bed){
-	bed->BinExpDiff::getExp()->accept(this);
+	bed->BinExpDiff::getLValue()->accept(this);
 	bed->BinExpDiff::getFactor()->accept(this);
 	Value *value1 = stack_.back();
 	stack_.pop_back();
@@ -559,14 +559,19 @@ void Operations::visit(LparExpRpar *lpr){
 	lpr->getExp()->accept(this);
 }
 
-
-void FuncDefinition::visit(FuncDefinition *fdef){}
+/*
+void FuncDefinition::visit(FuncDefinition *fdef){
+	fdef->FuncDefinition::
+}
+*/
 
 //Accepts
 
+/*
 void Commands::accept(Visitor *v){ 
 	v->visit(this); 
 }
+*/
 
 void VarDeclaration::accept(Visitor *v){ 
 	v->visit(this); 

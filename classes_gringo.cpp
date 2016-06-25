@@ -2,29 +2,29 @@
 
 //Parameter
 IdValue *Parameter::getIdValue(){
-	return idValue;
+	return this->idValue;
 }
 
 int Parameter::getType(){
-	return type;
+	return this->type;
 }
 
 //VarDeclaration
 int VarDeclaration::getType(){
-	return type;
+	return this->type;
 }
 
 NameList *VarDeclaration::getNameList(){
-	return nameList;
+	return this->nameList;
 }
 
 //Name
-idValue *Name::getValue(){
-	return idValue;
+IdValue *Name::getValue(){
+	return this->idValue;
 }
 
 Assignment *Name::getAssignment(){
-	return assignment;
+	return this->assignment;
 }
 
 //FunctionDefinition
@@ -81,8 +81,8 @@ Commands *Block::getCommands(){
 }
 
 //BinExpPlus
-Exp *BinExpPlus::getExp (){
-	return this->exp;
+LValue *BinExpPlus::getLValue (){
+	return this->lValue;
 }
 
 Factor *BinExpPlus::getFactor(){
@@ -90,56 +90,68 @@ Factor *BinExpPlus::getFactor(){
 }
 
 //BinExpMinus
-Exp *BinExpMinus::getExp (){
-	return this->exp; 
+LValue *BinExpMinus::getLValue (){
+	return this->lValue; 
 }
 
 Factor *BinExpMinus::getFactor(){ 
 	return this->factor; 
 }
 
-Exp *BinExpLessThen::getExp(){
-	return this->exp;
+//BinExpLessThen
+
+LValue *BinExpLessThen::getLValue(){
+	return this->lValue;
 }
 
 Factor *BinExpLessThen::getFactor(){
 	return this->factor;
 }
 
-Exp *BinExpLessEqualThen::getExp(){
-	return this->exp;
+//BinExpLessEqualThen
+
+LValue *BinExpLessEqualThen::getLValue(){
+	return this->lValue;
 }
 
 Factor *BinExpLessEqualThen::getFactor(){
 	return this->factor;
 }
 
-Exp *BinExpGreaterThen::getExp(){
-	return this->exp;
+//BinExpGreaterThen
+
+LValue *BinExpGreaterThen::getLValue(){
+	return this->lValue;
 }
 
 Factor *BinExpGreaterThen::getFactor(){
 	return this->factor;
 }
 
-Exp *BinExpGreaterEqualThen::getExp(){
-	return this->exp;
+//BinExpGreaterEqualThen
+
+LValue *BinExpGreaterEqualThen::getLValue(){
+	return this->lValue;
 }
 
 Factor *BinExpGreaterEqualThen::getFactor(){
 	return this->factor;
 }
 
-Exp *BinExpEqual::getExp(){
-	return this->exp;
+//BinExpEqual
+
+LValue *BinExpEqual::getLValue(){
+	return this->lValue;
 }
 
 Factor *BinExpEqual::getFactor(){
 	return this->factor;
 }
 
-Exp *BinExpDiff::getExp(){
-	return this->exp;
+//BinExpDiff
+
+LValue *BinExpDiff::getLValue(){
+	return this->lValue;
 }
 
 Factor *BinExpDiff::getFactor(){

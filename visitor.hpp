@@ -10,7 +10,7 @@ using std::vector;
 
 class Visitor {
 public:
-	virtual void visit(Commands *) = 0;
+	//virtual void visit(Commands *) = 0;
 	virtual void visit(VarDeclaration *) = 0;
 	virtual void visit(FuncDefinition *) = 0;
 	virtual void visit(Parameter *) = 0;
