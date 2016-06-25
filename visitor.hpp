@@ -47,10 +47,12 @@ private:
 	int countFunc;
 	int countLaces;
 	struct counterVar GlobalCountVar;
+	struct counterFunc GlobalCountFunc;
 public:
 	Operations();
 	
 	struct counterVar getGlobalCount();
+	struct counterFunc getGlobalCountFunc();
 	
 	void visit(IntValue *v);
 

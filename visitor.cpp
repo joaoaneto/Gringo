@@ -10,6 +10,10 @@ struct counterVar Operations::getGlobalCount(){
 	return this->GlobalCountVar;
 };
 
+struct counterFunc Operations::getGlobalCountFunc(){
+	return this->GlobalCountFunc;
+};
+
 void Operations::visit(IntValue *v){ 
 	stack_.push_back(v); 
 }
@@ -568,19 +572,33 @@ void Operations::visit(VarDeclaration *vd){
 	
 	
 	if(newType == 1){
-		GlobalCountVar.countInt += 		GlobalCountVar.count;
+		GlobalCountVar.countInt += GlobalCountVar.count;
 	}else if(newType == 2){
-		GlobalCountVar.countFloat += 		GlobalCountVar.count;
+		GlobalCountVar.countFloat += GlobalCountVar.count;
 	}
 	else if(newType == 3){
-		GlobalCountVar.countDouble += 		GlobalCountVar.count;
+		GlobalCountVar.countDouble += GlobalCountVar.count;
 	}
 	
 	GlobalCountVar.count = 0;
 	
 }
 
-void Operations::visit(FuncDefinition *fdef){}
+void Operations::visit(FuncDefinition *fdef){
+	int newType = fdef->getType();
+
+	if(newType == 1){
+		GlobalCountFunc.countInt += GlobalCountFunc.count;
+	} else if(newType == 2){
+		GlobalCountFunc.countFloat += GlobalCountFunc.count;
+	} else if(newType == 3){
+		GlobalCountFunc.countDouble += GlobalCountFunc.count;
+	} else if(newType == 4){
+		GlobalCountFunc.countVoid += GlobalCountFunc.count;
+	}
+	
+	GlobalCountFunc.count = 0;
+}
 
 void Operations::visit(Parameter *par){}
 

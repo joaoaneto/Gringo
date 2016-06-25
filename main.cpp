@@ -24,6 +24,12 @@ int main(int argc, char ** argv){
 	fprintf(relatorio, "float: %d\n", (op->getGlobalCount()).countFloat);
 	fprintf(relatorio, "double: %d\n", (op->getGlobalCount()).countDouble);
 
+	fprintf(relatorio, "Contagem de declarações de funçoes\n");
+	fprintf(relatorio, "int: %d\n", (op->getGlobalCountFunc()).countInt);
+	fprintf(relatorio, "float: %d\n", (op->getGlobalCountFunc()).countFloat);
+	fprintf(relatorio, "double: %d\n", (op->getGlobalCountFunc()).countDouble);
+	fprintf(relatorio, "void: %d\n", (op->getGlobalCountFunc()).countVoid);
+
 	fclose(relatorio);
 
 	return 0;
