@@ -37,10 +37,7 @@ public:
 	void accept(Visitor *);
 };
 
-class Commands : public Block {
-public:
-	Commands();
-};
+class Commands : public Node {};
 
 class IdValue;
 
@@ -87,10 +84,7 @@ public:
 	void accept(Visitor *);
 };  
 
-class ParameterList : public FuncDefinition{
-public:
-	ParameterList();
-};
+class ParameterList : public FuncDefinition{};
 
 class Command : public Commands {};
 
@@ -133,7 +127,7 @@ public:
 	void accept(Visitor *);
 };
 
-class Parameter : public ParameterList{
+class Parameter : public Node{
 private:
 	int type;
 	IdValue *idValue;
