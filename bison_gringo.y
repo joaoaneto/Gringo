@@ -87,8 +87,10 @@
 	class StatementList *statementlist;
 	class VarDeclarationList *vardeclarationlist;
 	class FuncDefinitionList *funcdefinitionlist;
+	class FuncDefinition *funcdefinition;
 	class VarDeclaration *vardeclaration;
 	class ParameterList *parList;
+	class Parameter *param;
 	class Command *command;
 	class Value *value;
 	class Exp *exp;
@@ -120,14 +122,18 @@
 	class IfElse *ifelset;
 	class While *wwhile;
 	class LValue *lvalue;
+	class NameList *namelist;
+	class Name *name;
 };
 
 %type<program> Program;
 %type<parList> ParameterList;
+%type<param> Parameter;
 %type<int_value> Type;
 %type<statementlist> StatementList;
 %type<vardeclarationlist> VarDeclarationList;
 %type<funcdefinitionlist> FuncDefinitionList;
+%type<funcdefinition> FuncDefinition;
 %type<vardeclaration> VarDeclaration;
 %type<command> Command;
 %type<char_value> CHAR;
@@ -165,6 +171,8 @@
 %type<ifelset> IfElse;
 %type<wwhile> While;
 %type<lvalue> LValue;
+%type<namelist> NameList;
+%type<name> Name;
 %%
 
 Program : StatementList {
@@ -179,15 +187,15 @@ Type : INT {}
 	  |VOID{}	
 ;
 
-StatementList : VarDeclarationList {$$ = $1;}
-		  	  |FuncDefinitionList {$$ = $1;}		
+StatementList : VarDeclarationList {}
+		  	  |FuncDefinitionList {}		
 ;
 
 VarDeclarationList : VarDeclaration {}
 					|VarDeclarationList VarDeclaration {}
 ;
 
-VarDeclaration : Type NameList DOT_COMMA {}
+VarDeclaration : Type NameList DOT_COMMA { $$ = new VarDeclaration($1, $2); }
 ;
 
 NameList : Name {}
@@ -202,17 +210,17 @@ FuncDefinitionList : FuncDefinition {}
 					|FuncDefinition FuncDefinitionList {}
 ;
 
-FuncDefinition : Type IDENTIFIER PAR_L ParameterList PAR_R Block {}
+FuncDefinition : Type IDENTIFIER PAR_L ParameterList PAR_R Block { $$ = new FuncDefinition($1, new IdValue($2), $6); }
 ;	
 
 ParameterList : Parameter{}
 				|ParameterList COMMA Parameter {}
 ;
 
-Parameter : Type IDENTIFIER{}
+Parameter : Type IDENTIFIER{ $$ = new Parameter(new IdValue($2), $1); }
 ;	 
 
-Block : BRA_L VarDeclarationList Commands BRA_R {}
+Block : BRA_L VarDeclarationList Commands BRA_R { $$ = new Block($2, $3); }
 ;
 
 Commands : Command {}

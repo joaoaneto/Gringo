@@ -1,6 +1,15 @@
 #include "visitor.hpp"
 
 //Operations
+
+Operations::Operations(){
+	countIf = countFunc = countLaces = 	GlobalCountVar.count = GlobalCountVar.countInt = GlobalCountVar.countFloat = GlobalCountVar.countDouble = 0;
+};
+
+struct counterVar Operations::getGlobalCount(){
+	return this->GlobalCountVar;
+};
+
 void Operations::visit(IntValue *v){ 
 	stack_.push_back(v); 
 }
@@ -553,13 +562,31 @@ void Operations::visit(LparExpRpar *lpr){
 	lpr->getExp()->accept(this);
 }
 
-void Operations::visit(VarDeclaration *vd){}
+void Operations::visit(VarDeclaration *vd){
+	int newType = vd->getType();
+	//vd->getNameList()->accept(this);
+	
+	
+	if(newType == 1){
+		GlobalCountVar.countInt += 		GlobalCountVar.count;
+	}else if(newType == 2){
+		GlobalCountVar.countFloat += 		GlobalCountVar.count;
+	}
+	else if(newType == 3){
+		GlobalCountVar.countDouble += 		GlobalCountVar.count;
+	}
+	
+	GlobalCountVar.count = 0;
+	
+}
 
 void Operations::visit(FuncDefinition *fdef){}
 
 void Operations::visit(Parameter *par){}
 
-void Operations::visit(Name *n){}
+void Operations::visit(Name *n){
+	GlobalCountVar.count++;
+}
 
 void Operations::visit(Block *b){}
 

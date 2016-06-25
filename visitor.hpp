@@ -2,6 +2,7 @@
 #define VISITOR_HPP
 
 #include "classes_gringo.hpp"
+#include "counter_gringo.hpp"
 #include <math.h>
 #include <vector>
 #include <stdio.h>
@@ -45,9 +46,11 @@ private:
 	int countIf;
 	int countFunc;
 	int countLaces;
-	int countVar;
+	struct counterVar GlobalCountVar;
 public:
-	Operations(){};
+	Operations();
+	
+	struct counterVar getGlobalCount();
 	
 	void visit(IntValue *v);
 

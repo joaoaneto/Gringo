@@ -17,5 +17,14 @@ int main(int argc, char ** argv){
 
 	prg->accept(op);
 	
+	FILE *relatorio = fopen("relatório.txt", "w");
+	
+	fprintf(relatorio, "Contagem de declarações de variável global\n");
+	fprintf(relatorio, "int: %d\n", (op->getGlobalCount()).countInt);
+	fprintf(relatorio, "float: %d\n", (op->getGlobalCount()).countFloat);
+	fprintf(relatorio, "double: %d\n", (op->getGlobalCount()).countDouble);
+
+	fclose(relatorio);
+
 	return 0;
 }
