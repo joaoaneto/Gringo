@@ -3,7 +3,7 @@
 //Operations
 
 Operations::Operations(){
-	countIf = countFunc = countLaces = 	GlobalCountVar.count = GlobalCountVar.countInt = GlobalCountVar.countFloat = GlobalCountVar.countDouble = 0;
+	countIf = countFunc = countLaces = 	GlobalCountVar.count = GlobalCountVar.countInt = GlobalCountVar.countFloat = GlobalCountVar.countDouble = GlobalCountFunc.count = GlobalCountFunc.countDouble = GlobalCountFunc.countFloat = GlobalCountFunc.countInt = GlobalCountFunc.countVoid = 0;
 };
 
 void Operations::incLaces(){
@@ -574,6 +574,7 @@ void Operations::visit(LparExpRpar *lpr){
 
 void Operations::visit(VarDeclaration *vd){
 	int newType = vd->getType();
+	
 	vd->getNameList()->accept(this);
 	
 	if(newType == 1){
@@ -591,21 +592,26 @@ void Operations::visit(VarDeclaration *vd){
 
 void Operations::visit(FuncDefinition *fdef){
 	int newType = fdef->getType();
+	
+	fdef->getIdValue()->accept(this);
+	fdef->getBlock()->accept(this);
 
 	if(newType == 1){
-		GlobalCountFunc.countInt += GlobalCountFunc.count;
+		GlobalCountFunc.countInt++;
 	} else if(newType == 2){
-		GlobalCountFunc.countFloat += GlobalCountFunc.count;
+		GlobalCountFunc.countFloat++;
 	} else if(newType == 3){
-		GlobalCountFunc.countDouble += GlobalCountFunc.count;
-	} else if(newType == 4){
-		GlobalCountFunc.countVoid += GlobalCountFunc.count;
+		GlobalCountFunc.countDouble++;
+	} else if(newType == 0){
+		GlobalCountFunc.countVoid++;
 	}
 	
 	GlobalCountFunc.count = 0;
 }
 
-void Operations::visit(Parameter *par){}
+void Operations::visit(Parameter *par){
+	par->getIdValue()->accept(this);
+}
 
 /*
 void Operations::visit(Name *n){
@@ -615,12 +621,14 @@ void Operations::visit(Name *n){
 */
 
 void Operations::visit(NameID *nID){
-	printf("%s\n\n", nID->getIdValue());
+	nID->getIdValue()->accept(this);
+
 	GlobalCountVar.count++;
 }
 
 void Operations::visit(NameAssignment *n){
-	printf("Assignment : %s\n\n", n->getAssignment()->getIdValue());
+	n->getAssignment()->accept(this);
+
 	GlobalCountVar.count++;
 }
 

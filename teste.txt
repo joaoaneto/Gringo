@@ -1,4 +1,5 @@
 void silvs(int a){
+	float k;
 	int b;
 	while (1){
 		int a;
