@@ -1,5 +1,7 @@
-int a, b, c;
-float d, e;
-double h;
-
-void main(int a){}
+void silvs(int a){
+	int b;
+	while (1){
+		int a;
+		1+1;	
+	}
+}

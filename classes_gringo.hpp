@@ -50,12 +50,33 @@ class VarDeclarationList;
 //class Abstrata NameList
 
 class Name : public NameList {
+/*
 private:
 	IdValue *idValue;
 	Assignment *assignment;
 public:
 	Name(class IdValue *id, class Assignment *a) : idValue(id), assignment(a){}
 	IdValue *getValue();
+	Assignment *getAssignment();
+	void accept(Visitor *);
+*/	
+};
+
+class NameID : public Name {
+private:
+	IdValue *idValue;
+public:
+	NameID(class IdValue *id) : idValue(id){}
+	IdValue *getIdValue();
+	void accept(Visitor *);
+
+};
+
+class NameAssignment : public Name {
+private:
+	Assignment *assignment;
+public:
+	NameAssignment(class Assignment *a) : assignment(a){}
 	Assignment *getAssignment();
 	void accept(Visitor *);
 };

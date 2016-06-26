@@ -1,0 +1,11 @@
+Contagem de declarações de variável global
+int: 0
+float: 0
+double: 0
+Contagem de declarações de funçoes
+int: 0
+float: 0
+double: 0
+void: 0
+Número de Whiles
+While:0

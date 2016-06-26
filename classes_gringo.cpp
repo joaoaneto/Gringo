@@ -17,13 +17,26 @@ int VarDeclaration::getType(){
 NameList *VarDeclaration::getNameList(){
 	return this->nameList;
 }
-
+/*
 //Name
 IdValue *Name::getValue(){
 	return this->idValue;
 }
 
 Assignment *Name::getAssignment(){
+	return this->assignment;
+}
+*/
+
+//NameID 
+
+IdValue *NameID::getIdValue(){
+	return this->idValue;
+}
+
+//NameAssignment
+
+Assignment *NameAssignment::getAssignment(){
 	return this->assignment;
 }
 

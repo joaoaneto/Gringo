@@ -14,7 +14,9 @@ public:
 	virtual void visit(VarDeclaration *) = 0;
 	virtual void visit(FuncDefinition *) = 0;
 	virtual void visit(Parameter *) = 0;
-	virtual void visit(Name *) = 0;
+	//virtual void visit(Name *) = 0;
+	virtual void visit(NameID *) = 0;
+	virtual void visit(NameAssignment *) = 0;
 	virtual void visit(Block *) = 0;
 	virtual void visit(BinExpPlus *) = 0;
 	virtual void visit(BinExpMinus *) = 0;
@@ -54,6 +56,12 @@ public:
 	struct counterVar getGlobalCount();
 	struct counterFunc getGlobalCountFunc();
 	
+	void incLaces();
+
+	int getCountL(){
+		return this->countLaces;
+	}	
+
 	void visit(IntValue *v);
 
 	void visit(VarDeclaration *vd);
@@ -62,7 +70,11 @@ public:
 
 	void visit(Parameter *par);
 
-	void visit(Name *n);
+	//void visit(Name *n);
+
+	void visit(NameID *nID);
+
+	void visit(NameAssignment *n);
 
 	void visit(Block *b);
 

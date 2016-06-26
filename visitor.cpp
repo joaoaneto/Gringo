@@ -6,6 +6,10 @@ Operations::Operations(){
 	countIf = countFunc = countLaces = 	GlobalCountVar.count = GlobalCountVar.countInt = GlobalCountVar.countFloat = GlobalCountVar.countDouble = 0;
 };
 
+void Operations::incLaces(){
+	++this->countLaces;
+}
+
 struct counterVar Operations::getGlobalCount(){
 	return this->GlobalCountVar;
 };
@@ -49,9 +53,11 @@ void Operations::visit(IfElse *e){
 void Operations::visit(While *w){
 	w->While::getExp()->accept(this);
 	w->While::getBlock()->accept(this);
+	printf("LALALAL\n\n");	
 
 	IntValue *v1 = static_cast<IntValue *>(stack_.back());
-	
+	++Operations::countLaces;
+
 	int a = 0;
 	while(v1->getValue()){
 		
@@ -568,8 +574,7 @@ void Operations::visit(LparExpRpar *lpr){
 
 void Operations::visit(VarDeclaration *vd){
 	int newType = vd->getType();
-	//vd->getNameList()->accept(this);
-	
+	vd->getNameList()->accept(this);
 	
 	if(newType == 1){
 		GlobalCountVar.countInt += GlobalCountVar.count;
@@ -602,11 +607,30 @@ void Operations::visit(FuncDefinition *fdef){
 
 void Operations::visit(Parameter *par){}
 
+/*
 void Operations::visit(Name *n){
+	printf("ROLAAAA\n\n");
+	GlobalCountVar.count++;
+}
+*/
+
+void Operations::visit(NameID *nID){
+	printf("%s\n\n", nID->getIdValue());
 	GlobalCountVar.count++;
 }
 
-void Operations::visit(Block *b){}
+void Operations::visit(NameAssignment *n){
+	printf("Assignment : %s\n\n", n->getAssignment()->getIdValue());
+	GlobalCountVar.count++;
+}
+
+
+void Operations::visit(Block *b){
+	printf("Um print em Block\n");
+	b->getVarDecList()->accept(this);
+	b->getCommands()->accept(this);
+
+}
 
 
 //Accepts
@@ -626,8 +650,17 @@ void FuncDefinition::accept(Visitor *v){
 void Parameter::accept(Visitor *v){ 
 	v->visit(this); 
 }
-
+/*
 void Name::accept(Visitor *v){
+	v->visit(this);
+}
+*/
+
+void NameID::accept(Visitor *v){
+	v->visit(this);
+}
+
+void NameAssignment::accept(Visitor *v){
 	v->visit(this);
 }
 

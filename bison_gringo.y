@@ -124,10 +124,15 @@
 	class LValue *lvalue;
 	class NameList *namelist;
 	class Name *name;
+	class NameID *nameID;
+	class NameAssignment *nameAss;
+
 };
 
 %type<program> Program;
 %type<parList> ParameterList;
+%type<nameID> NameID;
+%type<nameAss> NameAssignment;
 %type<param> Parameter;
 %type<int_value> Type;
 %type<statementlist> StatementList;
@@ -195,29 +200,39 @@ VarDeclarationList : VarDeclaration {}
 					|VarDeclarationList VarDeclaration {}
 ;
 
-VarDeclaration : Type NameList DOT_COMMA { $$ = new VarDeclaration($1, $2); }
+VarDeclaration : Type NameList DOT_COMMA {$$ = new VarDeclaration($1, $2); }
 ;
 
 NameList : Name {}
 		  |NameList COMMA Name {}
 ;
 
-Name : IDENTIFIER {}
-	  |Assignment {}	
+Name : NameID  {}
+	  |NameAssignment {}	
+;
+
+NameID : IDENTIFIER {
+		printf("Entrou nameId\n");
+$$ = new NameID (new IdValue($1));}
+;
+
+NameAssignment : Assignment {$$ = new NameAssignment ($1);}
 ;
 
 FuncDefinitionList : FuncDefinition {}
 					|FuncDefinition FuncDefinitionList {}
 ;
 
-FuncDefinition : Type IDENTIFIER PAR_L ParameterList PAR_R Block { $$ = new FuncDefinition($1, new IdValue($2), $6); }
+FuncDefinition : Type IDENTIFIER PAR_L ParameterList PAR_R Block { 
+		printf("Entrou func\n");
+$$ = new FuncDefinition($1, new IdValue($2), $6); }
 ;	
 
 ParameterList : Parameter{}
-				|ParameterList COMMA Parameter {}
+				|ParameterList COMMA Parameter {printf("Para meter list\n\n");}
 ;
 
-Parameter : Type IDENTIFIER{ $$ = new Parameter(new IdValue($2), $1); }
+Parameter : Type IDENTIFIER{ printf("Entrou para meter\n");$$ = new Parameter(new IdValue($2), $1); }
 ;	 
 
 Block : BRA_L VarDeclarationList Commands BRA_R { $$ = new Block($2, $3); }
@@ -247,6 +262,7 @@ IfElse : IF PAR_L Exp PAR_R Block ELSE Block {
 ;
 
 While : WHILE PAR_L Exp PAR_R Block {
+		printf("Entrou While\n");
 		$$ = new While($3, $5);
 	}
 ;
