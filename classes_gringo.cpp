@@ -121,6 +121,7 @@ Block *While::getBlock(){
 	return this->block;
 }
 
+/*
 //Block
 VarDeclarationList *Block::getVarDecList(){
 	return this->varDecList;
@@ -128,6 +129,29 @@ VarDeclarationList *Block::getVarDecList(){
 
 Commands *Block::getCommands(){
 	return this->commands;
+}
+*/
+
+//BlockVarCommands
+
+VarDeclarationList *BlockVarCommands::getVarDecList(){
+	return this->varDecList;
+}
+
+Commands *BlockVarCommands::getCommands(){
+	return this->commands;
+}
+
+//BlockCommands
+
+Commands *BlockCommands::getCommands(){
+	return this->commands;
+}
+
+//BlockVar
+
+VarDeclarationList *BlockVar::getVarDecList(){
+	return this->varDecList;
 }
 
 //BinExpPlus
@@ -288,11 +312,22 @@ IdValue	*Assignment::getIdValue(){
 }
 
 //Scope
-/*
+Scope::TypeTable &Scope::getTable(){ 
+	return this->table; 
+}
+
 Scope *Scope::getFather(){
 	return this->father_; 
 }
 
+Scope::Scope(){
+	father_ = Context::getContext().getAtualScope();
+}
+
+Scope::~Scope(){
+	Context::getContext().setAtualScope(father_);
+}
+/*
 
 Value *Scope::getSymbol(string name){
 	map<stringm Valor*>::iterator it;
@@ -308,18 +343,23 @@ Value *Scope::getSymbol(string name){
 
 //Context
 Context &Context::getContext(){
-		if (instance == NULL){ 
-			instance = new Context(); 
-		}
-		return *instance;
+	if (instance == NULL){ 
+		instance = new Context(); 
+	}
+	return *instance;
 }
 
-Context::TypeTable &Context::getTable(){ 
-	return this->table; 
+void Context::setAtualScope(Scope *chupa_sandy){
+	atual_ = chupa_sandy;
+}
+
+Scope *Context::getAtualScope(){
+
+	return atual_;
 }
 
 void Context::setProgram(Program *prog){ 
-	program = prog; 
+	program = prog;
 }
 
 Program *Context::getProgram(){

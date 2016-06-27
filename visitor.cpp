@@ -6,6 +6,18 @@ Operations::Operations(){
 	countIf = countFunc = countLaces = 	GlobalCountVar.count = GlobalCountVar.countInt = GlobalCountVar.countFloat = GlobalCountVar.countDouble = GlobalCountFunc.count = GlobalCountFunc.countDouble = GlobalCountFunc.countFloat = GlobalCountFunc.countInt = GlobalCountFunc.countVoid = 0;
 };
 
+int Operations::getCountL(){
+	return this->countLaces;
+}
+
+int Operations::getCountIf(){
+	return this->countIf;
+}
+
+int Operations::getCountIfElse(){
+	return this->countIfElse;
+}
+
 void Operations::incLaces(){
 	++this->countLaces;
 }
@@ -27,9 +39,9 @@ void Operations::visit(DoubleValue *v){
 }
 
 void Operations::visit(If *i){
-	i->If::getBlock()->accept(this);
-
+	i->getExp()->accept(this);
 	IntValue *v1 = static_cast<IntValue *>(stack_.back());
+	++Operations::countIf;
 
 	if(v1->getValue()){
 		i->If::getBlock()->accept(this);
@@ -41,6 +53,8 @@ void Operations::visit(IfElse *e){
 	e->IfElse::getExp()->accept(this);
 
 	IntValue *v1 = static_cast<IntValue *>(stack_.back());
+
+	++Operations::countIfElse;
 
 	if(v1->getValue()){
 		e->IfElse::getBlock1()->accept(this);
@@ -68,7 +82,7 @@ void Operations::visit(While *w){
 }
 
 void Operations::visit(IdValue *v){
-	Context::TypeTable &t = Context::getContext().getTable();
+	Scope::TypeTable &t = Context::getContext().getAtualScope()->getTable();
 
 	if(t.find(v->getValue()) == t.end()){
 		stack_.push_back(v);
@@ -80,8 +94,8 @@ void Operations::visit(IdValue *v){
 void Operations::visit(Assignment *a){
 	a->Assignment::getExp()->accept(this);
 	a->Assignment::getIdValue()->accept(this);
-	Context::TypeTable &t = Context::getContext().getTable();
-	
+	Scope::TypeTable &t = Context::getContext().getAtualScope()->getTable();
+
 	IdValue *valueId = static_cast <IdValue *> (stack_.back());
 	stack_.pop_back();
 	t[valueId->getValue()] = stack_.back();
@@ -643,13 +657,37 @@ void Operations::visit(NameAssignment *n){
 	GlobalCountVar.count++;
 }
 
-
+/*
 void Operations::visit(Block *b){
 	b->getVarDecList()->accept(this);
 	b->getCommands()->accept(this);
 
 }
+*/
 
+void Operations::visit(BlockVarCommands *bvc){
+	Scope *scopeVarCommands = new Scope();
+	Context::getContext().setAtualScope(scopeVarCommands);
+	bvc->getVarDecList()->accept(this);
+	bvc->getCommands()->accept(this);
+	delete scopeVarCommands;
+}
+
+
+void Operations::visit(BlockCommands *bc){
+	Scope *scopeCommands = new Scope();
+	Context::getContext().setAtualScope(scopeCommands);
+	bc->getCommands()->accept(this);
+	delete scopeCommands;
+
+}
+
+void Operations::visit(BlockVar *bv){
+	Scope *scopeBlockVar = new Scope();
+	Context::getContext().setAtualScope(scopeBlockVar);
+	bv->getVarDecList()->accept(this);
+	delete scopeBlockVar;
+}
 
 //Accepts
 
@@ -660,8 +698,21 @@ void VarDeclaration::accept(Visitor *v){
 void VarDeclarations::accept(Visitor *v){ 
 	v->visit(this); 
 }
-
+/*
 void Block::accept(Visitor *v){ 
+	v->visit(this); 
+}
+*/
+
+void BlockVarCommands::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void BlockCommands::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void BlockVar::accept(Visitor *v){ 
 	v->visit(this); 
 }
 

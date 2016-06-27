@@ -21,7 +21,10 @@ public:
 	virtual void visit(Names *) = 0;
 	virtual void visit(NameID *) = 0;
 	virtual void visit(NameAssignment *) = 0;
-	virtual void visit(Block *) = 0;
+	//virtual void visit(Block *) = 0;
+	virtual void visit(BlockVarCommands *) = 0;
+	virtual void visit(BlockCommands *) = 0;
+	virtual void visit(BlockVar *) = 0;
 	virtual void visit(BinExpPlus *) = 0;
 	virtual void visit(BinExpMinus *) = 0;
 	virtual void visit(BinExpLessThen *) = 0;
@@ -48,10 +51,11 @@ public:
 
 class Operations : public Visitor {
 private:
-	vector<Value *> stack_;
+	vector<Value *> stack_;  
 	int countIf;
 	int countFunc;
 	int countLaces;
+	int countIfElse;
 	struct counterVar GlobalCountVar;
 	struct counterFunc GlobalCountFunc;
 public:
@@ -59,12 +63,14 @@ public:
 	
 	struct counterVar getGlobalCount();
 	struct counterFunc getGlobalCountFunc();
-	
+
 	void incLaces();
 
-	int getCountL(){
-		return this->countLaces;
-	}	
+	int getCountL();
+
+	int getCountIf();
+
+	int getCountIfElse();
 
 	void visit(IntValue *v);
 
@@ -86,7 +92,13 @@ public:
 
 	void visit(NameAssignment *n);
 
-	void visit(Block *b);
+	//void visit(Block *b);
+
+	void visit(BlockVarCommands *bvc);
+
+	void visit(BlockCommands *bc);
+
+	void visit(BlockVar *bv);	
 
 	void visit(DoubleValue *v);
 	

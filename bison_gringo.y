@@ -130,6 +130,9 @@
 	class Name *name;
 	class Names *names;
 	class NameID *nameID;
+	class BlockVarCommands *blockVarCommands;
+	class BlockCommands *blockCommands;
+	class BlockVar *blockVar;
 	class NameAssignment *nameAss;
 
 };
@@ -157,6 +160,9 @@
 %type<value> Value;
 %type<exp> Exp;
 %type<block> Block;
+%type<blockVarCommands> BlockVarCommands;
+%type<blockCommands> BlockCommands;
+%type<blockVar> BlockVar;
 %type<belg> BinExpLessGreater;
 %type<bepm> BinExpPlusMinus;
 %type<beed> BinExpEqualDiff;
@@ -193,6 +199,7 @@
 Program : StatementList {
 		$$ = $1;
 		Context::getContext().setProgram($$);
+		Context::getContext().setAtualScope(new Scope());
 	}
 ;
 
@@ -253,8 +260,18 @@ Parameters: ParameterList COMMA Parameter { $$ = new Parameters($1, $3); }
 Parameter : Type IDENTIFIER{ $$ = new Parameter(new IdValue($2), $1); }
 ;	 
 
-Block : BRA_L VarDeclarationList Commands BRA_R { $$ = new Block($2, $3); }
+Block : BlockVarCommands {}
+	   |BlockCommands {}
+	   |BlockVar {}
 ;
+
+BlockVarCommands : BRA_L VarDeclarationList Commands BRA_R {$$ = new BlockVarCommands($2,$3);}
+;
+
+BlockCommands : BRA_L Commands BRA_R {$$ = new BlockCommands($2);}
+;
+
+BlockVar : BRA_L VarDeclarationList BRA_R {$$ = new BlockVar($2);}
 
 Commands : Command {}
 		  |CommandsList {}

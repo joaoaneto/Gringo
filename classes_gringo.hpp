@@ -27,6 +27,7 @@ class FuncDefinitionList : public StatementList {};
 class Commands;
 
 class Block : public Node {
+/*
 private:
 	VarDeclarationList *varDecList;
 	Commands *commands;
@@ -35,7 +36,39 @@ public:
 	VarDeclarationList *getVarDecList();
 	Commands *getCommands();
 	void accept(Visitor *);
+*/	
 };
+
+class BlockVarCommands : public Block {
+private:
+	VarDeclarationList *varDecList;
+	Commands *commands;
+public:
+	BlockVarCommands(VarDeclarationList *varList, Commands *comms) : varDecList(varList), commands(comms){}
+	VarDeclarationList *getVarDecList();
+	Commands *getCommands();
+	void accept(Visitor *);
+};
+
+class BlockCommands : public Block {
+private:
+	Commands *commands;
+public:
+	BlockCommands(Commands *comms) : commands(comms){}
+	Commands *getCommands();
+	void accept(Visitor *);
+
+};
+
+class BlockVar: public Block {
+private:
+	VarDeclarationList *varDecList;
+public:
+	BlockVar(VarDeclarationList *varList) : varDecList(varList){}
+	VarDeclarationList *getVarDecList();
+	void accept(Visitor *);
+};
+
 
 class Commands : public Node {};
 
@@ -434,29 +467,39 @@ public:
 	void accept(Visitor *);
 };
 
+
 class Scope {
 private:
-	map<string, Value*> Symbol_table_;
 	Scope *father_;
 public:
+	Scope();
+	typedef map<string, Value*> TypeTable;
 	Scope *getFather();
+	TypeTable &getTable();
 	Value *getSymbol(string);
+	~Scope();
+private:
+	TypeTable table;	
 };
 
 class Context {
 private:
 	static Context *instance;
+	Scope *atual_;
 	Program *program;
 	Context(){} //construtor	
 public:
-	typedef map<string, Value *> TypeTable;
+	//typedef map<string, Value *> TypeTable;
 	static Context &getContext();
-	
-	TypeTable &getTable();
+	Scope *getAtualScope();
+	void setAtualScope(Scope *chupa_sandy);
+	//TypeTable &getTable();
 	void setProgram(Program *prog);
 	Program *getProgram();
+/*	
 private:
 	TypeTable table;	
+*/	
 };
 
 #endif
