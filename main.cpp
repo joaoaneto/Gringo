@@ -30,8 +30,7 @@ int main(int argc, char ** argv){
 	fprintf(relatorio, "double: %d\n", (op->getGlobalCountFunc()).countDouble);
 	fprintf(relatorio, "void: %d\n", (op->getGlobalCountFunc()).countVoid);
 
-	fprintf(relatorio, "Número de Whiles\n");
-	fprintf(relatorio, "While:%d\n", op->getCountL());	
+	fprintf(relatorio, "Número de Whiles: %d",op->getCountL());	
 
 	fclose(relatorio);
 

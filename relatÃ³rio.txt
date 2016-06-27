@@ -7,5 +7,4 @@ int: 0
 float: 0
 double: 0
 void: 2
-Número de Whiles
-While:3
+Número de Whiles: 3
