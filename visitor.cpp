@@ -590,6 +590,11 @@ void Operations::visit(VarDeclaration *vd){
 	
 }
 
+void Operations::visit(VarDeclarations *vds){
+	vds->getVarDeclarationList()->accept(this);
+	vds->getVarDeclaration()->accept(this);
+}
+
 void Operations::visit(FuncDefinition *fdef){
 	int newType = fdef->getType();
 	
@@ -609,16 +614,31 @@ void Operations::visit(FuncDefinition *fdef){
 	GlobalCountFunc.count = 0;
 }
 
+void Operations::visit(FuncDefinitions *fdefs){
+	fdefs->getFuncDefinitionList()->accept(this);
+	fdefs->getFuncDefinition()->accept(this);
+}
+
+void Operations::visit(CommandsList *csl){
+	csl->getCommands()->accept(this);
+	csl->getCommand()->accept(this);
+}
+
 void Operations::visit(Parameter *par){
 	par->getIdValue()->accept(this);
 }
 
-/*
-void Operations::visit(Name *n){
-	printf("ROLAAAA\n\n");
-	GlobalCountVar.count++;
+void Operations::visit(Parameters *pars){
+	pars->getParameterList()->accept(this);
+	pars->getParameter()->accept(this);
 }
-*/
+
+
+void Operations::visit(Names *n){
+	n->getNameList()->accept(this);
+	n->getName()->accept(this);
+}
+
 
 void Operations::visit(NameID *nID){
 	nID->getIdValue()->accept(this);
@@ -634,7 +654,6 @@ void Operations::visit(NameAssignment *n){
 
 
 void Operations::visit(Block *b){
-	printf("Um print em Block\n");
 	b->getVarDecList()->accept(this);
 	b->getCommands()->accept(this);
 
@@ -647,6 +666,10 @@ void VarDeclaration::accept(Visitor *v){
 	v->visit(this); 
 }
 
+void VarDeclarations::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
 void Block::accept(Visitor *v){ 
 	v->visit(this); 
 }
@@ -655,14 +678,26 @@ void FuncDefinition::accept(Visitor *v){
 	v->visit(this); 
 }
 
+void FuncDefinitions::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void CommandsList::accept(Visitor *v){ 
+	v->visit(this);
+}
+
 void Parameter::accept(Visitor *v){ 
 	v->visit(this); 
 }
-/*
-void Name::accept(Visitor *v){
+
+void Parameters::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void Names::accept(Visitor *v){
 	v->visit(this);
 }
-*/
+
 
 void NameID::accept(Visitor *v){
 	v->visit(this);

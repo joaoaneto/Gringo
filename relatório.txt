@@ -1,11 +1,11 @@
 Contagem de declarações de variável global
-int: 1
-float: 1
+int: 5
+float: 3
 double: 0
 Contagem de declarações de funçoes
 int: 0
 float: 0
 double: 0
-void: 1
+void: 2
 Número de Whiles
-While:1
+While:3

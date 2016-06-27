@@ -9,6 +9,24 @@ int Parameter::getType(){
 	return this->type;
 }
 
+//Parameters
+ParameterList *Parameters::getParameterList(){
+	return this->paramlist;
+}
+
+Parameter *Parameters::getParameter(){
+	return this->param;
+}
+
+//VarDeclarations
+VarDeclarationList *VarDeclarations::getVarDeclarationList(){
+	return this->vardeclarationlist;
+}
+
+VarDeclaration *VarDeclarations::getVarDeclaration(){
+	return this->vardeclaration;
+}
+
 //VarDeclaration
 int VarDeclaration::getType(){
 	return this->type;
@@ -17,16 +35,16 @@ int VarDeclaration::getType(){
 NameList *VarDeclaration::getNameList(){
 	return this->nameList;
 }
-/*
-//Name
-IdValue *Name::getValue(){
-	return this->idValue;
+
+//Names
+NameList *Names::getNameList(){
+	return this->namelist;
 }
 
-Assignment *Name::getAssignment(){
-	return this->assignment;
+Name *Names::getName(){
+	return this->name;
 }
-*/
+
 
 //NameID 
 
@@ -40,7 +58,7 @@ Assignment *NameAssignment::getAssignment(){
 	return this->assignment;
 }
 
-//FunctionDefinition
+//FuncDefinition
 int FuncDefinition::getType(){
 	return this->type;
 }
@@ -52,6 +70,25 @@ IdValue *FuncDefinition::getIdValue(){
 Block *FuncDefinition::getBlock(){
 	return this->block; 
 }
+
+//FuncDefinitions
+FuncDefinitionList *FuncDefinitions::getFuncDefinitionList(){
+	return this->funcdefinitionlist; 
+}
+
+FuncDefinition *FuncDefinitions::getFuncDefinition(){
+	return this->funcdefinition; 
+}
+
+//CommandsList
+Commands *CommandsList::getCommands(){
+	return this->commands;
+}
+
+Command *CommandsList::getCommand(){
+	return this->command;
+}
+
 
 //If
 Exp *If::getExp(){

@@ -88,9 +88,12 @@
 	class VarDeclarationList *vardeclarationlist;
 	class FuncDefinitionList *funcdefinitionlist;
 	class FuncDefinition *funcdefinition;
+	class FuncDefinitions *funcdefinitions;
 	class VarDeclaration *vardeclaration;
+	class VarDeclarations *vardeclarations;
 	class ParameterList *parList;
 	class Parameter *param;
+	class Parameters *params;
 	class Command *command;
 	class Value *value;
 	class Exp *exp;
@@ -119,11 +122,13 @@
 	class IfElseIf *ifelseif;
 	class If *ift;
 	class Commands *commandst;
+	class CommandsList *commandslist;
 	class IfElse *ifelset;
 	class While *wwhile;
 	class LValue *lvalue;
 	class NameList *namelist;
 	class Name *name;
+	class Names *names;
 	class NameID *nameID;
 	class NameAssignment *nameAss;
 
@@ -134,12 +139,15 @@
 %type<nameID> NameID;
 %type<nameAss> NameAssignment;
 %type<param> Parameter;
+%type<params> Parameters;
 %type<int_value> Type;
 %type<statementlist> StatementList;
 %type<vardeclarationlist> VarDeclarationList;
 %type<funcdefinitionlist> FuncDefinitionList;
 %type<funcdefinition> FuncDefinition;
+%type<funcdefinitions> FuncDefinitions;
 %type<vardeclaration> VarDeclaration;
+%type<vardeclarations> VarDeclarations;
 %type<command> Command;
 %type<char_value> CHAR;
 %type<int_value> LITERAL_INT;
@@ -173,11 +181,13 @@
 %type<ifelseif> IfElseIf;
 %type<ift> If;
 %type<commandst> Commands;
+%type<commandslist> CommandsList;
 %type<ifelset> IfElse;
 %type<wwhile> While;
 %type<lvalue> LValue;
 %type<namelist> NameList;
 %type<name> Name;
+%type<names> Names;
 %%
 
 Program : StatementList {
@@ -197,30 +207,37 @@ StatementList : VarDeclarationList {}
 ;
 
 VarDeclarationList : VarDeclaration {}
-					|VarDeclarationList VarDeclaration {}
+					|VarDeclarations {}
 ;
 
-VarDeclaration : Type NameList DOT_COMMA {$$ = new VarDeclaration($1, $2); }
+VarDeclarations: VarDeclarationList VarDeclaration { $$ = new VarDeclarations($1, $2); }
+;
+
+VarDeclaration : Type NameList DOT_COMMA { $$ = new VarDeclaration($1, $2); }
 ;
 
 NameList : Name {}
-		  |NameList COMMA Name {}
+		  |Names {}
+;
+
+Names: NameList COMMA Name { $$ = new Names($1, $3); }
 ;
 
 Name : NameID  {}
 	  |NameAssignment {}	
 ;
 
-NameID : IDENTIFIER {
-		printf("Entrou nameId\n");
-$$ = new NameID (new IdValue($1));}
+NameID : IDENTIFIER { $$ = new NameID (new IdValue($1)); }
 ;
 
-NameAssignment : Assignment {$$ = new NameAssignment ($1);}
+NameAssignment : Assignment {$$ = new NameAssignment ($1); }
 ;
 
 FuncDefinitionList : FuncDefinition {}
-					|FuncDefinition FuncDefinitionList {}
+					|FuncDefinitions {}
+;
+
+FuncDefinitions: FuncDefinitionList FuncDefinition { $$ = new FuncDefinitions($1, $2); }
 ;
 
 FuncDefinition : Type IDENTIFIER PAR_L ParameterList PAR_R Block { 
@@ -229,7 +246,10 @@ $$ = new FuncDefinition($1, new IdValue($2), $6); }
 ;	
 
 ParameterList : Parameter{}
-				|ParameterList COMMA Parameter {printf("Para meter list\n\n");}
+				|Parameters{}
+;
+
+Parameters: ParameterList COMMA Parameter { $$ = new Parameters($1, $3); }
 ;
 
 Parameter : Type IDENTIFIER{ printf("Entrou para meter\n");$$ = new Parameter(new IdValue($2), $1); }
@@ -239,12 +259,14 @@ Block : BRA_L VarDeclarationList Commands BRA_R { $$ = new Block($2, $3); }
 ;
 
 Commands : Command {}
-		  |Commands Command {}
+		  |CommandsList {}
 ;
 
-Command : IfElseIf {$$ = $1;}
-		|While {$$ = $1;}
-		|Exp DOT_COMMA {$$ = $1;}
+CommandsList : Commands Command { $$ = new CommandsList($1,$2); }
+
+Command : IfElseIf {}
+		|While {}
+		|Exp DOT_COMMA {}
 ;
 
 IfElseIf : If {$$ = $1;}

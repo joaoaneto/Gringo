@@ -12,9 +12,13 @@ using std::vector;
 class Visitor {
 public:
 	virtual void visit(VarDeclaration *) = 0;
+	virtual void visit(VarDeclarations *) = 0;
 	virtual void visit(FuncDefinition *) = 0;
+	virtual void visit(FuncDefinitions *) = 0;
+	virtual void visit(CommandsList *) = 0;
 	virtual void visit(Parameter *) = 0;
-	//virtual void visit(Name *) = 0;
+	virtual void visit(Parameters *) = 0;
+	virtual void visit(Names *) = 0;
 	virtual void visit(NameID *) = 0;
 	virtual void visit(NameAssignment *) = 0;
 	virtual void visit(Block *) = 0;
@@ -66,11 +70,17 @@ public:
 
 	void visit(VarDeclaration *vd);
 	
+	void visit(VarDeclarations *vds);
+	
 	void visit(FuncDefinition *fdef);
+	
+	void visit(FuncDefinitions *fdefs);
 
 	void visit(Parameter *par);
+	
+	void visit(Parameters *pars);
 
-	//void visit(Name *n);
+	void visit(Names *n);
 
 	void visit(NameID *nID);
 
@@ -83,6 +93,8 @@ public:
 	void visit(IdValue *v);
 	
 	void visit(Assignment *a);
+	
+	void visit(CommandsList *csl);
 
 	void visit(If *i);
 		

@@ -45,8 +45,6 @@ class Assignment;
 
 class Block;
 
-class VarDeclarationList;
-
 //class Abstrata NameList
 
 class Name : public NameList {
@@ -60,6 +58,17 @@ public:
 	Assignment *getAssignment();
 	void accept(Visitor *);
 */	
+};
+
+class Names : public NameList {
+private:
+	NameList *namelist;
+	Name *name;
+public:
+	Names(NameList *nl, Name *n) : namelist(nl), name(n){}
+	NameList *getNameList();
+	Name *getName();
+	void accept(Visitor *);	
 };
 
 class NameID : public Name {
@@ -92,6 +101,17 @@ public:
 	void accept(Visitor *);
 };
 
+class VarDeclarations : public VarDeclarationList {
+private:
+	VarDeclarationList *vardeclarationlist;
+	VarDeclaration *vardeclaration;
+public:
+	VarDeclarations(VarDeclarationList *vdl, VarDeclaration *vd) : vardeclarationlist(vdl), vardeclaration(vd){}
+	VarDeclarationList *getVarDeclarationList();
+	VarDeclaration *getVarDeclaration();
+	void accept(Visitor *);
+};
+
 class FuncDefinition : public FuncDefinitionList {
 private:
 	int type;
@@ -103,11 +123,33 @@ public:
 	IdValue *getIdValue();
 	Block *getBlock();
 	void accept(Visitor *);
-};  
+}; 
 
-class ParameterList : public FuncDefinition{};
+class FuncDefinitions : public FuncDefinitionList {
+private:
+	FuncDefinitionList *funcdefinitionlist;
+	FuncDefinition *funcdefinition;
+public:
+	FuncDefinitions(FuncDefinitionList *fdl, FuncDefinition *fd) : funcdefinitionlist(fdl), funcdefinition(fd){}
+	FuncDefinitionList *getFuncDefinitionList();
+	FuncDefinition *getFuncDefinition();
+	void accept(Visitor *);	
+};
+
+class ParameterList : public Node {};
 
 class Command : public Commands {};
+
+class CommandsList : public Commands {
+private:
+	Commands *commands;
+	Command *command;
+public:
+	CommandsList(Commands *cs, Command *c) : commands(cs), command(c){}
+	Commands *getCommands();
+	Command *getCommand();
+	void accept(Visitor *);	
+};
 
 class IfElseIf : public Command{};
 
@@ -157,6 +199,17 @@ public:
 	IdValue *getIdValue();
 	int getType();
 	void accept(Visitor *);
+};
+
+class Parameters : public ParameterList {
+private:
+	ParameterList *paramlist;
+	Parameter *param;
+public:
+	Parameters(ParameterList *pl, Parameter *p) : paramlist(pl), param(p){}
+	ParameterList *getParameterList();
+	Parameter *getParameter();
+	void accept(Visitor *);	
 };
 
 class If: public IfElseIf{
