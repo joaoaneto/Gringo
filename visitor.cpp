@@ -18,6 +18,10 @@ int Operations::getCountIfElse(){
 	return this->countIfElse;
 }
 
+int Operations::getCountCall(){
+	return this->countCall;
+}
+
 void Operations::incLaces(){
 	++this->countLaces;
 }
@@ -29,6 +33,11 @@ struct counterVar Operations::getGlobalCount(){
 struct counterFunc Operations::getGlobalCountFunc(){
 	return this->GlobalCountFunc;
 };
+
+vector<int> &Operations::getStack(){
+	return stackCounterVar_;
+}
+
 
 void Operations::visit(IntValue *v){ 
 	stack_.push_back(v); 
@@ -89,6 +98,26 @@ void Operations::visit(IdValue *v){
 	}else{
 		stack_.push_back(t[v->getValue()]);
 	}
+
+	stackcounter++;
+}
+
+void Operations::visit(IdFunction *id){
+	Context::getContext().getVector().push_back(id->getIdFunction());	
+	printf("%d\n", Context::getContext().getVector().size());
+}
+
+void Operations::visit(FunctionCall *fcall){
+	string teste = fcall->getIdFunction()->getIdFunction();
+	vector<string> stackTeste_ = Context::getContext().getVector();
+	int i;
+
+	for(i = 0; i < stackTeste_.size(); i++){
+		if(teste == stackTeste_[i]){
+			++countCall;
+			break;
+		}		
+	}
 }
 
 void Operations::visit(Assignment *a){
@@ -100,6 +129,9 @@ void Operations::visit(Assignment *a){
 	stack_.pop_back();
 	t[valueId->getValue()] = stack_.back();
 	stack_.pop_back();
+
+	printf("Quantidade: %d\n", t.size());
+
 }
 
 void Operations::visit(BinExpPlus *bep){
@@ -600,10 +632,11 @@ void Operations::visit(VarDeclarations *vds){
 	vds->getVarDeclaration()->accept(this);
 }
 
+/*
 void Operations::visit(FuncDefinition *fdef){
 	int newType = fdef->getType();
 	
-	fdef->getIdValue()->accept(this);
+	fdef->getIdFunction()->accept(this);
 	fdef->getBlock()->accept(this);
 
 	if(newType == 1){
@@ -618,6 +651,52 @@ void Operations::visit(FuncDefinition *fdef){
 	
 	GlobalCountFunc.count = 0;
 }
+*/
+
+void Operations::visit(FunctionPar *fpar){
+	int newType = fpar->getType();
+	
+	fpar->getIdFunction()->accept(this);
+	fpar->getBlock()->accept(this);
+
+	if(newType == 1){
+		GlobalCountFunc.countInt++;
+	} else if(newType == 2){
+		GlobalCountFunc.countFloat++;
+	} else if(newType == 3){
+		GlobalCountFunc.countDouble++;
+	} else if(newType == 0){
+		GlobalCountFunc.countVoid++;
+	}
+	
+	GlobalCountFunc.count = 0;
+
+	printf("%d\n", Context::getContext().getAtualScope()->getTable().size());
+}
+
+void Operations::visit(FunctionNonPar *fnp){
+	int newType = fnp->getType();
+	
+	fnp->getIdFunction()->accept(this);
+	fnp->getBlock()->accept(this);
+
+	if(newType == 1){
+		GlobalCountFunc.countInt++;
+	} else if(newType == 2){
+		GlobalCountFunc.countFloat++;
+	} else if(newType == 3){
+		GlobalCountFunc.countDouble++;
+	} else if(newType == 0){
+		GlobalCountFunc.countVoid++;
+	}
+	
+	GlobalCountFunc.count = 0;
+
+	stackCounterVar_.push_back(stackcounter);
+	stackcounter = 0;
+}
+
+
 
 void Operations::visit(FuncDefinitions *fdefs){
 	fdefs->getFuncDefinitionList()->accept(this);
@@ -716,7 +795,20 @@ void BlockVar::accept(Visitor *v){
 	v->visit(this); 
 }
 
-void FuncDefinition::accept(Visitor *v){ 
+/*void FuncDefinition::accept(Visitor *v){ 
+	v->visit(this); 
+}
+*/
+
+void FunctionPar::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void FunctionNonPar::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void FunctionCall::accept(Visitor *v){ 
 	v->visit(this); 
 }
 
@@ -814,6 +906,10 @@ void DoubleValue::accept(Visitor *v){
 }
 
 void IdValue::accept(Visitor *v){ 
+	v->visit(this); 
+}
+
+void IdFunction::accept(Visitor *v){ 
 	v->visit(this); 
 }
 

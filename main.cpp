@@ -24,7 +24,7 @@ int main(int argc, char ** argv){
 	fprintf(relatorio, "float: %d\n", (op->getGlobalCount()).countFloat);
 	fprintf(relatorio, "double: %d\n", (op->getGlobalCount()).countDouble);
 
-	fprintf(relatorio, "Contagem de declarações de funçoes\n");
+	fprintf(relatorio, "Contagem de definições de funçoes\n");
 	fprintf(relatorio, "int: %d\n", (op->getGlobalCountFunc()).countInt);
 	fprintf(relatorio, "float: %d\n", (op->getGlobalCountFunc()).countFloat);
 	fprintf(relatorio, "double: %d\n", (op->getGlobalCountFunc()).countDouble);
@@ -35,6 +35,15 @@ int main(int argc, char ** argv){
 	fprintf(relatorio, "Número de If's: %d\n",op->getCountIf());	
 
 	fprintf(relatorio, "Número de IfElse's: %d\n",op->getCountIfElse());	
+
+	fprintf(relatorio, "Número de chamadas de funções : %d\n",op->getCountCall());	
+
+	fprintf(relatorio, "Número de declarações de variáveis em cada função\n");
+	for(int i =0; i<Context::getContext().getVector().size(); i++){
+		string xablau = Context::getContext().getVector()[i];
+		int oudre = op->getStack()[i];
+		fprintf(relatorio, " %d\n", oudre);
+	}
 
 	fclose(relatorio);
 

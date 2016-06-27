@@ -32,7 +32,6 @@
 
 %%
 
-"main"		{ return MAIN;}
 "char"		{ return CHAR; }
 "int"		{ yylval.type = 1;return INT;}
 "float"		{ yylval.type = 2;return FLOAT; }

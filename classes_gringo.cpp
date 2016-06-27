@@ -58,17 +58,59 @@ Assignment *NameAssignment::getAssignment(){
 	return this->assignment;
 }
 
+/*
 //FuncDefinition
 int FuncDefinition::getType(){
 	return this->type;
 }
 
-IdValue *FuncDefinition::getIdValue(){
-	return this->idValue; 
+Id *FuncDefinition::getIdFunction(){
+	return this->idFunction; 
 }
 
 Block *FuncDefinition::getBlock(){
 	return this->block; 
+}
+*/
+
+//FunctionPar
+
+int FunctionPar::getType(){
+	return this->type;
+}
+
+IdFunction *FunctionPar::getIdFunction(){
+	return this->idFunction; 
+}
+
+Block *FunctionPar::getBlock(){
+	return this->block; 
+}
+
+//FunctionNonPar 
+
+int FunctionNonPar::getType(){
+	return this->type;
+}
+
+IdFunction *FunctionNonPar::getIdFunction(){
+	return this->idFunction; 
+}
+
+Block *FunctionNonPar::getBlock(){
+	return this->block; 
+}
+
+//IdFunction
+
+string IdFunction::getIdFunction(){ 
+	return this->idFunction; 
+}
+
+//FunctionCall
+
+IdFunction *FunctionCall::getIdFunction(){
+	return this->idFunction;
 }
 
 //FuncDefinitions
@@ -327,6 +369,7 @@ Scope::Scope(){
 Scope::~Scope(){
 	Context::getContext().setAtualScope(father_);
 }
+
 /*
 
 Value *Scope::getSymbol(string name){
@@ -364,6 +407,10 @@ void Context::setProgram(Program *prog){
 
 Program *Context::getProgram(){
 	return this->program;
+}
+
+vector<string> &Context::getVector(){
+	return this->stackFunc_;
 }
 
 Context *Context::instance = NULL;

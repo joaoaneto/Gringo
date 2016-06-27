@@ -89,6 +89,9 @@
 	class FuncDefinitionList *funcdefinitionlist;
 	class FuncDefinition *funcdefinition;
 	class FuncDefinitions *funcdefinitions;
+	class FunctionPar *funcPar;
+	class FunctionCall *funcCall;
+	class FunctionNonPar *funcNonPar;
 	class VarDeclaration *vardeclaration;
 	class VarDeclarations *vardeclarations;
 	class ParameterList *parList;
@@ -149,6 +152,9 @@
 %type<funcdefinitionlist> FuncDefinitionList;
 %type<funcdefinition> FuncDefinition;
 %type<funcdefinitions> FuncDefinitions;
+%type<funcPar> FunctionPar;
+%type<funcNonPar> FunctionNonPar;
+%type<funcCall> FunctionCall;
 %type<vardeclaration> VarDeclaration;
 %type<vardeclarations> VarDeclarations;
 %type<command> Command;
@@ -247,8 +253,14 @@ FuncDefinitionList : FuncDefinition {}
 FuncDefinitions: FuncDefinitionList FuncDefinition { $$ = new FuncDefinitions($1, $2); }
 ;
 
-FuncDefinition : Type IDENTIFIER PAR_L ParameterList PAR_R Block { $$ = new FuncDefinition($1, new IdValue($2), $6); }
+FuncDefinition : FunctionPar {}
+				|FunctionNonPar {}
 ;	
+
+FunctionPar : Type IDENTIFIER PAR_L ParameterList PAR_R Block { $$ = new FunctionPar($1, new IdFunction($2), $6); }
+;
+
+FunctionNonPar : Type IDENTIFIER PAR_L PAR_R Block { $$ = new FunctionNonPar($1, new IdFunction($2), $5); }
 
 ParameterList : Parameter{}
 				|Parameters{}
@@ -282,6 +294,12 @@ CommandsList : Commands Command { $$ = new CommandsList($1,$2); }
 Command : IfElseIf {}
 		|While {}
 		|Exp DOT_COMMA {}
+		|FunctionCall DOT_COMMA {}
+;
+
+FunctionCall : IDENTIFIER PAR_L PAR_R {
+	$$ = new FunctionCall(new IdFunction($1)); 
+}
 ;
 
 IfElseIf : If {$$ = $1;}

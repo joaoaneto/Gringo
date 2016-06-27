@@ -4,6 +4,7 @@
 #include <map>
 #include <string.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -145,18 +146,55 @@ public:
 	void accept(Visitor *);
 };
 
+class IdFunction: public Node {
+private:
+	string idFunction;
+public:
+	IdFunction(string idfunction):idFunction(idfunction){} //construtor
+	string getIdFunction();
+	void accept(Visitor *);
+};
+
 class FuncDefinition : public FuncDefinitionList {
+/*
 private:
 	int type;
-	IdValue *idValue;
+	IdFunction *idFunction;
 	Block *block;
 public:
-	FuncDefinition(int t, IdValue *id, Block *b) : type(t), idValue(id), block(b){}
+	FuncDefinition(int t, IdFunction *idF, Block *b) : type(t), idFunction(idF), block(b){}
 	int getType();
-	IdValue *getIdValue();
+	IdFunction *getIdFunction();
 	Block *getBlock();
 	void accept(Visitor *);
-}; 
+*/	
+};
+
+class FunctionPar : public FuncDefinition {
+private:
+	int type;
+	IdFunction *idFunction;
+	Block *block;
+public:
+	FunctionPar(int t, IdFunction *idF, Block *b) : type(t), idFunction(idF), block(b){}
+	int getType();
+	IdFunction *getIdFunction();
+	Block *getBlock();
+	void accept(Visitor *);
+};
+
+class FunctionNonPar : public FuncDefinition {
+private:
+	int type;
+	IdFunction *idFunction;
+	Block *block;
+public:
+	FunctionNonPar(int t, IdFunction *idF, Block *b) : type(t), idFunction(idF), block(b){}
+	int getType();
+	IdFunction *getIdFunction();
+	Block *getBlock();
+	void accept(Visitor *);
+};
 
 class FuncDefinitions : public FuncDefinitionList {
 private:
@@ -172,6 +210,15 @@ public:
 class ParameterList : public Node {};
 
 class Command : public Commands {};
+
+class FunctionCall : public Command {
+private:
+	IdFunction *idFunction;
+public:
+	FunctionCall(IdFunction *idFunc) : idFunction(idFunc) {}	
+	IdFunction *getIdFunction();
+	void accept(Visitor *);
+};
 
 class CommandsList : public Commands {
 private:
@@ -487,10 +534,13 @@ private:
 	static Context *instance;
 	Scope *atual_;
 	Program *program;
-	Context(){} //construtor	
+	Context(){} //construtor
+	vector<string> stackFunc_;
 public:
+	vector<string> &getVector();
 	//typedef map<string, Value *> TypeTable;
 	static Context &getContext();
+
 	Scope *getAtualScope();
 	void setAtualScope(Scope *chupa_sandy);
 	//TypeTable &getTable();

@@ -20,6 +20,7 @@ void feijis(int b){
 	int a = 0;
 	while(1){
 		int b=7;
+		int f=24;
 		2+2;
 	}
 }
@@ -29,4 +30,12 @@ int neto(int b){
 		int matheus = 2;
 		2+2;
 	}
+}
+
+double matheu(int a){
+	double oudre = 1;
+}
+
+int main(){
+	matheu();
 }
