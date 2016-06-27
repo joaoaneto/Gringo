@@ -53,7 +53,6 @@ void Operations::visit(IfElse *e){
 void Operations::visit(While *w){
 	w->While::getExp()->accept(this);
 	w->While::getBlock()->accept(this);
-	printf("LALALAL\n\n");	
 
 	IntValue *v1 = static_cast<IntValue *>(stack_.back());
 	++Operations::countLaces;
@@ -65,11 +64,7 @@ void Operations::visit(While *w){
 			break;
 		}
 		++a;
-		printf("Aqui é While msm %d\n", a);
-		
 	}
-
-	printf("Valor aruah auu while eoq: %d\n\n", v1->getValue());
 }
 
 void Operations::visit(IdValue *v){
@@ -85,7 +80,6 @@ void Operations::visit(IdValue *v){
 void Operations::visit(Assignment *a){
 	a->Assignment::getExp()->accept(this);
 	a->Assignment::getIdValue()->accept(this);
-	printf("Eh rolaaaa\n\n");
 	Context::TypeTable &t = Context::getContext().getTable();
 	
 	IdValue *valueId = static_cast <IdValue *> (stack_.back());
@@ -124,8 +118,6 @@ void Operations::visit(BinExpPlus *bep){
 		stack_.push_back(new DoubleValue(v1->getValue() + v2->getValue()));
 	}
 	
-	printf("Resultado: %d\n", static_cast<IntValue*>(stack_.back())->getValue());
-
 	delete value1;
 	delete value2;
 }
@@ -474,7 +466,6 @@ void Operations::visit(FactorMul *fm){
 		stack_.push_back(new DoubleValue(v1->getValue() * v2->getValue()));
 	}
 	
-	printf("Resultado: %d\n", static_cast<IntValue*>(stack_.back())->getValue());
 
 	delete value1;
 	delete value2;

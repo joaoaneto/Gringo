@@ -240,9 +240,7 @@ FuncDefinitionList : FuncDefinition {}
 FuncDefinitions: FuncDefinitionList FuncDefinition { $$ = new FuncDefinitions($1, $2); }
 ;
 
-FuncDefinition : Type IDENTIFIER PAR_L ParameterList PAR_R Block { 
-		printf("Entrou func\n");
-$$ = new FuncDefinition($1, new IdValue($2), $6); }
+FuncDefinition : Type IDENTIFIER PAR_L ParameterList PAR_R Block { $$ = new FuncDefinition($1, new IdValue($2), $6); }
 ;	
 
 ParameterList : Parameter{}
@@ -252,7 +250,7 @@ ParameterList : Parameter{}
 Parameters: ParameterList COMMA Parameter { $$ = new Parameters($1, $3); }
 ;
 
-Parameter : Type IDENTIFIER{ printf("Entrou para meter\n");$$ = new Parameter(new IdValue($2), $1); }
+Parameter : Type IDENTIFIER{ $$ = new Parameter(new IdValue($2), $1); }
 ;	 
 
 Block : BRA_L VarDeclarationList Commands BRA_R { $$ = new Block($2, $3); }
@@ -284,7 +282,6 @@ IfElse : IF PAR_L Exp PAR_R Block ELSE Block {
 ;
 
 While : WHILE PAR_L Exp PAR_R Block {
-		printf("Entrou While\n");
 		$$ = new While($3, $5);
 	}
 ;
