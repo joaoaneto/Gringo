@@ -21,15 +21,17 @@ Escopo: global e local
 
 ## Como rodar: 
 
-make
+> make
 
-./gringo teste.txt
+> ./gringo teste.txt
 
 ## Créditos:
 
 Professor: Thiago Farias
 
-Alunos: Lucas Feijó
-		Matheus Tigresa
-		Silvano Neto
-		João Neto
+Alunos:
+
+- Lucas Feijó
+- Matheus Tigresa
+- Silvano Neto
+- João Neto
