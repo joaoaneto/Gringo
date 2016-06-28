@@ -45,36 +45,17 @@ Name *Names::getName(){
 	return this->name;
 }
 
-
 //NameID 
-
 IdValue *NameID::getIdValue(){
 	return this->idValue;
 }
 
 //NameAssignment
-
 Assignment *NameAssignment::getAssignment(){
 	return this->assignment;
 }
 
-/*
-//FuncDefinition
-int FuncDefinition::getType(){
-	return this->type;
-}
-
-Id *FuncDefinition::getIdFunction(){
-	return this->idFunction; 
-}
-
-Block *FuncDefinition::getBlock(){
-	return this->block; 
-}
-*/
-
 //FunctionPar
-
 int FunctionPar::getType(){
 	return this->type;
 }
@@ -88,7 +69,6 @@ Block *FunctionPar::getBlock(){
 }
 
 //FunctionNonPar 
-
 int FunctionNonPar::getType(){
 	return this->type;
 }
@@ -102,13 +82,11 @@ Block *FunctionNonPar::getBlock(){
 }
 
 //IdFunction
-
 string IdFunction::getIdFunction(){ 
 	return this->idFunction; 
 }
 
 //FunctionCall
-
 IdFunction *FunctionCall::getIdFunction(){
 	return this->idFunction;
 }
@@ -130,7 +108,6 @@ Commands *CommandsList::getCommands(){
 Command *CommandsList::getCommand(){
 	return this->command;
 }
-
 
 //If
 Exp *If::getExp(){
@@ -163,19 +140,7 @@ Block *While::getBlock(){
 	return this->block;
 }
 
-/*
-//Block
-VarDeclarationList *Block::getVarDecList(){
-	return this->varDecList;
-}
-
-Commands *Block::getCommands(){
-	return this->commands;
-}
-*/
-
 //BlockVarCommands
-
 VarDeclarationList *BlockVarCommands::getVarDecList(){
 	return this->varDecList;
 }
@@ -185,13 +150,11 @@ Commands *BlockVarCommands::getCommands(){
 }
 
 //BlockCommands
-
 Commands *BlockCommands::getCommands(){
 	return this->commands;
 }
 
 //BlockVar
-
 VarDeclarationList *BlockVar::getVarDecList(){
 	return this->varDecList;
 }
@@ -215,7 +178,6 @@ Factor *BinExpMinus::getFactor(){
 }
 
 //BinExpLessThen
-
 LValue *BinExpLessThen::getLValue(){
 	return this->lValue;
 }
@@ -225,7 +187,6 @@ Factor *BinExpLessThen::getFactor(){
 }
 
 //BinExpLessEqualThen
-
 LValue *BinExpLessEqualThen::getLValue(){
 	return this->lValue;
 }
@@ -235,7 +196,6 @@ Factor *BinExpLessEqualThen::getFactor(){
 }
 
 //BinExpGreaterThen
-
 LValue *BinExpGreaterThen::getLValue(){
 	return this->lValue;
 }
@@ -245,7 +205,6 @@ Factor *BinExpGreaterThen::getFactor(){
 }
 
 //BinExpGreaterEqualThen
-
 LValue *BinExpGreaterEqualThen::getLValue(){
 	return this->lValue;
 }
@@ -255,7 +214,6 @@ Factor *BinExpGreaterEqualThen::getFactor(){
 }
 
 //BinExpEqual
-
 LValue *BinExpEqual::getLValue(){
 	return this->lValue;
 }
@@ -265,7 +223,6 @@ Factor *BinExpEqual::getFactor(){
 }
 
 //BinExpDiff
-
 LValue *BinExpDiff::getLValue(){
 	return this->lValue;
 }
@@ -369,20 +326,6 @@ Scope::Scope(){
 Scope::~Scope(){
 	Context::getContext().setAtualScope(father_);
 }
-
-/*
-
-Value *Scope::getSymbol(string name){
-	map<stringm Valor*>::iterator it;
-	it = symbolTable_.find(name);
-		if(it == symbolTable_.end()){
-			if(father_) return father_->getSymbol(name);
-			else return NULL;
-		}else{
-			return it->second();	
-		}
-}			
-*/
 
 //Context
 Context &Context::getContext(){

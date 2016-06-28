@@ -27,18 +27,7 @@ class FuncDefinitionList : public StatementList {};
 
 class Commands;
 
-class Block : public Node {
-/*
-private:
-	VarDeclarationList *varDecList;
-	Commands *commands;
-public:
-	Block(VarDeclarationList *varList, Commands *comms) : varDecList(varList), commands(comms){}
-	VarDeclarationList *getVarDecList();
-	Commands *getCommands();
-	void accept(Visitor *);
-*/	
-};
+class Block : public Node {};
 
 class BlockVarCommands : public Block {
 private:
@@ -58,7 +47,6 @@ public:
 	BlockCommands(Commands *comms) : commands(comms){}
 	Commands *getCommands();
 	void accept(Visitor *);
-
 };
 
 class BlockVar: public Block {
@@ -70,7 +58,6 @@ public:
 	void accept(Visitor *);
 };
 
-
 class Commands : public Node {};
 
 class IdValue;
@@ -79,20 +66,7 @@ class Assignment;
 
 class Block;
 
-//class Abstrata NameList
-
-class Name : public NameList {
-/*
-private:
-	IdValue *idValue;
-	Assignment *assignment;
-public:
-	Name(class IdValue *id, class Assignment *a) : idValue(id), assignment(a){}
-	IdValue *getValue();
-	Assignment *getAssignment();
-	void accept(Visitor *);
-*/	
-};
+class Name : public NameList {};
 
 class Names : public NameList {
 private:
@@ -112,7 +86,6 @@ public:
 	NameID(class IdValue *id) : idValue(id){}
 	IdValue *getIdValue();
 	void accept(Visitor *);
-
 };
 
 class NameAssignment : public Name {
@@ -155,20 +128,7 @@ public:
 	void accept(Visitor *);
 };
 
-class FuncDefinition : public FuncDefinitionList {
-/*
-private:
-	int type;
-	IdFunction *idFunction;
-	Block *block;
-public:
-	FuncDefinition(int t, IdFunction *idF, Block *b) : type(t), idFunction(idF), block(b){}
-	int getType();
-	IdFunction *getIdFunction();
-	Block *getBlock();
-	void accept(Visitor *);
-*/	
-};
+class FuncDefinition : public FuncDefinitionList {};
 
 class FunctionPar : public FuncDefinition {
 private:
@@ -514,7 +474,6 @@ public:
 	void accept(Visitor *);
 };
 
-
 class Scope {
 private:
 	Scope *father_;
@@ -538,18 +497,12 @@ private:
 	vector<string> stackFunc_;
 public:
 	vector<string> &getVector();
-	//typedef map<string, Value *> TypeTable;
 	static Context &getContext();
 
 	Scope *getAtualScope();
 	void setAtualScope(Scope *chupa_sandy);
-	//TypeTable &getTable();
 	void setProgram(Program *prog);
 	Program *getProgram();
-/*	
-private:
-	TypeTable table;	
-*/	
 };
 
 #endif

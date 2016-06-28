@@ -51,7 +51,7 @@
 %token COMMA;
 %token DOT;
 %token TWO_DOTS;
-%token DOT_COMMA;
+%token SEMICOLON;
 %token PAR_L;
 %token PAR_R;
 %token COL_L;
@@ -226,7 +226,7 @@ VarDeclarationList : VarDeclaration {}
 VarDeclarations: VarDeclarationList VarDeclaration { $$ = new VarDeclarations($1, $2); }
 ;
 
-VarDeclaration : Type NameList DOT_COMMA { $$ = new VarDeclaration($1, $2); }
+VarDeclaration : Type NameList SEMICOLON { $$ = new VarDeclaration($1, $2); }
 ;
 
 NameList : Name {}
@@ -262,14 +262,14 @@ FunctionPar : Type IDENTIFIER PAR_L ParameterList PAR_R Block { $$ = new Functio
 
 FunctionNonPar : Type IDENTIFIER PAR_L PAR_R Block { $$ = new FunctionNonPar($1, new IdFunction($2), $5); }
 
-ParameterList : Parameter{}
-				|Parameters{}
+ParameterList : Parameter {}
+				|Parameters {}
 ;
 
 Parameters: ParameterList COMMA Parameter { $$ = new Parameters($1, $3); }
 ;
 
-Parameter : Type IDENTIFIER{ $$ = new Parameter(new IdValue($2), $1); }
+Parameter : Type IDENTIFIER { $$ = new Parameter(new IdValue($2), $1); }
 ;	 
 
 Block : BlockVarCommands {}
@@ -277,13 +277,13 @@ Block : BlockVarCommands {}
 	   |BlockVar {}
 ;
 
-BlockVarCommands : BRA_L VarDeclarationList Commands BRA_R {$$ = new BlockVarCommands($2,$3);}
+BlockVarCommands : BRA_L VarDeclarationList Commands BRA_R { $$ = new BlockVarCommands($2,$3); }
 ;
 
-BlockCommands : BRA_L Commands BRA_R {$$ = new BlockCommands($2);}
+BlockCommands : BRA_L Commands BRA_R { $$ = new BlockCommands($2); }
 ;
 
-BlockVar : BRA_L VarDeclarationList BRA_R {$$ = new BlockVar($2);}
+BlockVar : BRA_L VarDeclarationList BRA_R { $$ = new BlockVar($2); }
 
 Commands : Command {}
 		  |CommandsList {}
@@ -292,62 +292,52 @@ Commands : Command {}
 CommandsList : Commands Command { $$ = new CommandsList($1,$2); }
 
 Command : IfElseIf {}
-		|While {}
-		|Exp DOT_COMMA {}
-		|FunctionCall DOT_COMMA {}
+		 |While {}
+		 |Exp SEMICOLON {}
+		 |FunctionCall SEMICOLON {}
 ;
 
-FunctionCall : IDENTIFIER PAR_L PAR_R {
-	$$ = new FunctionCall(new IdFunction($1)); 
-}
+FunctionCall : IDENTIFIER PAR_L PAR_R {	$$ = new FunctionCall(new IdFunction($1)); }
 ;
 
 IfElseIf : If {$$ = $1;}
-		|IfElse {$$ = $1;}
+		  |IfElse {$$ = $1;}
 ;
 
-If : IF PAR_L Exp PAR_R Block {
-		$$ = new If($3, $5);
-	}
+If : IF PAR_L Exp PAR_R Block { $$ = new If($3, $5); }
 ; 
 
-IfElse : IF PAR_L Exp PAR_R Block ELSE Block {
-		$$ = new IfElse($3,$5,$7);
-	}
+IfElse : IF PAR_L Exp PAR_R Block ELSE Block { $$ = new IfElse($3,$5,$7); }
 ;
 
-While : WHILE PAR_L Exp PAR_R Block {
-		$$ = new While($3, $5);
-	}
+While : WHILE PAR_L Exp PAR_R Block { $$ = new While($3, $5); }
 ;
 
 Exp: LValue {$$ = $1;}
-	| Assignment {$$ = $1;}
+	|Assignment {$$ = $1;}
 ;
 
 LValue: BinExpEqualDiff { $$ = $1; }
-	|BinExpLessGreater { $$ = $1; }
-	|BinExpPlusMinus { $$ = $1; }
-	|Factor {$$ = $1;}
+	   |BinExpLessGreater { $$ = $1; }
+	   |BinExpPlusMinus { $$ = $1; }
+	   |Factor { $$ = $1; }
 ;	
 
 BinExpEqualDiff: BinExpEqual { $$ = $1; }
 				|BinExpDiff { $$ = $1; }
 ;
 
-BinExpLessGreater: BinExpLessThen {$$ = $1;}
-				|BinExpLessEqualThen {$$ = $1;}
-				|BinExpGreaterThen {$$ = $1;}
-				|BinExpGreaterEqualThen {$$ = $1;}
+BinExpLessGreater: BinExpLessThen { $$ = $1; }
+				  |BinExpLessEqualThen { $$ = $1; }
+				  |BinExpGreaterThen { $$ = $1; }
+				  |BinExpGreaterEqualThen { $$ = $1; }
 ;
 
-BinExpPlusMinus: BinExpPlus {$$ = $1;}
-				|BinExpMinus {$$ = $1;}
+BinExpPlusMinus: BinExpPlus { $$ = $1; }
+				|BinExpMinus { $$ = $1; }
 ;
 
-BinExpPlus : LValue ADD Factor {
-		$$ = new BinExpPlus($1,$3);
-	}
+BinExpPlus : LValue ADD Factor { $$ = new BinExpPlus($1,$3); }
 ;  
 
 BinExpMinus : LValue SUBTRACT Factor {
@@ -390,7 +380,7 @@ Factor : FactorMul { $$ = $1; }
 		|UnExp { $$ = $1; }
 ;
 
-FactorMul : Factor MUL UnExp{
+FactorMul : Factor MUL UnExp {
 		$$ = new FactorMul($1, $3);
 	}
 ;		
@@ -401,11 +391,11 @@ FactorDiv : Factor DIV UnExp {
 ;
 
 UnExp : UnExpPlus { $$ = $1; }
-        |UnExpMinus { $$ = $1; }
-				|UnExpLog { $$ = $1; }
-				|UnExpExp { $$ = $1; }
-				|LparExpRpar { $$ = $1; }
-				|Value { $$ = $1; }
+       |UnExpMinus { $$ = $1; }
+	   |UnExpLog { $$ = $1; }
+	   |UnExpExp { $$ = $1; }
+	   |LparExpRpar { $$ = $1; }
+	   |Value { $$ = $1; }
 ;
 
 UnExpPlus : ADD Value{

@@ -60,7 +60,7 @@
 ","		{ return COMMA; }
 "."		{ return DOT; }
 ":"		{ return TWO_DOTS; }
-";"		{ return DOT_COMMA; }
+";"		{ return SEMICOLON; }
 "("		{ return PAR_L; }
 ")"		{ return PAR_R; }
 "["		{ return COL_L; }

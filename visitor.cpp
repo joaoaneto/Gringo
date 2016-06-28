@@ -1,7 +1,6 @@
 #include "visitor.hpp"
 
 //Operations
-
 Operations::Operations(){
 	countIf = countFunc = countLaces = 	GlobalCountVar.count = GlobalCountVar.countInt = GlobalCountVar.countFloat = GlobalCountVar.countDouble = GlobalCountFunc.count = GlobalCountFunc.countDouble = GlobalCountFunc.countFloat = GlobalCountFunc.countInt = GlobalCountFunc.countVoid = 0;
 };
@@ -38,7 +37,6 @@ vector<int> &Operations::getStack(){
 	return stackCounterVar_;
 }
 
-
 void Operations::visit(IntValue *v){ 
 	stack_.push_back(v); 
 }
@@ -55,7 +53,6 @@ void Operations::visit(If *i){
 	if(v1->getValue()){
 		i->If::getBlock()->accept(this);
 	}
-
 }
 
 void Operations::visit(IfElse *e){
@@ -70,7 +67,6 @@ void Operations::visit(IfElse *e){
 	}else{
 		e->IfElse::getBlock2()->accept(this);
 	}
-
 }
 
 void Operations::visit(While *w){
@@ -81,8 +77,7 @@ void Operations::visit(While *w){
 	++Operations::countLaces;
 
 	int a = 0;
-	while(v1->getValue()){
-		
+	while(v1->getValue()){		
 		if(a == 2){
 			break;
 		}
@@ -98,7 +93,6 @@ void Operations::visit(IdValue *v){
 	}else{
 		stack_.push_back(t[v->getValue()]);
 	}
-
 	stackcounter++;
 }
 
@@ -632,27 +626,6 @@ void Operations::visit(VarDeclarations *vds){
 	vds->getVarDeclaration()->accept(this);
 }
 
-/*
-void Operations::visit(FuncDefinition *fdef){
-	int newType = fdef->getType();
-	
-	fdef->getIdFunction()->accept(this);
-	fdef->getBlock()->accept(this);
-
-	if(newType == 1){
-		GlobalCountFunc.countInt++;
-	} else if(newType == 2){
-		GlobalCountFunc.countFloat++;
-	} else if(newType == 3){
-		GlobalCountFunc.countDouble++;
-	} else if(newType == 0){
-		GlobalCountFunc.countVoid++;
-	}
-	
-	GlobalCountFunc.count = 0;
-}
-*/
-
 void Operations::visit(FunctionPar *fpar){
 	int newType = fpar->getType();
 	
@@ -696,8 +669,6 @@ void Operations::visit(FunctionNonPar *fnp){
 	stackcounter = 0;
 }
 
-
-
 void Operations::visit(FuncDefinitions *fdefs){
 	fdefs->getFuncDefinitionList()->accept(this);
 	fdefs->getFuncDefinition()->accept(this);
@@ -717,12 +688,10 @@ void Operations::visit(Parameters *pars){
 	pars->getParameter()->accept(this);
 }
 
-
 void Operations::visit(Names *n){
 	n->getNameList()->accept(this);
 	n->getName()->accept(this);
 }
-
 
 void Operations::visit(NameID *nID){
 	nID->getIdValue()->accept(this);
@@ -735,14 +704,6 @@ void Operations::visit(NameAssignment *n){
 
 	GlobalCountVar.count++;
 }
-
-/*
-void Operations::visit(Block *b){
-	b->getVarDecList()->accept(this);
-	b->getCommands()->accept(this);
-
-}
-*/
 
 void Operations::visit(BlockVarCommands *bvc){
 	Scope *scopeVarCommands = new Scope();
@@ -769,7 +730,6 @@ void Operations::visit(BlockVar *bv){
 }
 
 //Accepts
-
 void VarDeclaration::accept(Visitor *v){ 
 	v->visit(this); 
 }
@@ -777,11 +737,6 @@ void VarDeclaration::accept(Visitor *v){
 void VarDeclarations::accept(Visitor *v){ 
 	v->visit(this); 
 }
-/*
-void Block::accept(Visitor *v){ 
-	v->visit(this); 
-}
-*/
 
 void BlockVarCommands::accept(Visitor *v){ 
 	v->visit(this); 
@@ -794,11 +749,6 @@ void BlockCommands::accept(Visitor *v){
 void BlockVar::accept(Visitor *v){ 
 	v->visit(this); 
 }
-
-/*void FuncDefinition::accept(Visitor *v){ 
-	v->visit(this); 
-}
-*/
 
 void FunctionPar::accept(Visitor *v){ 
 	v->visit(this); 
@@ -831,7 +781,6 @@ void Parameters::accept(Visitor *v){
 void Names::accept(Visitor *v){
 	v->visit(this);
 }
-
 
 void NameID::accept(Visitor *v){
 	v->visit(this);

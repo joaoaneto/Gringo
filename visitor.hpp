@@ -12,7 +12,6 @@ class Visitor {
 public:
 	virtual void visit(VarDeclaration *) = 0;
 	virtual void visit(VarDeclarations *) = 0;
-	//virtual void visit(FuncDefinition *) = 0;
 	virtual void visit(FunctionPar *) = 0;
 	virtual void visit(FunctionCall *) = 0;
 	virtual void visit(FunctionNonPar *) = 0;
@@ -24,7 +23,6 @@ public:
 	virtual void visit(IdFunction *) = 0;
 	virtual void visit(NameID *) = 0;
 	virtual void visit(NameAssignment *) = 0;
-	//virtual void visit(Block *) = 0;
 	virtual void visit(BlockVarCommands *) = 0;
 	virtual void visit(BlockCommands *) = 0;
 	virtual void visit(BlockVar *) = 0;
@@ -90,8 +88,6 @@ public:
 	void visit(VarDeclaration *vd);
 	
 	void visit(VarDeclarations *vds);
-	
-	//void visit(FuncDefinition *fdef);
 
 	void visit(FunctionPar *fpar);
 
@@ -110,8 +106,6 @@ public:
 	void visit(NameID *nID);
 
 	void visit(NameAssignment *n);
-
-	//void visit(Block *b);
 
 	void visit(BlockVarCommands *bvc);
 
