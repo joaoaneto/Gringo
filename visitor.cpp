@@ -93,12 +93,12 @@ void Operations::visit(IdValue *v){
 	}else{
 		stack_.push_back(t[v->getValue()]);
 	}
-	stackcounter++;
+	
 }
 
 void Operations::visit(IdFunction *id){
 	Context::getContext().getVector().push_back(id->getIdFunction());	
-	printf("%d\n", Context::getContext().getVector().size());
+	//printf("%d\n", Context::getContext().getVector().size());
 }
 
 void Operations::visit(FunctionCall *fcall){
@@ -124,7 +124,7 @@ void Operations::visit(Assignment *a){
 	t[valueId->getValue()] = stack_.back();
 	stack_.pop_back();
 
-	printf("Quantidade: %d\n", t.size());
+	//printf("Quantidade: %d\n", t.size());
 
 }
 
@@ -644,7 +644,8 @@ void Operations::visit(FunctionPar *fpar){
 	
 	GlobalCountFunc.count = 0;
 
-	printf("%d\n", Context::getContext().getAtualScope()->getTable().size());
+	stackCounterVar_.push_back(stackcounter);
+	stackcounter = 0;
 }
 
 void Operations::visit(FunctionNonPar *fnp){
@@ -697,12 +698,14 @@ void Operations::visit(NameID *nID){
 	nID->getIdValue()->accept(this);
 
 	GlobalCountVar.count++;
+	stackcounter++;
 }
 
 void Operations::visit(NameAssignment *n){
 	n->getAssignment()->accept(this);
 
 	GlobalCountVar.count++;
+	stackcounter++;
 }
 
 void Operations::visit(BlockVarCommands *bvc){

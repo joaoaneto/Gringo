@@ -1,11 +1,22 @@
 Contagem de declarações de variável global
-int: 5
-float: 3
-double: 0
-Contagem de declarações de funçoes
-int: 0
+int: 6
+float: 2
+double: 1
+
+Contagem de definições de funçoes
+int: 2
 float: 0
-double: 0
+double: 1
 void: 2
-Número de Whiles
-While:3
+
+Número de Whiles: 2
+Número de If's: 2
+Número de IfElse's: 1
+Número de chamadas de funções: 1
+
+Número de declarações de variáveis em cada função
+silvs: 4
+feijis: 3
+neto: 1
+matheu: 1
+main: 0
